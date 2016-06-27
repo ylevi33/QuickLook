@@ -16,9 +16,6 @@ namespace QuickLook
 
     public static void SyncSprintsToOutlook(Release release, EntityListResult<Sprint> sprints) {
 
-      Dictionary<long, Release> releaseMap = new Dictionary<long, Release>();
-      releaseMap[release.Id] = release;
-
       //set sprint map
       Dictionary<long, Sprint> sprintMap = new Dictionary<long, Sprint>();
       foreach (Sprint sprint in sprints.data)
@@ -36,19 +33,7 @@ namespace QuickLook
         UserProperty sprintUP = appointment.UserProperties[OutlookUtils.APPOINTMENT_SPRINT_ID_FIELD];
         int appointmentSprintId = (sprintUP == null ? NO_ID_VALUE : int.Parse(sprintUP.Value));
 
-        //if release
-        if (appointmentReleaseId != NO_ID_VALUE && appointmentSprintId == NO_ID_VALUE)
-        {
-          Release tempRelease = releaseMap[appointmentReleaseId];
-          releaseMap.Remove(appointmentReleaseId);
-
-          // todo sync release
-          if (tempRelease != null)
-          {
-            SyncReleaseToOutlook(release, appointment);
-          }
-        }
-        else if (appointmentReleaseId != NO_ID_VALUE && appointmentSprintId != NO_ID_VALUE) //sprint
+        if (appointmentReleaseId != NO_ID_VALUE && appointmentSprintId != NO_ID_VALUE) //sprint
         {
           Sprint tempSprint = sprintMap[appointmentSprintId];
           sprintMap.Remove(appointmentSprintId);
@@ -64,12 +49,13 @@ namespace QuickLook
       }
 
       //create releases that were not deleted from map
-      foreach (Release tempRelease in releaseMap.Values)
+   /*   foreach (Release tempRelease in releaseMap.Values)
       {
         Dictionary<String, Object> customFields = new Dictionary<String, Object>();
         customFields.Add(OutlookUtils.APPOINTMENT_RELEASE_ID_FIELD, tempRelease.Id);
         OutlookUtils.AddAppointment(tempRelease.Name, tempRelease.StartDate, tempRelease.EndDate, customFields, true);
       }
+      */
 
       //create sprints that were not deleted from map
       foreach (Sprint sprint in sprintMap.Values)
@@ -77,7 +63,8 @@ namespace QuickLook
         Dictionary<String, Object> customFields = new Dictionary<String, Object>();
         customFields.Add(OutlookUtils.APPOINTMENT_RELEASE_ID_FIELD, sprint.Release.Id);
         customFields[OutlookUtils.APPOINTMENT_SPRINT_ID_FIELD] = sprint.Id;
-        OutlookUtils.AddAppointment(sprint.Name, sprint.StartDate, sprint.EndDate, customFields, true);
+        String sprintName = getSprintAppointmentName(sprint);
+        OutlookUtils.AddAppointment(sprintName, sprint.StartDate, sprint.EndDate, customFields, true);
       }
 
     }
@@ -119,9 +106,11 @@ namespace QuickLook
         appointment.End = sprint.EndDate;
         modified = true;
       }
-      if (!sprint.Name.Equals(appointment.Subject))
+
+      String sprintName = getSprintAppointmentName(sprint);
+      if (!sprintName.Equals(appointment.Subject))
       {
-        appointment.Subject = sprint.Name;
+        appointment.Subject = sprintName;
         modified = true;
       }
       if (modified)
@@ -129,5 +118,11 @@ namespace QuickLook
         appointment.Save();
       }
     }
+
+    private static String getSprintAppointmentName(Sprint sprint)
+    {
+      return sprint.Release.Name + " " + sprint.Name;
+    }
   }
+
 }
