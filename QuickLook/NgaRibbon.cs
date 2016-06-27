@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -10,7 +11,9 @@ using Hpe.Nga.Api.Core.Entities;
 using Hpe.Nga.Api.Core.Services;
 using Hpe.Nga.Api.Core.Services.RequestContext;
 using Hpe.Nga.Api.UI.Core.Configuration;
+using Microsoft.Office.Core;
 using Microsoft.Office.Tools.Ribbon;
+using QuickLook.Properties;
 using Office = Microsoft.Office.Core;
 
 // TODO:  Follow these steps to enable the Ribbon (XML) item:
@@ -67,6 +70,16 @@ namespace QuickLook
       Release release = NgaUtils.GetReleaseById(releaseId);
       EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
       OutlookSyncUtils.SyncSprintsToOutlook(release, sprints);
+    }
+
+    public Bitmap imageConnect_GetImage(IRibbonControl control)
+    {
+      return Resources.OctaneConnect;
+    }
+
+    public Bitmap imageSync_GetImage(IRibbonControl control)
+    {
+      return Resources.OctaneSync;
     }
 
     #region IRibbonExtensibility Members
