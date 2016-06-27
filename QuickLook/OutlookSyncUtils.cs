@@ -114,6 +114,80 @@ namespace QuickLook
     {
       return sprint.Release.Name + " " + sprint.Name;
     }
+
+    public static void SyncMilestonesToOutlook(Release release, EntityListResult<Milestone> milestones)
+    {
+
+        //set sprint map
+        Dictionary<long, Milestone> milestonesMap = new Dictionary<long, Milestone>();
+        foreach (Milestone milestone in milestones.data)
+        {
+            milestone.setMilestoneStartDateEndDate();
+            milestonesMap[milestone.Id] = milestone;
+        }
+
+        //iterate outlook appointments
+        Items resultItems = OutlookUtils.GetAppointmentsInRange(new DateTime(2015, 1, 1), new DateTime(2030, 1, 1));
+        foreach (AppointmentItem appointment in resultItems)
+        {
+            UserProperty releaseUP = appointment.UserProperties[OutlookUtils.APPOINTMENT_RELEASE_ID_FIELD];
+            int appointmentReleaseId = (releaseUP == null ? NO_ID_VALUE : int.Parse(releaseUP.Value));
+
+            UserProperty milestoneUP = appointment.UserProperties[OutlookUtils.APPOINTMENT_MILESTONE_ID_FIELD];
+            int appointmentMilestoneId = (milestoneUP == null ? NO_ID_VALUE : int.Parse(milestoneUP.Value));
+
+            if (appointmentReleaseId != NO_ID_VALUE && appointmentMilestoneId != NO_ID_VALUE) //milestone
+            {
+                Milestone tempMilestone = milestonesMap[appointmentMilestoneId];
+                milestonesMap.Remove(appointmentMilestoneId);
+
+
+                if (tempMilestone != null)
+                {
+                    SyncMilestoneToOutlook(tempMilestone, appointment);
+                }
+            }
+
+            Marshal.ReleaseComObject(appointment);
+        }
+
+        //create milestones that were not deleted from map
+        foreach (Milestone milestone in milestonesMap.Values)
+        {
+            Dictionary<String, Object> customFields = new Dictionary<String, Object>();
+            customFields.Add(OutlookUtils.APPOINTMENT_RELEASE_ID_FIELD, ((Release)(milestone.Releases.data.ElementAt<BaseEntity>(0))).Id);
+            customFields[OutlookUtils.APPOINTMENT_MILESTONE_ID_FIELD] = milestone.Id;
+            String milestoneName = getMilestoneAppointmentName(milestone);
+            OutlookUtils.AddAppointment(milestoneName, milestone.StartDate, milestone.EndDate, customFields, true);
+        }
+    }
+
+    private static void SyncMilestoneToOutlook(Milestone milestone, AppointmentItem appointment)
+    {
+        bool modified = false;
+        if ((appointment.Start.Date != milestone.StartDate.Date) || (appointment.End.Date != milestone.EndDate.Date))
+        {
+            appointment.Start = milestone.StartDate;
+            appointment.End = milestone.EndDate;
+            modified = true;
+        }
+
+        String milestoneName = getMilestoneAppointmentName(milestone);
+        if (!milestoneName.Equals(appointment.Subject))
+        {
+            appointment.Subject = milestoneName;
+            modified = true;
+        }
+        if (modified)
+        {
+            appointment.Save();
+        }
+    }
+
+    private static String getMilestoneAppointmentName(Milestone milestone)
+    {
+        return ((Release)(milestone.Releases.data.ElementAt<BaseEntity>(0))).Name + " " + milestone.Name;
+    }
   }
 
 }

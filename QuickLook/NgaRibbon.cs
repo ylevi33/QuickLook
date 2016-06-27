@@ -71,6 +71,7 @@ namespace QuickLook
       EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
       OutlookSyncUtils.SyncSprintsToOutlook(release, sprints);
       EntityListResult<Milestone> milestones = NgaUtils.GetMilestonesByRelease(release.Id);
+      OutlookSyncUtils.SyncMilestonesToOutlook(release, milestones);
     }
 
     public Bitmap imageConnect_GetImage(IRibbonControl control)

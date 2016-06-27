@@ -154,6 +154,23 @@ namespace Hpe.Nga.Api.Core.Services
             SetValue(propertyName, value);
         }
 
+        public DateTime? GetDateTimeUTCValue(string propertyName)
+        {
+            Object obj = GetValue(propertyName);
+            if (obj == null)
+            {
+                return null;
+            }
+            else if (obj is DateTime)
+            {
+                return ((DateTime)obj).ToUniversalTime();
+            }
+            else
+            {
+                return DateTime.ParseExact((String)obj, DATE_TIME_FORMAT, null).ToUniversalTime();
+            }
+        }
+
         //2016-06-01T05:26:02Z
         //DateTime date = DateTime.Now;
         //

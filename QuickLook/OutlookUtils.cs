@@ -13,6 +13,7 @@ namespace QuickLook
   {
     public static string APPOINTMENT_RELEASE_ID_FIELD = "ReleaseId";
     public static string APPOINTMENT_SPRINT_ID_FIELD = "SprintId";
+    public static string APPOINTMENT_MILESTONE_ID_FIELD = "MilestoneId";
 
     public static Application GetApplication()
     {
