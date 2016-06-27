@@ -48,15 +48,6 @@ namespace QuickLook
         Marshal.ReleaseComObject(appointment);
       }
 
-      //create releases that were not deleted from map
-   /*   foreach (Release tempRelease in releaseMap.Values)
-      {
-        Dictionary<String, Object> customFields = new Dictionary<String, Object>();
-        customFields.Add(OutlookUtils.APPOINTMENT_RELEASE_ID_FIELD, tempRelease.Id);
-        OutlookUtils.AddAppointment(tempRelease.Name, tempRelease.StartDate, tempRelease.EndDate, customFields, true);
-      }
-      */
-
       //create sprints that were not deleted from map
       foreach (Sprint sprint in sprintMap.Values)
       {
