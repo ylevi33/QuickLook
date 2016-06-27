@@ -66,6 +66,7 @@ namespace QuickLook
       //Get by id
       Release release = NgaUtils.GetReleaseById(releaseId);
       EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
+      OutlookSyncUtils.SyncSprintsToOutlook(release, sprints);
     }
 
     #region IRibbonExtensibility Members

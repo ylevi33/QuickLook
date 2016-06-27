@@ -18,10 +18,10 @@ namespace QuickLook
 
     public static void init(long sharedSpaceId) 
     {
-      workspaceContext = GetWorkspaceContextTest(sharedSpaceId);
+      workspaceContext = GetWorkspaceContext(sharedSpaceId);
     }
 
-    private static WorkspaceContext GetWorkspaceContextTest(long sharedSpaceId)
+    private static WorkspaceContext GetWorkspaceContext(long sharedSpaceId)
     {
       SharedSpaceContext sharedSpaceContext = new SharedSpaceContext(sharedSpaceId);
       EntityListResult<Workspace> workspaces = entityService.Get<Workspace>(sharedSpaceContext);
@@ -34,6 +34,8 @@ namespace QuickLook
     {
       List<String> fields = new List<string>();
       fields.Add(Release.NAME_FIELD);
+      fields.Add(Release.START_DATE_FIELD);
+      fields.Add(Release.END_DATE_FIELD);
       Release release = entityService.GetById<Release>(workspaceContext, id, fields);
       
       Debug.Assert(release.Id == id);

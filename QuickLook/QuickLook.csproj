@@ -162,6 +162,8 @@
   <ItemGroup>
     <Compile Include="NgaRibbon.cs" />
     <Compile Include="NgaUtils.cs" />
+    <Compile Include="OutlookSyncUtils.cs" />
+    <Compile Include="OutlookUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
