@@ -1,0 +1,68 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Hpe.Nga.Api.Core.Services;
+
+namespace Hpe.Nga.Api.Core.Entities
+{
+    public class Release : BaseEntity
+    {
+        public static string START_DATE_FIELD = "start_date";
+        public static string END_DATE_FIELD = "end_date";
+        public static string SPRINT_DURATION_FIELD = "sprint_duration";
+
+        public Release()
+        {
+
+        }
+
+        public Release(long id)
+        {
+            Id = id;
+        }
+
+
+        public DateTime StartDate
+        {
+            get
+            {
+                return GetDateTimeValue(START_DATE_FIELD).Value;
+            }
+            set
+            {
+                SetDateTimeValue(START_DATE_FIELD, value);
+            }
+
+        }
+
+        public DateTime EndDate
+        {
+            get
+            {
+                return GetDateTimeValue(END_DATE_FIELD).Value;
+            }
+            set
+            {
+                SetDateTimeValue(END_DATE_FIELD, value);
+            }
+
+        }
+
+
+        public int SprintDuration
+        {
+            get
+            {
+                return GetIntValue(SPRINT_DURATION_FIELD, 0);
+            }
+            set
+            {
+                SetIntValue(SPRINT_DURATION_FIELD, value);
+            }
+
+        }
+
+    }
+}
