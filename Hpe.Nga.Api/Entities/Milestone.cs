@@ -10,6 +10,7 @@ namespace Hpe.Nga.Api.Core.Entities
     public class Milestone : BaseEntity
     {
         public static string DATE_FIELD = "date";
+        public static string DESCRIPTION_FIELD = "description";
         public static string RELEASES_FIELD = "releases";
 
         public DateTime Date
@@ -28,6 +29,19 @@ namespace Hpe.Nga.Api.Core.Entities
         public void SetRelease(EntityList<Release> releases)
         {
             SetValue(RELEASES_FIELD, releases);
+
+        }
+
+        public EntityList<BaseEntity> Releases
+        {
+            get
+            {
+                return (EntityList<BaseEntity>)GetValue(RELEASES_FIELD);
+            }
+            set
+            {
+                SetValue(RELEASES_FIELD, value);
+            }
 
         }
     }

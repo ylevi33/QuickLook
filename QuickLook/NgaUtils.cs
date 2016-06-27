@@ -60,5 +60,23 @@ namespace QuickLook
       return result;
     }
 
+    public static EntityListResult<Milestone> GetMilestonesByRelease(long releaseId)
+    {
+        List<String> fields = new List<string>();
+        fields.Add(Milestone.NAME_FIELD);
+        fields.Add(Milestone.DATE_FIELD);
+        fields.Add(Milestone.RELEASES_FIELD);
+        fields.Add(Milestone.DESCRIPTION_FIELD);
+
+        List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
+        QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
+        QueryPhrase byReleasePhrase = new CrossQueryPhrase(Milestone.RELEASES_FIELD, releaseIdPhrase);
+
+        queryPhrases.Add(byReleasePhrase);
+
+        EntityListResult<Milestone> result = entityService.Get<Milestone>(workspaceContext, queryPhrases, fields);
+        return result;
+    }
+
   }
 }
