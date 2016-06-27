@@ -162,6 +162,8 @@
   <ItemGroup>
     <Compile Include="NgaRibbon.cs" />
     <Compile Include="NgaUtils.cs" />
+    <Compile Include="OutlookSyncUtils.cs" />
+    <Compile Include="OutlookUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -173,6 +175,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -206,6 +209,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="NgaRibbon.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\OctaneConnect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\OctaneSync.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
