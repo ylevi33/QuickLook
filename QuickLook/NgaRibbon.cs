@@ -6,6 +6,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using Hpe.Nga.Api.Core.Entities;
+using Hpe.Nga.Api.Core.Services;
+using Hpe.Nga.Api.Core.Services.RequestContext;
 using Hpe.Nga.Api.UI.Core.Configuration;
 using Microsoft.Office.Tools.Ribbon;
 using Office = Microsoft.Office.Core;
@@ -51,7 +54,18 @@ namespace QuickLook
         loginConfig = form.Configuration;
         PersistLoginConfiguration();
         UpdateLabelStatus();
+        NgaUtils.init(loginConfig.SharedSpaceId);
       }
+    }
+
+    public void OnSync(Office.IRibbonControl control)
+    {
+      
+      int releaseId = 1029;
+      
+      //Get by id
+      Release release = NgaUtils.GetReleaseById(releaseId);
+      EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
     }
 
     #region IRibbonExtensibility Members
@@ -99,7 +113,7 @@ namespace QuickLook
 
     private void UpdateLabelStatus()
     {
-      String format = String.Format("Connected as '{0}' to {1}, shared space ({2})", loginConfig.Name, loginConfig.ServerUrl, loginConfig.SharedSpaceId);
+      Console.Write(String.Format("Connected as '{0}' to {1}, shared space ({2})", loginConfig.Name, loginConfig.ServerUrl, loginConfig.SharedSpaceId));
       //lblStatus.Text = format;
     }
 
@@ -109,6 +123,8 @@ namespace QuickLook
       //save last successful configuration
       persistService.Save(loginConfig);
     }
+
+   
 
   }
 }

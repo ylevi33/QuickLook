@@ -20,7 +20,7 @@ namespace NgaOutlookTest
             SharedSpaceContext sharedSpaceContext = new SharedSpaceContext(sharedSpaceId);
             EntityListResult<Workspace> workspaces = entityService.Get<Workspace>(sharedSpaceContext);
             Workspace workspace = workspaces.data[0];
-            long workspaceId = 2004;//workspaces.data[0].Id hardcoded workaround
+            long workspaceId = 2006;//workspaces.data[0].Id hardcoded workaround
             WorkspaceContext workspaceContext = new WorkspaceContext(sharedSpaceId, workspaceId);
             return workspaceContext;
         }

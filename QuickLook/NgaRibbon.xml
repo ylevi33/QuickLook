@@ -5,6 +5,7 @@
       <tab id="ngaTab" label="NGA">
         <group id="actions" label="Actions">
           <button id="btnConnect" label="Connect" showImage="false" onAction="OnLogin"/>
+          <button id="btnSync" label="Sync" showImage="false" onAction="OnSync"/>
         </group>
       </tab>
     </tabs>

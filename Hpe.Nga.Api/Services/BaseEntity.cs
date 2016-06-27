@@ -11,8 +11,7 @@ namespace Hpe.Nga.Api.Core.Services
         public static string ID_FIELD = "id";
         public static string TYPE_NAME_FIELD = "type";
         public static string NAME_FIELD = "name";
-
-
+        
         public static string DATE_TIME_FORMAT = "yyyy-MM-ddTHH:mm:ssZ";
 
         #region Ctors
