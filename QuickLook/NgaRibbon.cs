@@ -80,7 +80,7 @@ namespace QuickLook
                 }
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
             //autologin fail
             if (ribbon != null)

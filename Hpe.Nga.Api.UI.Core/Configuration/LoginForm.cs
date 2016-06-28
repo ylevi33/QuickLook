@@ -26,14 +26,6 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
         {
             get
             {
-                SharedSpace selectedSS = (SharedSpace)cmbSharedSpace.SelectedItem;
-                long ssIdForSave = 1001;
-                String ssNameForSave = null;
-                /*if (selectedSS != null)
-                {
-                    ssIdForSave = selectedSS.Id;
-                    ssNameForSave = selectedSS.Name;
-                }*/
                 return new LoginConfiguration(txtServer.Text, txtName.Text, txtPassword.Text);
             }
             set

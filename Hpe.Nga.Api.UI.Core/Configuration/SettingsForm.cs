@@ -154,7 +154,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
 
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 lblStatus.Text = "Failed to connect";
                 lblStatus.ForeColor = Color.Red;
@@ -171,7 +171,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
             {
                 sharedSpaces = EntityService.GetInstance().Get<SharedSpace>(new SiteContext());
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
@@ -231,20 +231,6 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
             //User user = GetSharedSpaceUser(sharedSpaceId, txtName.Text);
 
             FillCombo<Workspace>(cmbWorkspace, workspaces.data);
-
-        }
-
-        private User GetSharedSpaceUser(long sharedSpaceId, string name)
-        {
-            SharedSpaceContext context = new SharedSpaceContext(sharedSpaceId);
-
-            //s?query="name='hackathon@user'"
-
-            QueryPhrase query = new LogicalQueryPhrase("name", name);
-            List<QueryPhrase> queries = new List<QueryPhrase>();
-            queries.Add(query);
-            EntityListResult<User> users = EntityService.GetInstance().Get<User>(context, queries, null);
-            return users.data[0];
 
         }
 
