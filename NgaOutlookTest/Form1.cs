@@ -80,5 +80,18 @@ namespace NgaOutlookTest
             MessageBox.Show("Finished OK");
         }
 
+        private void btnSettingsDialog_Click(object sender, EventArgs e)
+        {
+            //Open login dialog
+            SettingsForm form = new SettingsForm();
+            form.Configuration = persistService.Load<LoginConfiguration>(); ;
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                loginConfig = form.Configuration;
+                PersistLoginConfiguration();
+                UpdateLabelStatus();
+            }
+        }
+
     }
 }

@@ -15,19 +15,26 @@ namespace QuickLook
   {
     private static EntityService entityService = EntityService.GetInstance();
     private static WorkspaceContext workspaceContext;
+    private static long selectedReleaseId = 0;
 
-    public static void init(long sharedSpaceId) 
+    public static void init(long sharedSpaceId, long workspaceId, long releaseId) 
     {
-      workspaceContext = GetWorkspaceContext(sharedSpaceId);
+        workspaceContext = GetWorkspaceContext(sharedSpaceId, workspaceId);
+        selectedReleaseId = releaseId;
     }
 
-    private static WorkspaceContext GetWorkspaceContext(long sharedSpaceId)
+    private static WorkspaceContext GetWorkspaceContext(long sharedSpaceId, long workspaceId)
     {
       SharedSpaceContext sharedSpaceContext = new SharedSpaceContext(sharedSpaceId);
       //EntityListResult<Workspace> workspaces = entityService.Get<Workspace>(sharedSpaceContext);
       //Workspace workspace = workspaces.data[0];
-      long workspaceId = 2029;//workspaces.data[0].Id hardcoded workaround
+      //long workspaceId = 2029;//workspaces.data[0].Id hardcoded workaround
       return new WorkspaceContext(sharedSpaceId, workspaceId);
+    }
+
+    public static Release GetSelectedRelease()
+    {
+        return GetReleaseById(selectedReleaseId);
     }
 
     public static Release GetReleaseById(long id)

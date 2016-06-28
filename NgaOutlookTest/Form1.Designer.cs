@@ -34,6 +34,7 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnRunSprintTests = new System.Windows.Forms.Button();
             this.btnLoginConfiguration = new System.Windows.Forms.Button();
+            this.btnSettingsDialog = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnRunReleaseTests
@@ -69,7 +70,7 @@
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(25, 72);
+            this.lblStatus.Location = new System.Drawing.Point(22, 66);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(78, 13);
             this.lblStatus.TabIndex = 13;
@@ -95,11 +96,22 @@
             this.btnLoginConfiguration.UseVisualStyleBackColor = true;
             this.btnLoginConfiguration.Click += new System.EventHandler(this.btnLoginConfiguration_Click);
             // 
+            // btnSettingsDialog
+            // 
+            this.btnSettingsDialog.Location = new System.Drawing.Point(25, 100);
+            this.btnSettingsDialog.Name = "btnSettingsDialog";
+            this.btnSettingsDialog.Size = new System.Drawing.Size(124, 23);
+            this.btnSettingsDialog.TabIndex = 16;
+            this.btnSettingsDialog.Text = "Settings Dialog";
+            this.btnSettingsDialog.UseVisualStyleBackColor = true;
+            this.btnSettingsDialog.Click += new System.EventHandler(this.btnSettingsDialog_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(557, 357);
+            this.Controls.Add(this.btnSettingsDialog);
             this.Controls.Add(this.btnLoginConfiguration);
             this.Controls.Add(this.btnRunSprintTests);
             this.Controls.Add(this.lblStatus);
@@ -121,6 +133,7 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnRunSprintTests;
         private System.Windows.Forms.Button btnLoginConfiguration;
+        private System.Windows.Forms.Button btnSettingsDialog;
     }
 }
 

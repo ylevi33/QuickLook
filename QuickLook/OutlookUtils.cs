@@ -23,7 +23,7 @@ namespace QuickLook
 
     public static Items GetAppointmentsInRange(DateTime startDate, DateTime endDate)
     {
-      Folder calFolder = GetApplication().Session.GetDefaultFolder(OlDefaultFolders.olFolderCalendar) as Folder;
+      Folder calFolder = GetApplication().ActiveExplorer().CurrentFolder as Folder;
       string filter = "[Start] >= '" + startDate.ToString("g") + "' AND [End] <= '" + endDate.ToString("g") + "' AND [AllDayEvent] = True";
       Debug.WriteLine(filter);
       Items calItems = null;
@@ -59,7 +59,7 @@ namespace QuickLook
 
     public static AppointmentItem AddAppointment(String subject, DateTime startDate, DateTime endDate, String categories, int reminderMinutesBeforeStart, Dictionary<String, Object> customFields, bool save)
     {
-      AppointmentItem newAppointment = (AppointmentItem)GetApplication().CreateItem(OlItemType.olAppointmentItem);
+      AppointmentItem newAppointment = (AppointmentItem)GetApplication().ActiveExplorer().CurrentFolder.Items.Add(OlItemType.olAppointmentItem);
       newAppointment.AllDayEvent = true;
       newAppointment.Start = startDate;
       newAppointment.End = endDate;

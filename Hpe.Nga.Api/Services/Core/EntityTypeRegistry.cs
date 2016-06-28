@@ -73,7 +73,11 @@ namespace Hpe.Nga.Api.Core.Services.Core
 
         public Type GetTypeByEntityTypeName(String entityTypeName)
         {
-            return entityTypeName2Type[entityTypeName];
+            if (entityTypeName2Type.ContainsKey(entityTypeName))
+            {
+                return entityTypeName2Type[entityTypeName];
+            }
+            return null;
         }
     }
 }

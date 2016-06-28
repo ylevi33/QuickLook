@@ -38,20 +38,32 @@ namespace Hpe.Nga.Api.Core.Services
         }
 
         public EntityListResult<T> Get<T>(IRequestContext context, IList<QueryPhrase> queryPhrases, List<String> fields)
+        where T : BaseEntity
+        {
+            return Get<T>(context, queryPhrases, fields, null);
+        }
+
+        public EntityListResult<T> Get<T>(IRequestContext context, IList<QueryPhrase> queryPhrases, List<String> fields, int? limit)
             where T : BaseEntity
         {
             String collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
             string url = context.GetPath() + "/" + collectionName;
 
-            String queryString = QueryBuilder.BuildQueryString(queryPhrases, fields, null, null, null);
+            String queryString = QueryBuilder.BuildQueryString(queryPhrases, fields, null, null, limit);
             if (!String.IsNullOrEmpty(queryString))
             {
                 url = url + "?" + queryString;
             }
 
             ResponseWrapper response = rc.ExecuteGet(url);
-            EntityListResult<T> result = jsonSerializer.Deserialize<EntityListResult<T>>(response.Data);
-            return result;
+            if (response.Data != null)
+            {
+                EntityListResult<T> result = jsonSerializer.Deserialize<EntityListResult<T>>(response.Data);
+                return result;
+            }
+            return null;
+
+
         }
 
 

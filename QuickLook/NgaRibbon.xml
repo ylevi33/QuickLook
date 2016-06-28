@@ -4,7 +4,7 @@
     <tabs>
       <tab id="ngaTab" label="NGA">
         <group id="actions" label="Actions">
-          <button id="btnConnect" label="Connect" showImage="false" onAction="OnLogin" size="large" getImage="imageConnect_GetImage"/>
+          <button id="btnConnect" getLabel="GetBtnConnectLable" showImage="false" onAction="OnLogin" size="large" getImage="imageConnect_GetImage"/>
           <button id="btnSync" label="Sync" showImage="false" onAction="OnSync" size="large" getImage="imageSync_GetImage"/>
         </group>
       </tab>
