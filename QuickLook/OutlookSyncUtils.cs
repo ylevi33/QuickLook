@@ -35,14 +35,22 @@ namespace QuickLook
 
         if (appointmentReleaseId != NO_ID_VALUE && appointmentSprintId != NO_ID_VALUE) //sprint
         {
-          Sprint tempSprint = sprintMap[appointmentSprintId];
-          sprintMap.Remove(appointmentSprintId);
+            if (sprintMap.ContainsKey(appointmentSprintId))
+            {
+                Sprint tempSprint = sprintMap[appointmentSprintId];
+                sprintMap.Remove(appointmentSprintId);
 
 
-          if (tempSprint != null)
-          {
-            SyncSprintToOutlook(tempSprint, appointment);
-          }
+                if (tempSprint != null)
+                {
+                    SyncSprintToOutlook(tempSprint, appointment);
+                }
+            }
+            else
+            {
+                //Delete Sprint no longer exist in NGA
+                appointment.Delete();
+            }
         }
 
         Marshal.ReleaseComObject(appointment);
@@ -120,6 +128,7 @@ namespace QuickLook
 
         //set sprint map
         Dictionary<long, Milestone> milestonesMap = new Dictionary<long, Milestone>();
+
         foreach (Milestone milestone in milestones.data)
         {
             milestone.setMilestoneStartDateEndDate();
@@ -138,13 +147,21 @@ namespace QuickLook
 
             if (appointmentReleaseId != NO_ID_VALUE && appointmentMilestoneId != NO_ID_VALUE) //milestone
             {
-                Milestone tempMilestone = milestonesMap[appointmentMilestoneId];
-                milestonesMap.Remove(appointmentMilestoneId);
-
-
-                if (tempMilestone != null)
+                if (milestonesMap.ContainsKey(appointmentMilestoneId))
                 {
-                    SyncMilestoneToOutlook(tempMilestone, appointment);
+                    Milestone tempMilestone = milestonesMap[appointmentMilestoneId];
+                    milestonesMap.Remove(appointmentMilestoneId);
+
+
+                    if (tempMilestone != null)
+                    {
+                        SyncMilestoneToOutlook(tempMilestone, appointment);
+                    }
+                }
+                else
+                {
+                    //Delete Milestone no longer exist in NGA
+                    appointment.Delete();
                 }
             }
 
