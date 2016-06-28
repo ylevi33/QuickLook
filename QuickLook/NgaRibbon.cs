@@ -72,7 +72,7 @@ namespace QuickLook
             if (RestConnector.GetInstance().Connect(tempLoginConfig.ServerUrl, tempLoginConfig.Name, tempLoginConfig.Password))
             {
                 loginConfig = tempLoginConfig;
-                NgaUtils.init(loginConfig.SharedSpaceId);
+                NgaUtils.init(loginConfig.SharedSpaceId, loginConfig.WorkspaceId, loginConfig.ReleaseId);
                 isLoggedIn = true;
                 if (ribbon != null)
                 {
@@ -93,14 +93,14 @@ namespace QuickLook
 
     public void OnLogin(Office.IRibbonControl control)
     {
-      LoginForm form = new LoginForm();
+        SettingsForm form = new SettingsForm();
       form.Configuration = persistService.Load<LoginConfiguration>(); ;
       if (form.ShowDialog() == DialogResult.OK)
       {
         loginConfig = form.Configuration;
         PersistLoginConfiguration();
         UpdateLabelStatus();
-        NgaUtils.init(loginConfig.SharedSpaceId);
+        NgaUtils.init(loginConfig.SharedSpaceId, loginConfig.WorkspaceId, loginConfig.ReleaseId);
         isLoggedIn = true;
       }
       if (ribbon != null)
@@ -112,12 +112,12 @@ namespace QuickLook
     public void OnSync(Office.IRibbonControl control)
     {
       
-      int releaseId = 1055;
+      //int releaseId = 1055;
 
       try
       {
           //Get by id
-          Release release = NgaUtils.GetReleaseById(releaseId);
+          Release release = NgaUtils.GetSelectedRelease(); //NgaUtils.GetReleaseById(releaseId);
           EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
           OutlookSyncUtils.SyncSprintsToOutlook(release, sprints);
           EntityListResult<Milestone> milestones = NgaUtils.GetMilestonesByRelease(release.Id);

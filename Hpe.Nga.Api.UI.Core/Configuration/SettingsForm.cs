@@ -17,7 +17,6 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
 {
     public partial class SettingsForm : Form
     {
-        bool enableEvents = false;
         public SettingsForm()
         {
             InitializeComponent();
@@ -28,7 +27,6 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
         {
             get
             {
-                enableEvents = false;
                 SharedSpace selectedSS = (SharedSpace)cmbSharedSpace.SelectedItem;
                 Workspace selectedWorkspace = (Workspace)cmbWorkspace.SelectedItem;
                 Release selectedRelease = (Release)cmbRelease.SelectedItem;
@@ -49,8 +47,6 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
                     conf.ReleaseId = selectedRelease.Id;
                     conf.ReleaseName = selectedRelease.Name;
                 }
-
-                enableEvents = true;
                 return conf;
             }
             set
@@ -90,24 +86,21 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
                     }
                 }
             }
-
-
         }
 
-        private void Save()
+        /*private void Save()
         {
             ConfigurationPersistService persistService = new ConfigurationPersistService();
             persistService.ConfigurationFileName = "LoginConf.OnPrem.json";
             LoginConfiguration conf = Configuration;
             persistService.Save(conf);
-        }
+        }*/
 
         private void OnLoginSettingsChanged(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(txtServer.Text) || String.IsNullOrEmpty(txtName.Text) || String.IsNullOrEmpty(txtPassword.Text))
             {
                 btnLogin.Enabled = false;
-
             }
             else
             {
@@ -148,11 +141,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
                 btnLogin.Enabled = true;
                 lblStatus.Text = "Connected";
                 lblStatus.ForeColor = Color.White;
-
-                Save();
                 Application.DoEvents();
-
-
             }
             catch (Exception)
             {
@@ -185,7 +174,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
                 sharedSpaces = new EntityListResult<SharedSpace>();
                 sharedSpaces.data = new List<SharedSpace>();
                 sharedSpaces.data.Add(defaultSharedSpace);
-                sharedSpaces.total_count = 2;
+                sharedSpaces.total_count = 1;
             }
             FillCombo(cmbSharedSpace, sharedSpaces.data);
             //LoadWorkspaces(((SharedSpace)cmbSharedSpace.SelectedItem).Id);
@@ -197,7 +186,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
             T newSelected = null;
             combo.Items.Clear();
 
-            List<T> ordered = data.OrderBy(en =>en.Name).ToList();
+            List<T> ordered = data.OrderBy(en => en.Name).ToList();
             foreach (T item in ordered)
             {
                 //fill combo
@@ -227,7 +216,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
         {
             SharedSpaceContext context = new SharedSpaceContext(sharedSpaceId);
             EntityListResult<Workspace> workspaces = EntityService.GetInstance().Get<Workspace>(context);
-            
+
             //User user = GetSharedSpaceUser(sharedSpaceId, txtName.Text);
 
             FillCombo<Workspace>(cmbWorkspace, workspaces.data);
@@ -244,8 +233,6 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
                 FillCombo<Release>(cmbRelease, result.data);
 
                 btnConnect.Enabled = true;
-
-                Save();
             }
             else
             {
@@ -261,27 +248,18 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
 
         private void cmbSharedSpace_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!enableEvents)
-            {
-                return;
-            }
             LoadWorkspaces(((SharedSpace)cmbSharedSpace.SelectedItem).Id);
             OnConnectSettingsChanged();
         }
 
         private void cmbWorkspace_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!enableEvents)
-            {
-                return;
-            }
             LoadReleases(((SharedSpace)cmbSharedSpace.SelectedItem).Id, ((Workspace)cmbWorkspace.SelectedItem).Id);
             OnConnectSettingsChanged();
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            Save();
             this.DialogResult = DialogResult.OK;
 
         }
