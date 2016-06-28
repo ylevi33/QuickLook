@@ -101,8 +101,9 @@ namespace QuickLook
         QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
         QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE, releaseIdPhrase);
         queries.Add(byReleasePhrase);
-        LogicalQueryPhrase phaseIdPhrase = new LogicalQueryPhrase("id", 2810);
-        phaseIdPhrase.NegativeCondition = true;
+        LogicalQueryPhrase phaseNamePhrase = new LogicalQueryPhrase("name", "Done");
+        phaseNamePhrase.NegativeCondition = true;
+        CrossQueryPhrase phaseIdPhrase = new CrossQueryPhrase("metaphase", phaseNamePhrase);
         CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE, phaseIdPhrase);
         queries.Add(byPhasePhrase);
 
@@ -126,8 +127,9 @@ namespace QuickLook
         QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
         QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE, releaseIdPhrase);
         queryPhrases.Add(byReleasePhrase);
-        LogicalQueryPhrase phaseIdPhrase = new LogicalQueryPhrase("id", 2810);
-        phaseIdPhrase.NegativeCondition = true;
+        LogicalQueryPhrase phaseNamePhrase = new LogicalQueryPhrase("name", "Done");
+        phaseNamePhrase.NegativeCondition = true;
+        CrossQueryPhrase phaseIdPhrase = new CrossQueryPhrase("metaphase", phaseNamePhrase);
         CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE, phaseIdPhrase);
         queryPhrases.Add(byPhasePhrase);
 
