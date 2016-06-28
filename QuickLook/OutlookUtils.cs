@@ -70,8 +70,11 @@ namespace QuickLook
       newAppointment.Categories = categories;
         
       // Add reminder
-      newAppointment.ReminderSet = true;
-      newAppointment.ReminderMinutesBeforeStart = reminderMinutesBeforeStart;
+      if (reminderMinutesBeforeStart != null)
+      {
+          newAppointment.ReminderSet = true;
+          newAppointment.ReminderMinutesBeforeStart = reminderMinutesBeforeStart;
+      }
         
       if (customFields != null)
       {
