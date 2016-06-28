@@ -51,6 +51,18 @@ namespace Hpe.Nga.Api.Core.Entities
             {
                 SetDateTimeValue(END_DATE_FIELD, value);
             }
+        }
+
+        public String Description
+        {
+          get
+          {
+            return GetStringValue(DESCRIPTION_FIELD);
+          }
+          set
+          {
+            SetValue(DESCRIPTION_FIELD, value);
+          }
 
         }
 
