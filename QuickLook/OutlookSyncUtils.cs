@@ -258,10 +258,12 @@ namespace QuickLook
         int totatDefects = 0;
           foreach (Group group in groupResult.groups)
           {
-              defectsStrBuild.AppendLine("\t"+group.value.name+": "+group.count);
+              defectsStrBuild.AppendLine("\t\t"+group.value.name+": "+group.count);
               totatDefects += group.count;
           }
-          mailItem.Body = "Open Defects:\n\tTotal: " + totatDefects + "\n" + defectsStrBuild.ToString() +
+          mailItem.Body = "Release:\n\t" + release.Name + " (" + release.StartDate.ToShortDateString() + " - " + release.EndDate.ToShortDateString() + ")\n"
+              + "\tNumber Of Sprints: " + release.NumOfSprints
+              + "\n\nOpen Defects:\n\tTotal: " + totatDefects + "\n" + defectsStrBuild.ToString() +
               "\nOpenUser Stories:\n\tTotal: " + workItems.total_count;
         mailItem.Display();
       }

@@ -44,6 +44,7 @@ namespace QuickLook
       fields.Add(Release.NAME_FIELD);
       fields.Add(Release.START_DATE_FIELD);
       fields.Add(Release.END_DATE_FIELD);
+      fields.Add(Release.NUM_OF_SPRINTS_FIELD);
       Release release = entityService.GetById<Release>(workspaceContext, id, fields);
       
       Debug.Assert(release.Id == id);
