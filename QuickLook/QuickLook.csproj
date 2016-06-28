@@ -160,6 +160,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="MilestoneDataContainer.cs" />
     <Compile Include="NgaRibbon.cs" />
     <Compile Include="NgaUtils.cs" />
     <Compile Include="OutlookSyncUtils.cs" />
