@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using Hpe.Nga.Api.Core.Connector;
 using Hpe.Nga.Api.Core.Entities;
 using Hpe.Nga.Api.Core.Services;
 using Hpe.Nga.Api.Core.Services.RequestContext;
@@ -46,6 +47,26 @@ namespace QuickLook
 
     public NgaRibbon()
     {
+        persistService.ConfigurationFileName = "QuickLook.configuration";
+        tryAutoLogin();
+    }
+
+    private void tryAutoLogin()
+    {
+        try
+        {
+            LoginConfiguration tempLoginConfig = persistService.Load<LoginConfiguration>();
+            if (RestConnector.GetInstance().Connect(tempLoginConfig.ServerUrl, tempLoginConfig.Name, tempLoginConfig.Password))
+            {
+                loginConfig = tempLoginConfig;
+                NgaUtils.init(loginConfig.SharedSpaceId);
+            }
+        }
+        catch (Exception e)
+        {
+            //autologin fail
+        }
+
     }
 
     public void OnLogin(Office.IRibbonControl control)
@@ -65,13 +86,20 @@ namespace QuickLook
     {
       
       int releaseId = 1029;
-      
-      //Get by id
-      Release release = NgaUtils.GetReleaseById(releaseId);
-      EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
-      OutlookSyncUtils.SyncSprintsToOutlook(release, sprints);
-      EntityListResult<Milestone> milestones = NgaUtils.GetMilestonesByRelease(release.Id);
-      OutlookSyncUtils.SyncMilestonesToOutlook(release, milestones);
+
+      try
+      {
+          //Get by id
+          Release release = NgaUtils.GetReleaseById(releaseId);
+          EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
+          OutlookSyncUtils.SyncSprintsToOutlook(release, sprints);
+          EntityListResult<Milestone> milestones = NgaUtils.GetMilestonesByRelease(release.Id);
+          OutlookSyncUtils.SyncMilestonesToOutlook(release, milestones);
+      }
+      catch (Exception e)
+      {
+          MessageBox.Show("Failed to sync : " + e.Message + e.StackTrace);
+      }
     }
 
     public Bitmap imageConnect_GetImage(IRibbonControl control)

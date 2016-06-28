@@ -199,6 +199,11 @@ namespace Hpe.Nga.Api.Core.Connector
 
         public ResponseWrapper Send(string restRelativeUri, RequestType requestType, string data)
         {
+            if (!IsConnected())
+            {
+                throw new NotConnectedException();
+            }
+
             HttpWebRequest request = CreateRequest(restRelativeUri, requestType);
 
             if ((requestType == RequestType.Post || requestType == RequestType.Update) && !String.IsNullOrEmpty(data))

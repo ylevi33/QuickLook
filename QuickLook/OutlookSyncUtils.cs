@@ -63,7 +63,7 @@ namespace QuickLook
         customFields.Add(OutlookUtils.APPOINTMENT_RELEASE_ID_FIELD, sprint.Release.Id);
         customFields[OutlookUtils.APPOINTMENT_SPRINT_ID_FIELD] = sprint.Id;
         String sprintName = getSprintAppointmentName(sprint);
-        OutlookUtils.AddAppointment(sprintName, sprint.StartDate, sprint.EndDate, customFields, true);
+        OutlookUtils.AddAppointment(sprintName, sprint.StartDate, sprint.EndDate, "category", 5, customFields, true);
       }
 
     }
@@ -175,7 +175,7 @@ namespace QuickLook
             customFields.Add(OutlookUtils.APPOINTMENT_RELEASE_ID_FIELD, ((Release)(milestone.Releases.data.ElementAt<BaseEntity>(0))).Id);
             customFields[OutlookUtils.APPOINTMENT_MILESTONE_ID_FIELD] = milestone.Id;
             String milestoneName = getMilestoneAppointmentName(milestone);
-            OutlookUtils.AddAppointment(milestoneName, milestone.StartDate, milestone.EndDate, customFields, true);
+            OutlookUtils.AddAppointment(milestoneName, milestone.StartDate, milestone.EndDate, "category", 5, customFields, true);
         }
     }
 
