@@ -63,7 +63,7 @@ namespace QuickLook
         customFields.Add(OutlookUtils.APPOINTMENT_RELEASE_ID_FIELD, sprint.Release.Id);
         customFields[OutlookUtils.APPOINTMENT_SPRINT_ID_FIELD] = sprint.Id;
         String sprintName = getSprintAppointmentName(sprint);
-        OutlookUtils.AddAppointment(sprintName, sprint.StartDate, sprint.EndDate, "category", 5, customFields, true);
+        OutlookUtils.AddAppointment(sprintName, sprint.StartDate, sprint.EndDate, "", 0, false, customFields, true);
       }
 
     }
@@ -177,7 +177,7 @@ namespace QuickLook
             String milestoneName = getMilestoneAppointmentName(milestone);
             MilestoneDataContainer msExtraData = getMilestoneData(milestone);
 
-            OutlookUtils.AddAppointment(milestoneName, milestone.StartDate, milestone.EndDate, msExtraData.Category, msExtraData.ReminderMinutesBeforeStart, customFields, true);
+            OutlookUtils.AddAppointment(milestoneName, milestone.StartDate, milestone.EndDate, msExtraData.Category, msExtraData.ReminderMinutesBeforeStart, msExtraData.ReminderSet, customFields, true);
         }
     }
 
@@ -203,7 +203,6 @@ namespace QuickLook
         if (notificationData.ReminderMinutesBeforeStart == 0 && appointment.ReminderSet) 
         {
           appointment.ReminderSet = false;
-          notificationData.ReminderMinutesBeforeStart = -1;
           modified = true;
         }
         if (notificationData.ReminderMinutesBeforeStart != appointment.ReminderMinutesBeforeStart) {

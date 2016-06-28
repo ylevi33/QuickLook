@@ -40,7 +40,7 @@ namespace QuickLook
         }
         return null;
       }
-      catch
+      catch(System.Exception ex)
       {
         if (restrictItems != null)
         {
@@ -57,14 +57,14 @@ namespace QuickLook
       }
     }
 
-    public static AppointmentItem AddAppointment(String subject, DateTime startDate, DateTime endDate, String categories, int reminderMinutesBeforeStart, Dictionary<String, Object> customFields, bool save)
+    public static AppointmentItem AddAppointment(String subject, DateTime startDate, DateTime endDate, String categories, int reminderMinutesBeforeStart, Boolean reminderSet, Dictionary<String, Object> customFields, bool save)
     {
       AppointmentItem newAppointment = (AppointmentItem)GetApplication().ActiveExplorer().CurrentFolder.Items.Add(OlItemType.olAppointmentItem);
       newAppointment.AllDayEvent = true;
       newAppointment.Start = startDate;
       newAppointment.End = endDate;
       newAppointment.Subject = subject;
-      newAppointment.ReminderSet = false;
+      newAppointment.ReminderSet = reminderSet;
 
       // Add categories
       newAppointment.Categories = categories;
@@ -72,7 +72,6 @@ namespace QuickLook
       // Add reminder
       if (reminderMinutesBeforeStart >= 0)
       {
-          newAppointment.ReminderSet = true;
           newAppointment.ReminderMinutesBeforeStart = reminderMinutesBeforeStart;
       }
         

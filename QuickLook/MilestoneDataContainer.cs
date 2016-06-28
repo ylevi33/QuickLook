@@ -11,6 +11,7 @@ namespace QuickLook
     
     public String Category;
     public int ReminderMinutesBeforeStart;
+    public Boolean ReminderSet;
 
     public Boolean AddPhrase(String phrase)
     {
@@ -27,6 +28,7 @@ namespace QuickLook
             } 
             else if(i==1) {
               ReminderMinutesBeforeStart = getMinutes(value);
+              ReminderSet = true;
               break;
             }
             break;
@@ -40,7 +42,6 @@ namespace QuickLook
 
     private int getMinutes(string value)
     {
-      ReminderMinutesBeforeStart = -1;
       string[] parts = value.Split(new string[] { "&nbsp;" }, StringSplitOptions.RemoveEmptyEntries);
       if (parts.Length == 1)
       {
