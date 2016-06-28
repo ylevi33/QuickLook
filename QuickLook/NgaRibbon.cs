@@ -85,7 +85,7 @@ namespace QuickLook
     public void OnSync(Office.IRibbonControl control)
     {
       
-      int releaseId = 1029;
+      int releaseId = 1055;
 
       try
       {

@@ -14,6 +14,11 @@ namespace QuickLook
   {
     public static int NO_ID_VALUE = -1;
 
+    public class OutlookNotificationDataContainer {
+      public String category;
+      public int reminder; // in minutes
+    }
+
     public static void SyncSprintsToOutlook(Release release, EntityListResult<Sprint> sprints) {
 
       //set sprint map
@@ -35,13 +40,16 @@ namespace QuickLook
 
         if (appointmentReleaseId != NO_ID_VALUE && appointmentSprintId != NO_ID_VALUE) //sprint
         {
-          Sprint tempSprint = sprintMap[appointmentSprintId];
-          sprintMap.Remove(appointmentSprintId);
-
-
-          if (tempSprint != null)
+          if (sprintMap.ContainsKey(appointmentSprintId))
           {
-            SyncSprintToOutlook(tempSprint, appointment);
+            Sprint tempSprint = sprintMap[appointmentSprintId];
+            sprintMap.Remove(appointmentSprintId);
+
+
+            if (tempSprint != null)
+            {
+              SyncSprintToOutlook(tempSprint, appointment);
+            }
           }
         }
 
@@ -178,10 +186,22 @@ namespace QuickLook
             appointment.Subject = milestoneName;
             modified = true;
         }
+
+        OutlookNotificationDataContainer notificationData = getMilestoneData(milestone);
         if (modified)
         {
             appointment.Save();
         }
+    }
+
+    private static OutlookNotificationDataContainer getMilestoneData(Milestone milestone)
+    {
+
+      string[] lines = milestone.Description.Split(new string[] { "\br" }, StringSplitOptions.None);
+
+      OutlookNotificationDataContainer container = new OutlookNotificationDataContainer();
+
+      return container;
     }
 
     private static String getMilestoneAppointmentName(Milestone milestone)
