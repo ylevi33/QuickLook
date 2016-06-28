@@ -120,6 +120,16 @@ namespace Hpe.Nga.Api.Core.Services.Query
             return null;
         }
 
+        private static string BuildGroupByString(string groupBy)
+        {
+            //group_by=severity
+            if (!String.IsNullOrEmpty(groupBy))
+            {
+                return "group_by=" + groupBy;
+            }
+            return null;
+        }
+
         private static string BuildQueryString(IList<QueryPhrase> phrases)
         {
             if (phrases == null || phrases.Count == 0)
@@ -150,14 +160,15 @@ namespace Hpe.Nga.Api.Core.Services.Query
         /// <param name="offset"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public static string BuildQueryString(IList<QueryPhrase> queryPhrases, IList<String> fields, String orderBy, int? offset, int? limit)
+        public static string BuildQueryString(IList<QueryPhrase> queryPhrases, IList<String> fields, String orderBy, int? offset, int? limit, String groupBy)
         {
             String str = String.Empty;
+            str = ConcateNewQueryString(str, QueryBuilder.BuildGroupByString(groupBy));
             str = ConcateNewQueryString(str, QueryBuilder.BuildQueryString(queryPhrases));
             str = ConcateNewQueryString(str, QueryBuilder.BuildOrderByString(orderBy));
             str = ConcateNewQueryString(str, QueryBuilder.BuildFieldsString(fields));
             str = ConcateNewQueryString(str, QueryBuilder.BuildOffsetString(offset));
-            str = ConcateNewQueryString(str, QueryBuilder.BuildLimitString(limit));
+            str = ConcateNewQueryString(str, QueryBuilder.BuildLimitString(limit));            
             return str;
         }
 

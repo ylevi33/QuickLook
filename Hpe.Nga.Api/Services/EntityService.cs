@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using Hpe.Nga.Api.Core.Connector;
 using Hpe.Nga.Api.Core.Services.Core;
+using Hpe.Nga.Api.Core.Services.GroupBy;
 using Hpe.Nga.Api.Core.Services.Query;
 using Hpe.Nga.Api.Core.Services.RequestContext;
 
@@ -49,7 +50,7 @@ namespace Hpe.Nga.Api.Core.Services
             String collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
             string url = context.GetPath() + "/" + collectionName;
 
-            String queryString = QueryBuilder.BuildQueryString(queryPhrases, fields, null, null, limit);
+            String queryString = QueryBuilder.BuildQueryString(queryPhrases, fields, null, null, limit, null);
             if (!String.IsNullOrEmpty(queryString))
             {
                 url = url + "?" + queryString;
@@ -62,8 +63,29 @@ namespace Hpe.Nga.Api.Core.Services
                 return result;
             }
             return null;
+        }
+
+        public GroupResult GetWithGroupBy<T>(IRequestContext context, IList<QueryPhrase> queryPhrases, String groupBy)
+            where T : BaseEntity
+        {
+
+            String collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
+            string url = context.GetPath() + "/" + collectionName + "/groups";
 
 
+            String queryString = QueryBuilder.BuildQueryString(queryPhrases, null, null, null, null, groupBy);
+            if (!String.IsNullOrEmpty(queryString))
+            {
+                url = url + "?" + queryString;
+            }
+
+            ResponseWrapper response = rc.ExecuteGet(url);
+            if (response.Data != null)
+            {
+                GroupResult result = jsonSerializer.Deserialize<GroupResult>(response.Data);
+                return result;
+            }
+            return null;
         }
 
 
@@ -72,7 +94,7 @@ namespace Hpe.Nga.Api.Core.Services
         {
             String collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
             string url = context.GetPath() + "/" + collectionName + "/" + id;
-            String queryString = QueryBuilder.BuildQueryString(null, fields, null, null, null);
+            String queryString = QueryBuilder.BuildQueryString(null, fields, null, null, null, null);
             if (!String.IsNullOrEmpty(queryString))
             {
                 url = url + "?" + queryString;

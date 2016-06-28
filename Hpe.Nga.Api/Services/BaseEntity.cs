@@ -101,23 +101,6 @@ namespace Hpe.Nga.Api.Core.Services
             SetValue(propertyName, value);
         }
 
-        public int? GetIntValue(String propertyName)
-        {
-            Object obj = GetValue(propertyName);
-            if (obj == null)
-            {
-                return null;
-            }
-            else if (obj is int)
-            {
-                return (int)obj;
-            }
-            else
-            {
-                return int.Parse((String)obj);
-            }
-        }
-
         public int GetIntValue(String propertyName, int defaultValue)
         {
             int? value = GetIntValue(propertyName);

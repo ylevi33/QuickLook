@@ -15,12 +15,12 @@ namespace NgaOutlookTest
     {
         private static EntityService entityService = EntityService.GetInstance();
 
-        public static WorkspaceContext GetWorkspaceContextTest(long sharedSpaceId)
+        public static WorkspaceContext GetWorkspaceContextTest(long sharedSpaceId, long workspaceId)
         {
             SharedSpaceContext sharedSpaceContext = new SharedSpaceContext(sharedSpaceId);
-            EntityListResult<Workspace> workspaces = entityService.Get<Workspace>(sharedSpaceContext);
-            Workspace workspace = workspaces.data[0];
-            long workspaceId = 2006;//workspaces.data[0].Id hardcoded workaround
+            //EntityListResult<Workspace> workspaces = entityService.Get<Workspace>(sharedSpaceContext);
+            //Workspace workspace = workspaces.data[0];
+            //long workspaceId = 2006;//workspaces.data[0].Id hardcoded workaround
             WorkspaceContext workspaceContext = new WorkspaceContext(sharedSpaceId, workspaceId);
             return workspaceContext;
         }
@@ -71,6 +71,12 @@ namespace NgaOutlookTest
 
             DeleteRelease(context, release.Id);
 
+        }
+
+        public static void BasicWorkItemsTests(WorkspaceContext context)
+        {
+            GetAllDefectWithLimit1(context);
+            GetAllDefectWithGroupBy(context);
         }
 
 
@@ -261,6 +267,46 @@ namespace NgaOutlookTest
 
         #endregion
 
+
+        #region WorkItems
+        private static EntityListResult<WorkItem> GetAllDefectWithLimit1(WorkspaceContext context)
+        {
+            List<String> fields = new List<string>();
+            fields.Add(WorkItem.NAME_FIELD);
+            fields.Add(WorkItem.SUBTYPE);
+
+            List<QueryPhrase> queries = new List<QueryPhrase>();
+            LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE, WorkItem.SUBTYPE_DEFECT);
+            queries.Add(subtypeQuery);
+
+
+            //api/shared_spaces/1001/workspaces/2029/work_items/groups?group_by=severity&limit=20&query="(subtype='defect');(release={id=1055})"
+
+            EntityListResult<WorkItem> result = entityService.Get<WorkItem>(context, queries, fields, 1);
+            Assert(result.data.Count <= 1);
+            return result;
+        }
+
+        private static Object GetAllDefectWithGroupBy(WorkspaceContext context)
+        {
+            List<String> fields = new List<string>();
+            fields.Add(WorkItem.NAME_FIELD);
+            fields.Add(WorkItem.SUBTYPE);
+
+
+            List<QueryPhrase> queries = new List<QueryPhrase>();
+            LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE, WorkItem.SUBTYPE_DEFECT);
+            queries.Add(subtypeQuery);
+
+            //api/shared_spaces/1001/workspaces/2029/work_items/groups?group_by=severity&limit=20&query="(subtype='defect');(release={id=1055})"
+
+            GroupResult result = entityService.GetWithGroupBy<WorkItem>(context, queries, "severity");
+            //Assert(result.data.Count <= 1);
+            return result;
+        }
+
+        #endregion
+
         private static void Assert(bool condition)
         {
             if (!condition)
@@ -268,5 +314,7 @@ namespace NgaOutlookTest
                 throw new Exception("Assertion is failed");
             }
         }
+
+
     }
 }

@@ -55,8 +55,12 @@
     <Compile Include="Entities\Release.cs" />
     <Compile Include="Entities\SharedSpace.cs" />
     <Compile Include="Entities\Sprint.cs" />
+    <Compile Include="Entities\WorkItem.cs" />
     <Compile Include="Entities\Workspace.cs" />
     <Compile Include="Services\EntityList.cs" />
+    <Compile Include="Services\GroupBy\GroupResult.cs" />
+    <Compile Include="Services\GroupBy\Group.cs" />
+    <Compile Include="Services\GroupBy\GroupByValue.cs" />
     <Compile Include="Services\Queries\ComparisonOperator.cs" />
     <Compile Include="Services\Queries\CrossQueryPhrase.cs" />
     <Compile Include="Services\Queries\QueryBuilder.cs" />

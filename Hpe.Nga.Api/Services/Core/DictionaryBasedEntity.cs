@@ -53,6 +53,23 @@ namespace Hpe.Nga.Api.Core.Services.Core
 
         }
 
+        public int? GetIntValue(String propertyName)
+        {
+            Object obj = GetValue(propertyName);
+            if (obj == null)
+            {
+                return null;
+            }
+            else if (obj is int)
+            {
+                return (int)obj;
+            }
+            else
+            {
+                return int.Parse((String)obj);
+            }
+        }
+
         public bool Contains(string property)
         {
             return m_properties.ContainsKey(property);
