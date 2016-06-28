@@ -211,7 +211,10 @@ namespace QuickLook
     private static OutlookNotificationDataContainer getMilestoneData(Milestone milestone)
     {
 
-      string[] lines = milestone.Description.Split(new string[] { "\br" }, StringSplitOptions.None);
+      if (milestone.Description != null)
+      {
+        string[] lines = milestone.Description.Split(new string[] { "\br" }, StringSplitOptions.None);
+      }
 
       OutlookNotificationDataContainer container = new OutlookNotificationDataContainer();
 

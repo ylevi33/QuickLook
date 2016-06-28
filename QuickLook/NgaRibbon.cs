@@ -44,11 +44,24 @@ namespace QuickLook
     private Office.IRibbonUI ribbon;
     ConfigurationPersistService persistService = new ConfigurationPersistService();
     LoginConfiguration loginConfig;
+    private Boolean isLoggedIn = false;
 
     public NgaRibbon()
     {
         persistService.ConfigurationFileName = "QuickLook.configuration";
         tryAutoLogin();
+    }
+
+    public String GetBtnConnectLable(IRibbonControl control)
+    {
+        if (isLoggedIn)
+        {
+            return "Connected";
+        }
+        else
+        {
+            return "Connect";
+        }
     }
 
     private void tryAutoLogin()
@@ -60,11 +73,20 @@ namespace QuickLook
             {
                 loginConfig = tempLoginConfig;
                 NgaUtils.init(loginConfig.SharedSpaceId);
+                isLoggedIn = true;
+                if (ribbon != null)
+                {
+                    ribbon.InvalidateControl("btnConnect");
+                }
             }
         }
         catch (Exception e)
         {
             //autologin fail
+            if (ribbon != null)
+            {
+                ribbon.InvalidateControl("btnConnect");
+            }
         }
 
     }
@@ -79,6 +101,11 @@ namespace QuickLook
         PersistLoginConfiguration();
         UpdateLabelStatus();
         NgaUtils.init(loginConfig.SharedSpaceId);
+        isLoggedIn = true;
+      }
+      if (ribbon != null)
+      {
+          ribbon.InvalidateControl("btnConnect");
       }
     }
 
