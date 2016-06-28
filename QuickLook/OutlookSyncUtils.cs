@@ -14,11 +14,6 @@ namespace QuickLook
   {
     public static int NO_ID_VALUE = -1;
 
-    public class OutlookNotificationDataContainer {
-      public String category;
-      public int reminder; // in minutes
-    }
-
     public static void SyncSprintsToOutlook(Release release, EntityListResult<Sprint> sprints) {
 
       //set sprint map
@@ -180,7 +175,9 @@ namespace QuickLook
             customFields.Add(OutlookUtils.APPOINTMENT_RELEASE_ID_FIELD, ((Release)(milestone.Releases.data.ElementAt<BaseEntity>(0))).Id);
             customFields[OutlookUtils.APPOINTMENT_MILESTONE_ID_FIELD] = milestone.Id;
             String milestoneName = getMilestoneAppointmentName(milestone);
-            OutlookUtils.AddAppointment(milestoneName, milestone.StartDate, milestone.EndDate, "category", 5, customFields, true);
+            MilestoneDataContainer msExtraData = getMilestoneData(milestone);
+
+            OutlookUtils.AddAppointment(milestoneName, milestone.StartDate, milestone.EndDate, msExtraData.Category, msExtraData.ReminderMinutesBeforeStart, customFields, true);
         }
     }
 
@@ -201,24 +198,50 @@ namespace QuickLook
             modified = true;
         }
 
-        OutlookNotificationDataContainer notificationData = getMilestoneData(milestone);
+        MilestoneDataContainer notificationData = getMilestoneData(milestone);
+
+        if (notificationData.ReminderMinutesBeforeStart == 0 && appointment.ReminderSet) 
+        {
+          appointment.ReminderSet = false;
+          notificationData.ReminderMinutesBeforeStart = -1;
+          modified = true;
+        }
+        if (notificationData.ReminderMinutesBeforeStart != appointment.ReminderMinutesBeforeStart) {
+          appointment.ReminderSet = true;
+          appointment.ReminderMinutesBeforeStart = notificationData.ReminderMinutesBeforeStart;
+          modified = true;
+        }
+
+        if (!String.IsNullOrEmpty(notificationData.Category) && !appointment.Categories.Contains(notificationData.Category))
+        {
+          appointment.Categories = appointment.Categories + notificationData.Category;
+          modified = true;
+        }
+
         if (modified)
         {
             appointment.Save();
         }
     }
 
-    private static OutlookNotificationDataContainer getMilestoneData(Milestone milestone)
+    private static MilestoneDataContainer getMilestoneData(Milestone milestone)
     {
-
-      if (milestone.Description != null)
+      MilestoneDataContainer dataContainer = new MilestoneDataContainer();
+      String desc = milestone.Description;
+      if (desc != null)
       {
-        string[] lines = milestone.Description.Split(new string[] { "\br" }, StringSplitOptions.None);
+        string[] lines = milestone.Description.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+        for (int i = 0; i < lines.Length; i++)
+        {
+          string[] phrases = lines[i].Split('@');
+          if (phrases.Length > 1)
+          {
+            dataContainer.AddPhrase(phrases[1]);
+          }
+        }
       }
 
-      OutlookNotificationDataContainer container = new OutlookNotificationDataContainer();
-
-      return container;
+      return dataContainer;
     }
 
     private static String getMilestoneAppointmentName(Milestone milestone)
