@@ -59,7 +59,7 @@ namespace QuickLook
 
     public static AppointmentItem AddAppointment(String subject, DateTime startDate, DateTime endDate, String categories, int reminderMinutesBeforeStart, Dictionary<String, Object> customFields, bool save)
     {
-      AppointmentItem newAppointment = (AppointmentItem)GetApplication().CreateItem(OlItemType.olAppointmentItem);
+      AppointmentItem newAppointment = (AppointmentItem)GetApplication().ActiveExplorer().CurrentFolder.Items.Add(OlItemType.olAppointmentItem);
       newAppointment.AllDayEvent = true;
       newAppointment.Start = startDate;
       newAppointment.End = endDate;
