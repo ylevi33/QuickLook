@@ -76,8 +76,9 @@ namespace Hpe.Nga.Api.Core.Entities
         public void setMilestoneStartDateEndDate()
         {
             DateTime date = GetDateTimeValue(DATE_FIELD).Value;
-            StartDate = new DateTime(date.Year, date.Month, date.Day, 8, 0, 0, DateTimeKind.Utc);
-            EndDate = new DateTime(date.Year, date.Month, date.Day, 18, 0, 0, DateTimeKind.Utc);
+            StartDate = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
+            EndDate = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
+            EndDate = EndDate.AddDays(1);
         }
     }
 }
