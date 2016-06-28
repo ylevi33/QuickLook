@@ -8,6 +8,7 @@ using Hpe.Nga.Api.Core.Entities;
 using Hpe.Nga.Api.Core.Services;
 using Hpe.Nga.Api.Core.Services.Query;
 using Hpe.Nga.Api.Core.Services.RequestContext;
+using Hpe.Nga.Api.Core.Services.GroupBy;
 
 namespace QuickLook
 {
@@ -84,6 +85,54 @@ namespace QuickLook
         queryPhrases.Add(byReleasePhrase);
 
         EntityListResult<Milestone> result = entityService.Get<Milestone>(workspaceContext, queryPhrases, fields);
+        return result;
+    }
+
+    public static GroupResult GetAllDefectWithGroupBy(long releaseId)
+    {
+        List<String> fields = new List<string>();
+        fields.Add(WorkItem.NAME_FIELD);
+        fields.Add(WorkItem.SUBTYPE);
+
+
+        List<QueryPhrase> queries = new List<QueryPhrase>();
+        LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE, WorkItem.SUBTYPE_DEFECT);
+        queries.Add(subtypeQuery);
+        QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
+        QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE, releaseIdPhrase);
+        queries.Add(byReleasePhrase);
+        LogicalQueryPhrase phaseIdPhrase = new LogicalQueryPhrase("id", 2810);
+        phaseIdPhrase.NegativeCondition = true;
+        CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE, phaseIdPhrase);
+        queries.Add(byPhasePhrase);
+
+        //api/shared_spaces/1001/workspaces/2029/work_items/groups?group_by=severity&limit=20&query="!(phase={id=2810});(subtype='defect');(release={id=1055})"
+
+        GroupResult result = entityService.GetWithGroupBy<WorkItem>(workspaceContext, queries, "severity");
+        //Assert(result.data.Count <= 1);
+        return result;
+    }
+
+    public static EntityListResult<WorkItem> GetStoriesByRelease(long releaseId)
+    {
+        List<String> fields = new List<string>();
+        fields.Add(WorkItem.NAME_FIELD);
+        fields.Add(WorkItem.SUBTYPE);
+
+        List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
+        List<QueryPhrase> queries = new List<QueryPhrase>();
+        LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE, WorkItem.SUBTYPE_US);
+        queryPhrases.Add(subtypeQuery);
+        QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
+        QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE, releaseIdPhrase);
+        queryPhrases.Add(byReleasePhrase);
+        LogicalQueryPhrase phaseIdPhrase = new LogicalQueryPhrase("id", 2810);
+        phaseIdPhrase.NegativeCondition = true;
+        CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE, phaseIdPhrase);
+        queryPhrases.Add(byPhasePhrase);
+
+
+        EntityListResult<WorkItem> result = entityService.Get<WorkItem>(workspaceContext, queryPhrases, fields, 1);
         return result;
     }
 

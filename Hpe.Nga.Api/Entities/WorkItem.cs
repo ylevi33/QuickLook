@@ -10,7 +10,10 @@ namespace Hpe.Nga.Api.Core.Entities
     public class WorkItem : BaseEntity
     {
         public static string SUBTYPE = "subtype";
+        public static string RELEASE = "release";
+        public static string PHASE = "phase";
         public static string SUBTYPE_DEFECT = "defect";
+        public static string SUBTYPE_US = "story";
         
         public String Subtype
         {

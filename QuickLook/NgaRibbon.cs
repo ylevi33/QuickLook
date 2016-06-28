@@ -15,6 +15,7 @@ using Hpe.Nga.Api.UI.Core.Configuration;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools.Ribbon;
 using QuickLook.Properties;
+using Hpe.Nga.Api.Core.Services.GroupBy;
 using Office = Microsoft.Office.Core;
 
 // TODO:  Follow these steps to enable the Ribbon (XML) item:
@@ -127,6 +128,22 @@ namespace QuickLook
       {
           MessageBox.Show("Failed to sync : " + e.Message + e.StackTrace);
       }
+    }
+
+    public void OnMailReport(Office.IRibbonControl control)
+    {
+        try
+        {
+            //Get by id
+            Release release = NgaUtils.GetSelectedRelease(); //NgaUtils.GetReleaseById(releaseId);
+            GroupResult groupResult = NgaUtils.GetAllDefectWithGroupBy(release.Id);
+            EntityListResult<WorkItem> workItems = NgaUtils.GetStoriesByRelease(release.Id);
+            OutlookSyncUtils.getReleaseMailReport(release, groupResult, workItems);
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("Failed to generate Mail report : " + e.Message + e.StackTrace);
+        }
     }
 
     public Bitmap imageConnect_GetImage(IRibbonControl control)

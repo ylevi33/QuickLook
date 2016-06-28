@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Hpe.Nga.Api.Core.Entities;
 using Hpe.Nga.Api.Core.Services;
 using Microsoft.Office.Interop.Outlook;
+using Hpe.Nga.Api.Core.Services.GroupBy;
 
 namespace QuickLook
 {
@@ -125,7 +126,6 @@ namespace QuickLook
 
     public static void SyncMilestonesToOutlook(Release release, EntityListResult<Milestone> milestones)
     {
-
         //set sprint map
         Dictionary<long, Milestone> milestonesMap = new Dictionary<long, Milestone>();
 
@@ -248,6 +248,23 @@ namespace QuickLook
     {
         return ((Release)(milestone.Releases.data.ElementAt<BaseEntity>(0))).Name + " " + milestone.Name;
     }
+    public static void getReleaseMailReport(Release release, GroupResult groupResult, EntityListResult<WorkItem> workItems)
+    {
+          MailItem mailItem = OutlookUtils.AddMaileItem();
+          mailItem.Subject = "Release Status: #" + release.Id + " - " + release.Name + " (" + release.StartDate.ToShortDateString() + " - " + release.EndDate.ToShortDateString() + ")";
+          
+          //getting defect by severity
+          StringBuilder defectsStrBuild = new StringBuilder();
+        int totatDefects = 0;
+          foreach (Group group in groupResult.groups)
+          {
+              defectsStrBuild.AppendLine("\t"+group.value.name+": "+group.count);
+              totatDefects += group.count;
+          }
+          mailItem.Body = "Open Defects:\n\tTotal: " + totatDefects + "\n" + defectsStrBuild.ToString() +
+              "\nOpenUser Stories:\n\tTotal: " + workItems.total_count;
+        mailItem.Display();
+      }
   }
 
 }
