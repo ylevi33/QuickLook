@@ -23,7 +23,7 @@ namespace QuickLook
 
     public static Items GetAppointmentsInRange(DateTime startDate, DateTime endDate)
     {
-      Folder calFolder = GetApplication().Session.GetDefaultFolder(OlDefaultFolders.olFolderCalendar) as Folder;
+      Folder calFolder = GetApplication().ActiveExplorer().CurrentFolder as Folder;
       string filter = "[Start] >= '" + startDate.ToString("g") + "' AND [End] <= '" + endDate.ToString("g") + "' AND [AllDayEvent] = True";
       Debug.WriteLine(filter);
       Items calItems = null;
