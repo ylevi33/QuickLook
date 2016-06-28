@@ -50,8 +50,14 @@ namespace Hpe.Nga.Api.Core.Services
             }
 
             ResponseWrapper response = rc.ExecuteGet(url);
-            EntityListResult<T> result = jsonSerializer.Deserialize<EntityListResult<T>>(response.Data);
-            return result;
+            if (response.Data != null)
+            {
+                EntityListResult<T> result = jsonSerializer.Deserialize<EntityListResult<T>>(response.Data);
+                return result;
+            }
+            return null;
+            
+            
         }
 
 

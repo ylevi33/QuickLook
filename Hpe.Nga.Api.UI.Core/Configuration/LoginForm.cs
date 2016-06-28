@@ -34,7 +34,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
                     ssIdForSave = selectedSS.Id;
                     ssNameForSave = selectedSS.Name;
                 }*/
-                return new LoginConfiguration(txtServer.Text, txtName.Text, txtPassword.Text, ssIdForSave, ssNameForSave);
+                return new LoginConfiguration(txtServer.Text, txtName.Text, txtPassword.Text);
             }
             set
             {
@@ -127,6 +127,46 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
             }
 
             cmbSharedSpace.Enabled = true;
+
+        }
+
+        private void cmbSharedSpace_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblStatus_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblUserName_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
 
         }
 
