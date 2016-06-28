@@ -17,6 +17,8 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
 {
     public partial class SettingsForm : Form
     {
+        private bool loadingConfiguration = false;
+
         public SettingsForm()
         {
             InitializeComponent();
@@ -53,6 +55,8 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
             {
                 if (value != null)
                 {
+                    loadingConfiguration = true;
+
                     txtServer.Text = value.ServerUrl;
                     txtName.Text = value.Name;
                     txtPassword.Text = value.Password;
@@ -64,6 +68,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
                         ss.Id = value.SharedSpaceId;
                         cmbSharedSpace.Items.Clear();
                         cmbSharedSpace.Items.Add(ss);
+
                         cmbSharedSpace.SelectedItem = ss;
                     }
                     if (value.WorkspaceName != null)
@@ -84,6 +89,8 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
                         cmbRelease.Items.Add(release);
                         cmbRelease.SelectedItem = release;
                     }
+
+                    loadingConfiguration = false;
                 }
             }
         }
@@ -248,12 +255,21 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
 
         private void cmbSharedSpace_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (loadingConfiguration)
+            {
+                return;
+            }
             LoadWorkspaces(((SharedSpace)cmbSharedSpace.SelectedItem).Id);
             OnConnectSettingsChanged();
         }
 
         private void cmbWorkspace_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (loadingConfiguration)
+            {
+                return;
+            }
+
             LoadReleases(((SharedSpace)cmbSharedSpace.SelectedItem).Id, ((Workspace)cmbWorkspace.SelectedItem).Id);
             OnConnectSettingsChanged();
         }
