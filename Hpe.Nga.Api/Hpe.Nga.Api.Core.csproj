@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connector\ConnectionInfo.cs" />
+    <Compile Include="Connector\NotConnectedException.cs" />
     <Compile Include="Connector\RequestType.cs" />
     <Compile Include="Connector\ResponseWrapper.cs" />
     <Compile Include="Connector\RestConnector.cs" />

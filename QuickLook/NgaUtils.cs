@@ -24,8 +24,8 @@ namespace QuickLook
     private static WorkspaceContext GetWorkspaceContext(long sharedSpaceId)
     {
       SharedSpaceContext sharedSpaceContext = new SharedSpaceContext(sharedSpaceId);
-      EntityListResult<Workspace> workspaces = entityService.Get<Workspace>(sharedSpaceContext);
-      Workspace workspace = workspaces.data[0];
+      //EntityListResult<Workspace> workspaces = entityService.Get<Workspace>(sharedSpaceContext);
+      //Workspace workspace = workspaces.data[0];
       long workspaceId = 2006;//workspaces.data[0].Id hardcoded workaround
       return new WorkspaceContext(sharedSpaceId, workspaceId);
     }
