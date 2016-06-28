@@ -211,7 +211,8 @@ namespace QuickLook
           modified = true;
         }
 
-        if (!String.IsNullOrEmpty(notificationData.Category) && !appointment.Categories.Contains(notificationData.Category))
+        if (!String.IsNullOrEmpty(notificationData.Category) && 
+          (appointment.Categories == null || !appointment.Categories.Contains(notificationData.Category)))
         {
           appointment.Categories = appointment.Categories + notificationData.Category;
           modified = true;

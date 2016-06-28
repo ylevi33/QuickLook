@@ -7,7 +7,7 @@ namespace QuickLook
 {
   public class MilestoneDataContainer
   {
-    private static String[] PARAMS_LIST = new string[] { "Category", "Notification" };
+    private static String[] PARAMS_LIST = new string[] { "Color", "Notification" };
     
     public String Category;
     public int ReminderMinutesBeforeStart;
