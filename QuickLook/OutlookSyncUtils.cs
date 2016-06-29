@@ -8,6 +8,8 @@ using Hpe.Nga.Api.Core.Entities;
 using Hpe.Nga.Api.Core.Services;
 using Microsoft.Office.Interop.Outlook;
 using Hpe.Nga.Api.Core.Services.GroupBy;
+using System.IO;
+using System.Reflection;
 
 namespace QuickLook
 {
@@ -252,21 +254,65 @@ namespace QuickLook
     {
           MailItem mailItem = OutlookUtils.AddMailItem();
           mailItem.Subject = "Release Status: #" + release.Id + " - " + release.Name + " (" + release.StartDate.ToShortDateString() + " - " + release.EndDate.ToShortDateString() + ")";
+          mailItem.BodyFormat = OlBodyFormat.olFormatHTML;
+          String htmlBody = getHtmlTemplate();
+          htmlBody = htmlBody.Replace("@releasename", (release.Name + " (" + release.StartDate.ToShortDateString() + " - " + release.EndDate.ToShortDateString() + ")"));
+          htmlBody = htmlBody.Replace("@numofsprints", release.NumOfSprints.ToString());
           
-          //getting defect by severity
-          StringBuilder defectsStrBuild = new StringBuilder();
-        int totatDefects = 0;
+          int totatDefects = 0;
+          int maxWidth = 100;
+          int maxVal = 1;
+          Dictionary<string, int> map = new Dictionary<string, int>();
+          map.Add("list_node.severity.urgent", 0);
+          map.Add("list_node.severity.very_high", 0);  
+          map.Add("list_node.severity.high", 0);
+          map.Add("list_node.severity.medium", 0);
+          map.Add("list_node.severity.low", 0);
           foreach (Group group in groupResult.groups)
           {
-              defectsStrBuild.AppendLine("\t\t"+group.value.name+": "+group.count);
+              map[group.value.logical_name] = group.count;
+              maxVal = (maxVal < group.count ? group.count : maxVal);
               totatDefects += group.count;
           }
-          mailItem.Body = "Release:\n\t" + release.Name + " (" + release.StartDate.ToShortDateString() + " - " + release.EndDate.ToShortDateString() + ")\n"
-              + "\tNumber Of Sprints: " + release.NumOfSprints
-              + "\n\nOpen Defects:\n\tTotal: " + totatDefects + "\n" + defectsStrBuild.ToString() +
-              "\nOpenUser Stories:\n\tTotal: " + workItems.total_count;
+          htmlBody = htmlBody.Replace("@defecttotal", totatDefects.ToString());
+          int urgentVal = ((int)(map["list_node.severity.urgent"] * maxWidth / maxVal));
+          htmlBody = htmlBody.Replace("@urgentwidth", urgentVal.ToString());
+          htmlBody = htmlBody.Replace("@urgentcol", ((urgentVal == 0) ? "none" : "red"));
+          htmlBody = htmlBody.Replace("@urgentval", (map["list_node.severity.urgent"]).ToString());
+          
+          int veryhighVal = ((int)(map["list_node.severity.very_high"] * maxWidth / maxVal));
+          htmlBody = htmlBody.Replace("@veryhighwidth", veryhighVal.ToString());
+          htmlBody = htmlBody.Replace("@veryhighcol", ((veryhighVal == 0) ? "none" : "#D4522F"));
+          htmlBody = htmlBody.Replace("@veryhighval", (map["list_node.severity.very_high"]).ToString());
+
+          int highVal = ((int)(map["list_node.severity.high"] * maxWidth / maxVal));
+          htmlBody = htmlBody.Replace("@highwidth", highVal.ToString());
+          htmlBody = htmlBody.Replace("@highcol", ((highVal == 0) ? "none" : "#D97934"));
+          htmlBody = htmlBody.Replace("@highval", (map["list_node.severity.high"]).ToString());
+          
+          int mediumVal = ((int)(map["list_node.severity.medium"] * maxWidth / maxVal));
+          htmlBody = htmlBody.Replace("@mediumwidth", mediumVal.ToString());
+          htmlBody = htmlBody.Replace("@mediumcol", ((mediumVal == 0) ? "none" : "#EDAE66"));
+          htmlBody = htmlBody.Replace("@mediumval", (map["list_node.severity.medium"]).ToString());
+          
+          int lowVal = ((int)(map["list_node.severity.low"] * maxWidth / maxVal));
+          htmlBody = htmlBody.Replace("@lowwidth", lowVal.ToString());
+          htmlBody = htmlBody.Replace("@lowcol", ((lowVal == 0) ? "none" : "#E3CB44"));
+          htmlBody = htmlBody.Replace("@lowval", (map["list_node.severity.low"]).ToString());
+          
+          htmlBody = htmlBody.Replace("@userstoriestotal", workItems.total_count.ToString());
+          mailItem.HTMLBody = htmlBody;
         mailItem.Display();
       }
-  }
+    private static String getHtmlTemplate()
+    {
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        string location = assembly.CodeBase;
+        string directoryPath = Path.GetDirectoryName(new Uri(location).LocalPath);
+        string fullPath = Path.Combine(directoryPath, "ReportTemplate.html");
+        var htmlbody = File.ReadAllText(fullPath);
+        return htmlbody;
+    }
 
+  }
 }
