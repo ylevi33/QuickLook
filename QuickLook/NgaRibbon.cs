@@ -39,180 +39,180 @@ using Office = Microsoft.Office.Core;
 
 namespace QuickLook
 {
-  [ComVisible(true)]
-  public class NgaRibbon : Office.IRibbonExtensibility
-  {
-    private Office.IRibbonUI ribbon;
-    ConfigurationPersistService persistService = new ConfigurationPersistService();
-    LoginConfiguration loginConfig;
-    private Boolean isLoggedIn = false;
-
-    public NgaRibbon()
+    [ComVisible(true)]
+    public class NgaRibbon : Office.IRibbonExtensibility
     {
-        persistService.ConfigurationFileName = "QuickLook.configuration";
-        tryAutoLogin();
-    }
+        private Office.IRibbonUI ribbon;
+        ConfigurationPersistService persistService = new ConfigurationPersistService();
+        LoginConfiguration loginConfig;
+        private Boolean isLoggedIn = false;
 
-    public String GetBtnConnectLable(IRibbonControl control)
-    {
-        if (isLoggedIn)
+        public NgaRibbon()
         {
-            return "Connected";
+            persistService.ConfigurationFileName = "QuickLook.configuration";
+            tryAutoLogin();
         }
-        else
-        {
-            return "Connect";
-        }
-    }
 
-    private void tryAutoLogin()
-    {
-        try
+        public String GetBtnConnectLable(IRibbonControl control)
         {
-            LoginConfiguration tempLoginConfig = persistService.Load<LoginConfiguration>();
-            if (RestConnector.GetInstance().Connect(tempLoginConfig.ServerUrl, tempLoginConfig.Name, tempLoginConfig.Password))
+            if (isLoggedIn)
             {
-                loginConfig = tempLoginConfig;
-                NgaUtils.init(loginConfig.SharedSpaceId, loginConfig.WorkspaceId, loginConfig.ReleaseId);
-                isLoggedIn = true;
+                return "Connected";
+            }
+            else
+            {
+                return "Connect";
+            }
+        }
+
+        private void tryAutoLogin()
+        {
+            try
+            {
+                LoginConfiguration tempLoginConfig = persistService.Load<LoginConfiguration>();
+                if (RestConnector.GetInstance().Connect(tempLoginConfig.ServerUrl, tempLoginConfig.Name, tempLoginConfig.Password))
+                {
+                    loginConfig = tempLoginConfig;
+                    NgaUtils.init(loginConfig.SharedSpaceId, loginConfig.WorkspaceId, loginConfig.ReleaseId);
+                    isLoggedIn = true;
+                    if (ribbon != null)
+                    {
+                        ribbon.InvalidateControl("btnConnect");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                //autologin fail
                 if (ribbon != null)
                 {
                     ribbon.InvalidateControl("btnConnect");
                 }
             }
+
         }
-        catch (Exception)
+
+        public void OnLogin(Office.IRibbonControl control)
         {
-            //autologin fail
+            SettingsForm form = new SettingsForm();
+            form.Configuration = persistService.Load<LoginConfiguration>();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                loginConfig = form.Configuration;
+                PersistLoginConfiguration();
+                UpdateLabelStatus();
+                NgaUtils.init(loginConfig.SharedSpaceId, loginConfig.WorkspaceId, loginConfig.ReleaseId);
+                isLoggedIn = true;
+            }
             if (ribbon != null)
             {
                 ribbon.InvalidateControl("btnConnect");
             }
         }
 
-    }
-
-    public void OnLogin(Office.IRibbonControl control)
-    {
-        SettingsForm form = new SettingsForm();
-      form.Configuration = persistService.Load<LoginConfiguration>(); ;
-      if (form.ShowDialog() == DialogResult.OK)
-      {
-        loginConfig = form.Configuration;
-        PersistLoginConfiguration();
-        UpdateLabelStatus();
-        NgaUtils.init(loginConfig.SharedSpaceId, loginConfig.WorkspaceId, loginConfig.ReleaseId);
-        isLoggedIn = true;
-      }
-      if (ribbon != null)
-      {
-          ribbon.InvalidateControl("btnConnect");
-      }
-    }
-
-    public void OnSync(Office.IRibbonControl control)
-    {
-      
-      //int releaseId = 1055;
-
-      try
-      {
-          //Get by id
-          Release release = NgaUtils.GetSelectedRelease(); //NgaUtils.GetReleaseById(releaseId);
-          EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
-          OutlookSyncUtils.SyncSprintsToOutlook(release, sprints);
-          EntityListResult<Milestone> milestones = NgaUtils.GetMilestonesByRelease(release.Id);
-          OutlookSyncUtils.SyncMilestonesToOutlook(release, milestones);
-      }
-      catch (Exception e)
-      {
-          MessageBox.Show("Failed to sync : " + e.Message + e.StackTrace);
-      }
-    }
-
-    public void OnMailReport(Office.IRibbonControl control)
-    {
-        try
+        public void OnSync(Office.IRibbonControl control)
         {
-            //Get by id
-            Release release = NgaUtils.GetSelectedRelease(); //NgaUtils.GetReleaseById(releaseId);
-            GroupResult groupResult = NgaUtils.GetAllDefectWithGroupBy(release.Id);
-            EntityListResult<WorkItem> workItems = NgaUtils.GetStoriesByRelease(release.Id);
-            OutlookSyncUtils.getReleaseMailReport(release, groupResult, workItems);
-        }
-        catch (Exception e)
-        {
-            MessageBox.Show("Failed to generate Mail report : " + e.Message + e.StackTrace);
-        }
-    }
 
-    public Bitmap imageConnect_GetImage(IRibbonControl control)
-    {
-      return Resources.OctaneConnect;
-    }
+            //int releaseId = 1055;
 
-    public Bitmap imageSync_GetImage(IRibbonControl control)
-    {
-      return Resources.OctaneSync;
-    }
-
-    #region IRibbonExtensibility Members
-
-    public string GetCustomUI(string ribbonID)
-    {
-      return GetResourceText("QuickLook.NgaRibbon.xml");
-    }
-
-    #endregion
-
-    #region Ribbon Callbacks
-    //Create callback methods here. For more information about adding callback methods, visit http://go.microsoft.com/fwlink/?LinkID=271226
-
-    public void Ribbon_Load(Office.IRibbonUI ribbonUI)
-    {
-      this.ribbon = ribbonUI;
-    }
-
-    #endregion
-
-    #region Helpers
-
-    private static string GetResourceText(string resourceName)
-    {
-      Assembly asm = Assembly.GetExecutingAssembly();
-      string[] resourceNames = asm.GetManifestResourceNames();
-      for (int i = 0; i < resourceNames.Length; ++i)
-      {
-        if (string.Compare(resourceName, resourceNames[i], StringComparison.OrdinalIgnoreCase) == 0)
-        {
-          using (StreamReader resourceReader = new StreamReader(asm.GetManifestResourceStream(resourceNames[i])))
-          {
-            if (resourceReader != null)
+            try
             {
-              return resourceReader.ReadToEnd();
+                //Get by id
+                Release release = NgaUtils.GetSelectedRelease(); //NgaUtils.GetReleaseById(releaseId);
+                EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
+                OutlookSyncUtils.SyncSprintsToOutlook(release, sprints);
+                EntityListResult<Milestone> milestones = NgaUtils.GetMilestonesByRelease(release.Id);
+                OutlookSyncUtils.SyncMilestonesToOutlook(release, milestones);
             }
-          }
+            catch (Exception e)
+            {
+                MessageBox.Show("Failed to sync : " + e.Message + e.StackTrace);
+            }
         }
-      }
-      return null;
+
+        public void OnMailReport(Office.IRibbonControl control)
+        {
+            try
+            {
+                //Get by id
+                Release release = NgaUtils.GetSelectedRelease(); //NgaUtils.GetReleaseById(releaseId);
+                GroupResult groupResult = NgaUtils.GetAllDefectWithGroupBy(release.Id);
+                EntityListResult<WorkItem> workItems = NgaUtils.GetStoriesByRelease(release.Id);
+                OutlookSyncUtils.getReleaseMailReport(release, groupResult, workItems);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Failed to generate Mail report : " + e.Message + e.StackTrace);
+            }
+        }
+
+        public Bitmap imageConnect_GetImage(IRibbonControl control)
+        {
+            return Resources.OctaneConnect;
+        }
+
+        public Bitmap imageSync_GetImage(IRibbonControl control)
+        {
+            return Resources.OctaneSync;
+        }
+
+        #region IRibbonExtensibility Members
+
+        public string GetCustomUI(string ribbonID)
+        {
+            return GetResourceText("QuickLook.NgaRibbon.xml");
+        }
+
+        #endregion
+
+        #region Ribbon Callbacks
+        //Create callback methods here. For more information about adding callback methods, visit http://go.microsoft.com/fwlink/?LinkID=271226
+
+        public void Ribbon_Load(Office.IRibbonUI ribbonUI)
+        {
+            this.ribbon = ribbonUI;
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private static string GetResourceText(string resourceName)
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+            string[] resourceNames = asm.GetManifestResourceNames();
+            for (int i = 0; i < resourceNames.Length; ++i)
+            {
+                if (string.Compare(resourceName, resourceNames[i], StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    using (StreamReader resourceReader = new StreamReader(asm.GetManifestResourceStream(resourceNames[i])))
+                    {
+                        if (resourceReader != null)
+                        {
+                            return resourceReader.ReadToEnd();
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        #endregion
+
+        private void UpdateLabelStatus()
+        {
+            Console.Write(String.Format("Connected as '{0}' to {1}, shared space ({2})", loginConfig.Name, loginConfig.ServerUrl, loginConfig.SharedSpaceId));
+            //lblStatus.Text = format;
+        }
+
+        private void PersistLoginConfiguration()
+        {
+
+            //save last successful configuration
+            persistService.Save(loginConfig);
+        }
+
+
+
     }
-
-    #endregion
-
-    private void UpdateLabelStatus()
-    {
-      Console.Write(String.Format("Connected as '{0}' to {1}, shared space ({2})", loginConfig.Name, loginConfig.ServerUrl, loginConfig.SharedSpaceId));
-      //lblStatus.Text = format;
-    }
-
-    private void PersistLoginConfiguration()
-    {
-
-      //save last successful configuration
-      persistService.Save(loginConfig);
-    }
-
-   
-
-  }
 }
