@@ -221,8 +221,23 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
 
         private void LoadWorkspaces(long sharedSpaceId)
         {
+            WorkspaceContext defaultWorkspaceContext = new WorkspaceContext(sharedSpaceId, 1002);
+            LogicalQueryPhrase byName = new LogicalQueryPhrase(WorkspaceUser.NAME_FIELD, txtName.Text);
+            List<QueryPhrase> queries = new List<QueryPhrase>();
+            queries.Add(byName);
+
+            EntityListResult<WorkspaceUser> users = EntityService.GetInstance().Get<WorkspaceUser>(defaultWorkspaceContext, queries, null);
+            long userId = users.data[0].Id;
+
+
             SharedSpaceContext context = new SharedSpaceContext(sharedSpaceId);
-            EntityListResult<Workspace> workspaces = EntityService.GetInstance().Get<Workspace>(context);
+
+
+            LogicalQueryPhrase byUserId = new LogicalQueryPhrase(WorkspaceUser.ID_FIELD, userId);
+            CrossQueryPhrase byUser = new CrossQueryPhrase(Workspace.USERS_FIELD, byUserId);
+            queries = new List<QueryPhrase>();
+            queries.Add(byUser);
+            EntityListResult<Workspace> workspaces = EntityService.GetInstance().Get<Workspace>(context, queries, null);
 
             //User user = GetSharedSpaceUser(sharedSpaceId, txtName.Text);
 

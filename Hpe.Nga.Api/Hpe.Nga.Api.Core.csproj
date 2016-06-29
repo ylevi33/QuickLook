@@ -57,6 +57,7 @@
     <Compile Include="Entities\Sprint.cs" />
     <Compile Include="Entities\WorkItem.cs" />
     <Compile Include="Entities\Workspace.cs" />
+    <Compile Include="Entities\WorkspaceUser.cs" />
     <Compile Include="Services\EntityList.cs" />
     <Compile Include="Services\GroupBy\GroupResult.cs" />
     <Compile Include="Services\GroupBy\Group.cs" />

@@ -7,8 +7,7 @@ using Hpe.Nga.Api.Core.Services;
 
 namespace Hpe.Nga.Api.Core.Entities
 {
-    public class Workspace : BaseEntity
+    public class WorkspaceUser : BaseEntity
     {
-        public static string USERS_FIELD = "users";
     }
 }
