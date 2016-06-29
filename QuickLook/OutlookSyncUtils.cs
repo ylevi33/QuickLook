@@ -250,7 +250,7 @@ namespace QuickLook
     {
         return ((Release)(milestone.Releases.data.ElementAt<BaseEntity>(0))).Name + " " + milestone.Name;
     }
-    public static void getReleaseMailReport(Release release, GroupResult groupResult, EntityListResult<WorkItem> workItems)
+    public static void getReleaseMailReport(Release release, GroupResult groupResult, GroupResult usGroupResult)
     {
           MailItem mailItem = OutlookUtils.AddMailItem();
           mailItem.Subject = "Release Status: #" + release.Id + " - " + release.Name + " (" + release.StartDate.ToShortDateString() + " - " + release.EndDate.ToShortDateString() + ")";
@@ -299,8 +299,25 @@ namespace QuickLook
           htmlBody = htmlBody.Replace("@lowwidth", lowVal.ToString());
           htmlBody = htmlBody.Replace("@lowcol", ((lowVal == 0) ? "none" : "#E3CB44"));
           htmlBody = htmlBody.Replace("@lowval", (map["list_node.severity.low"]).ToString());
-          
-          htmlBody = htmlBody.Replace("@userstoriestotal", workItems.total_count.ToString());
+
+          StringBuilder storiesStrBuilder = new StringBuilder(" (");
+          int totalStories = 0;
+          bool isFirst = true;
+          foreach (Group group in usGroupResult.groups)
+          {
+              if (isFirst)
+              {
+                  isFirst = false;
+              }
+              else
+              {
+                  storiesStrBuilder.Append(",  ");
+              }
+              storiesStrBuilder.Append(group.value.name + ": " + group.count);
+              totalStories += group.count;
+          }
+          storiesStrBuilder.Append(")");
+          htmlBody = htmlBody.Replace("@userstoriestotal", totalStories.ToString() + storiesStrBuilder.ToString());
           mailItem.HTMLBody = htmlBody;
         mailItem.Display();
       }

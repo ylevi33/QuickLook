@@ -108,10 +108,30 @@ namespace QuickLook
         CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE, phaseIdPhrase);
         queries.Add(byPhasePhrase);
 
-        //api/shared_spaces/1001/workspaces/2029/work_items/groups?group_by=severity&limit=20&query="!(phase={id=2810});(subtype='defect');(release={id=1055})"
-
         GroupResult result = entityService.GetWithGroupBy<WorkItem>(workspaceContext, queries, "severity");
-        //Assert(result.data.Count <= 1);
+        return result;
+    }
+
+    public static GroupResult GetAllStoriesWithGroupBy(long releaseId)
+    {
+        List<String> fields = new List<string>();
+        fields.Add(WorkItem.NAME_FIELD);
+        fields.Add(WorkItem.SUBTYPE);
+
+
+        List<QueryPhrase> queries = new List<QueryPhrase>();
+        LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE, WorkItem.SUBTYPE_US);
+        queries.Add(subtypeQuery);
+        QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
+        QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE, releaseIdPhrase);
+        queries.Add(byReleasePhrase);
+        LogicalQueryPhrase phaseNamePhrase = new LogicalQueryPhrase("name", "Done");
+        phaseNamePhrase.NegativeCondition = true;
+        CrossQueryPhrase phaseIdPhrase = new CrossQueryPhrase("metaphase", phaseNamePhrase);
+        CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE, phaseIdPhrase);
+        queries.Add(byPhasePhrase);
+
+        GroupResult result = entityService.GetWithGroupBy<WorkItem>(workspaceContext, queries, WorkItem.PHASE);
         return result;
     }
 

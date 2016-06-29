@@ -144,8 +144,8 @@ namespace QuickLook
                 //Get by id
                 Release release = NgaUtils.GetSelectedRelease(); //NgaUtils.GetReleaseById(releaseId);
                 GroupResult groupResult = NgaUtils.GetAllDefectWithGroupBy(release.Id);
-                EntityListResult<WorkItem> workItems = NgaUtils.GetStoriesByRelease(release.Id);
-                OutlookSyncUtils.getReleaseMailReport(release, groupResult, workItems);
+                GroupResult usGroupResult = NgaUtils.GetAllStoriesWithGroupBy(release.Id);
+                OutlookSyncUtils.getReleaseMailReport(release, groupResult, usGroupResult);
             }
             catch (Exception e)
             {
