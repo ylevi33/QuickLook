@@ -27,11 +27,9 @@
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>QuickLook</RootNamespace>
     <AssemblyName>QuickLook</AssemblyName>
-    <LoadBehavior>3</LoadBehavior>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <BootstrapperComponentsLocation>HomeSite</BootstrapperComponentsLocation>
   </PropertyGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -216,6 +214,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\OctaneSync.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\OctaneReport.JPG" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -160,6 +160,10 @@ namespace QuickLook
             return Resources.OctaneSync;
         }
 
+        public Bitmap imageReport_GetImage(IRibbonControl control)
+        {
+          return Resources.OctaneReport;
+        }
         #region IRibbonExtensibility Members
 
         public string GetCustomUI(string ribbonID)

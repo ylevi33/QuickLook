@@ -6,7 +6,7 @@
         <group id="actions" label="Actions">
           <button id="btnConnect" getLabel="GetBtnConnectLable" showImage="false" onAction="OnLogin" size="large" getImage="imageConnect_GetImage"/>
           <button id="btnSync" label="Sync" showImage="false" onAction="OnSync" size="large" getImage="imageSync_GetImage"/>
-          <button id="btnReport" label="Release Report" showImage="false" onAction="OnMailReport" size="large" getImage="imageSync_GetImage"/>
+          <button id="btnReport" label="Release Report" showImage="false" onAction="OnMailReport" size="large" getImage="imageReport_GetImage"/>
         </group>
       </tab>
     </tabs>
