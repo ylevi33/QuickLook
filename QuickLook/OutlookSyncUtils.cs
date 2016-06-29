@@ -250,7 +250,7 @@ namespace QuickLook
     }
     public static void getReleaseMailReport(Release release, GroupResult groupResult, EntityListResult<WorkItem> workItems)
     {
-          MailItem mailItem = OutlookUtils.AddMaileItem();
+          MailItem mailItem = OutlookUtils.AddMailItem();
           mailItem.Subject = "Release Status: #" + release.Id + " - " + release.Name + " (" + release.StartDate.ToShortDateString() + " - " + release.EndDate.ToShortDateString() + ")";
           
           //getting defect by severity

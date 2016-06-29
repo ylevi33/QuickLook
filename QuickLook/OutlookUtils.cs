@@ -92,12 +92,26 @@ namespace QuickLook
       // todo set appointment category
       return newAppointment;
     }
-    public static MailItem AddMaileItem()
+    public static MailItem AddMailItem()
     {
         MailItem mailItem = (MailItem)GetApplication().CreateItem(OlItemType.olMailItem);
         mailItem.Save();
         return mailItem;
     }
 
+    public static bool IsCalendarActive()
+    {
+      var explorer = GetApplication().ActiveExplorer();
+      if (explorer != null)
+      {
+        var folder = explorer.CurrentFolder;
+        if (folder != null)
+        {
+          return folder.DefaultItemType == OlItemType.olAppointmentItem;
+        }
+      }
+
+      return false;
+    }
   }
 }

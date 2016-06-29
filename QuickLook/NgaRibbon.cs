@@ -112,17 +112,21 @@ namespace QuickLook
 
         public void OnSync(Office.IRibbonControl control)
         {
-
-            //int releaseId = 1055;
-
             try
             {
-                //Get by id
-                Release release = NgaUtils.GetSelectedRelease(); //NgaUtils.GetReleaseById(releaseId);
-                EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
-                OutlookSyncUtils.SyncSprintsToOutlook(release, sprints);
-                EntityListResult<Milestone> milestones = NgaUtils.GetMilestonesByRelease(release.Id);
-                OutlookSyncUtils.SyncMilestonesToOutlook(release, milestones);
+                if (!OutlookUtils.IsCalendarActive())
+                {
+                    MessageBox.Show("Please select calendar to sync");
+                }
+                else
+                {
+                    //Get by id
+                    Release release = NgaUtils.GetSelectedRelease(); //NgaUtils.GetReleaseById(releaseId);
+                    EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
+                    OutlookSyncUtils.SyncSprintsToOutlook(release, sprints);
+                    EntityListResult<Milestone> milestones = NgaUtils.GetMilestonesByRelease(release.Id);
+                    OutlookSyncUtils.SyncMilestonesToOutlook(release, milestones);
+                }
             }
             catch (Exception e)
             {
