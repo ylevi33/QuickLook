@@ -126,6 +126,9 @@ namespace QuickLook
                     OutlookSyncUtils.SyncSprintsToOutlook(release, sprints);
                     EntityListResult<Milestone> milestones = NgaUtils.GetMilestonesByRelease(release.Id);
                     OutlookSyncUtils.SyncMilestonesToOutlook(release, milestones);
+                    String str = String.Format("The sync is finished successfully.{0}Synced entities : {1} sprints and {2} milestones.", 
+                        Environment.NewLine, sprints.data.Count, milestones.data.Count);
+                    MessageBox.Show(str, "Sync is finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception e)
