@@ -6,6 +6,9 @@ using Hpe.Nga.Api.Core.Services.Core;
 
 namespace Hpe.Nga.Api.Core.Services
 {
+    /// <summary>
+    /// Base class for entities
+    /// </summary>
     public class BaseEntity : DictionaryBasedEntity
     {
         public static string ID_FIELD = "id";

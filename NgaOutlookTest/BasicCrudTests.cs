@@ -25,54 +25,8 @@ namespace NgaOutlookTest
             WorkspaceContext workspaceContext = new WorkspaceContext(sharedSpaceId, workspaceId);
             return workspaceContext;
         }
-        public static void BasicReleaseCrudTest(WorkspaceContext context)
-        {
-            //CREATE
-            Release created = CreateRelease(context);
-            Release created2 = CreateRelease(context);
+     
 
-            //Get by id
-            Release receivedById = GetReleaseById(context, created.Id);
-            Assert(receivedById.Name.Equals(created.Name));
-
-            EntityListResult<Release> receivedByNameResult = GetReleaseWithQueryByName(context, created.Name);
-
-            //update name
-            Release updated = UpdateReleaseName(context, created.Id);
-
-            //getAllReleases
-            EntityListResult<Release> allReleases = GetAllReleases(context, 2/*expected count*/);
-
-            //delete release
-            DeleteRelease(context, created.Id);
-            DeleteRelease(context, created2.Id);
-        }
-
-        public static void BasicMilestoneTest(WorkspaceContext context)
-        {
-            Release release = CreateRelease(context);
-            Milestone created1 = CreateMilestone(context, release);
-            Milestone created2 = CreateMilestone(context, release);
-            Milestone created3 = CreateMilestone(context, release);
-            Milestone milestone = GetMilestoneById(context, created1.Id);
-
-            GetMilestonesByRelease(context, release.Id, 3/*expected count*/);
-            GetMilestonesByName(context, created1.Name, created2.Name, 2/*expected count*/);
-
-            DeleteRelease(context, release.Id);
-            DeleteMilestone(context, created1.Id);
-            DeleteMilestone(context, created2.Id);
-            DeleteMilestone(context, created3.Id);
-        }
-
-        public static void BasicSprintTest(WorkspaceContext context)
-        {
-            Release release = CreateRelease(context);
-            GetSprintsByRelease(context, release.Id, 2);
-
-            DeleteRelease(context, release.Id);
-
-        }
 
         public static void BasicWorkItemsTests(WorkspaceContext context)
         {
@@ -80,83 +34,6 @@ namespace NgaOutlookTest
             GetAllDefectWithGroupBy(context);
         }
 
-
-        #region Milestone CRUD
-
-        private static Milestone CreateMilestone(WorkspaceContext context, Release release)
-        {
-            String name = "Milestone_" + Guid.NewGuid();
-            Milestone milestone = new Milestone();
-            milestone.Name = name;
-            milestone.Date = DateTime.Now.AddDays(7);
-            milestone.SetRelease(new EntityList<Release>(release));
-
-
-            Milestone created = entityService.Create<Milestone>(context, milestone);
-            Assert(created.Name.Equals(name));
-            return created;
-        }
-
-        private static Milestone GetMilestoneById(WorkspaceContext context, long id)
-        {
-            List<String> fields = new List<string>();
-            fields.Add(Milestone.NAME_FIELD);
-            fields.Add(Milestone.RELEASES_FIELD);
-            Milestone milestone = entityService.GetById<Milestone>(context, id, fields);
-            Assert(milestone.Id == id);
-            return milestone;
-        }
-
-        private static void GetMilestonesByName(WorkspaceContext context, string name1, string name2, int expectedResultCount)
-        {
-            List<String> fields = new List<string>();
-            fields.Add(Milestone.NAME_FIELD);
-
-            List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
-            LogicalQueryPhrase namePhrase = new LogicalQueryPhrase("name");
-            namePhrase.AddExpression(name1, ComparisonOperator.Equal);
-            namePhrase.AddExpression(name2, ComparisonOperator.Equal);
-
-
-            queryPhrases.Add(namePhrase);
-
-            EntityListResult<Milestone> result = entityService.Get<Milestone>(context, queryPhrases, fields);
-            Assert(result.data.Count == expectedResultCount);
-        }
-
-        private static EntityListResult<Milestone> GetMilestonesByRelease(WorkspaceContext context, long releaseId, int expectedResultCount)
-        {
-            List<String> fields = new List<string>();
-            fields.Add(Milestone.NAME_FIELD);
-            fields.Add(Milestone.DATE_FIELD);
-
-            List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
-            QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
-            QueryPhrase byReleasePhrase = new CrossQueryPhrase(Milestone.RELEASES_FIELD, releaseIdPhrase);
-
-            queryPhrases.Add(byReleasePhrase);
-
-            EntityListResult<Milestone> result = entityService.Get<Milestone>(context, queryPhrases, fields);
-            Assert(result.data.Count == expectedResultCount);
-            return result;
-        }
-
-        private static void DeleteMilestone(WorkspaceContext context, long id)
-        {
-            entityService.Delete<Milestone>(context, id);
-            try
-            {
-                GetMilestoneById(context, id);
-                Assert(false);
-            }
-            catch (Exception e)
-            {
-                Assert(e.Message.Contains("404"));
-            }
-
-        }
-
-        #endregion
 
         #region Release CRUD
 
@@ -243,27 +120,6 @@ namespace NgaOutlookTest
 
         #region Sprint Crud
 
-
-        private static EntityListResult<Sprint> GetSprintsByRelease(WorkspaceContext context, long releaseId, int expectedResultCount)
-        {
-            List<String> fields = new List<string>();
-            fields.Add(Sprint.NAME_FIELD);
-            fields.Add(Sprint.START_DATE_FIELD);
-            fields.Add(Sprint.END_DATE_FIELD);
-            fields.Add(Sprint.RELEASE_FIELD);
-
-            List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
-            QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
-            QueryPhrase byReleasePhrase = new CrossQueryPhrase(Sprint.RELEASE_FIELD, releaseIdPhrase);
-
-            queryPhrases.Add(byReleasePhrase);
-
-            EntityListResult<Sprint> result = entityService.Get<Sprint>(context, queryPhrases, fields);
-            Assert(result.data.Count >= expectedResultCount);
-            Release release = result.data[0].Release;
-            Assert(release.Id == releaseId);
-            return result;
-        }
 
 
         #endregion

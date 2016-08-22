@@ -9,6 +9,12 @@ using System.Web.Script.Serialization;
 
 namespace Hpe.Nga.Api.Core.Connector
 {
+    /// <summary>
+    /// Low-level class for communication with NGA server.
+    /// Used as singelton.
+    /// The login should be executed first by calling to <see cref="Connect"/> method.
+    /// For OO wrapper class <see cref="EntityService" class/>
+    /// </summary>
     public class RestConnector
     {
         private static string LWSSO_COOKIE_NAME = "LWSSO_COOKIE_KEY";

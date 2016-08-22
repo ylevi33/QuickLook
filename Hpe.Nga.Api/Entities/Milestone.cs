@@ -7,6 +7,10 @@ using Hpe.Nga.Api.Core.Services;
 
 namespace Hpe.Nga.Api.Core.Entities
 {
+    /// <summary>
+    /// Wrapper for Milestone entity
+    /// More fields might be supported by entity that still are not exposed in the class
+    /// </summary>
     public class Milestone : BaseEntity
     {
         public static string DATE_FIELD = "date";

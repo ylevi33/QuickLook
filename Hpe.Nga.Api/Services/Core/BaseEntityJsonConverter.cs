@@ -7,6 +7,9 @@ using System.Web.Script.Serialization;
 
 namespace Hpe.Nga.Api.Core.Services.Core
 {
+    /// <summary>
+    /// Serailization and deserialization to JSON of classes that inherit <see cref="BaseEntity"/>
+    /// </summary>
     public class BaseEntityJsonConverter : JavaScriptConverter
     {
         public override IEnumerable<Type> SupportedTypes
@@ -65,10 +68,6 @@ namespace Hpe.Nga.Api.Core.Services.Core
 
 
                 }
-
-
-
-
             }
 
             return entity;

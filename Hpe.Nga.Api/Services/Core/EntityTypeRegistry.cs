@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Hpe.Nga.Api.Core.Services.Core
 {
+    /// <summary>
+    /// Registration of entities and their collection names (used by REST communication)
+    /// </summary>
     public class EntityTypeRegistry
     {
         private Dictionary<Type, String> type2collectionNameMap = new Dictionary<Type, String>();

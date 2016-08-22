@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="Configuration\BaseConfiguration.cs" />
     <Compile Include="Configuration\CryptoPropertiesAttribute.cs" />
-    <Compile Include="Configuration\Enumerable.cs" />
     <Compile Include="Configuration\LoginConfiguration.cs" />
     <Compile Include="Configuration\LoginForm.cs">
       <SubType>Form</SubType>

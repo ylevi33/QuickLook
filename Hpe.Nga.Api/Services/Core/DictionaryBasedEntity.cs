@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Hpe.Nga.Api.Core.Services.Core
 {
+    /// <summary>
+    /// Base class for all objects that contains dynamic fields, for example <see cref="BaseEntity"/>
+    /// </summary>
     public class DictionaryBasedEntity
     {
         protected IDictionary<string, object> m_properties;

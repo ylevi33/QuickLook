@@ -5,7 +5,10 @@ using System.Text;
 
 namespace Hpe.Nga.Api.Core.Services.Query
 {
-    public static class QueryBuilder
+    /// <summary>
+    /// Builder of query string for rest request , like this : query="id>1001"&order-by=end_date&fields=id,name,end_date&offset=1&limit=3
+    /// </summary>
+    internal static class QueryStringBuilder
     {
 
         private static String BuildPhraseString(QueryPhrase phrase)
@@ -163,12 +166,12 @@ namespace Hpe.Nga.Api.Core.Services.Query
         public static string BuildQueryString(IList<QueryPhrase> queryPhrases, IList<String> fields, String orderBy, int? offset, int? limit, String groupBy)
         {
             String str = String.Empty;
-            str = ConcateNewQueryString(str, QueryBuilder.BuildGroupByString(groupBy));
-            str = ConcateNewQueryString(str, QueryBuilder.BuildQueryString(queryPhrases));
-            str = ConcateNewQueryString(str, QueryBuilder.BuildOrderByString(orderBy));
-            str = ConcateNewQueryString(str, QueryBuilder.BuildFieldsString(fields));
-            str = ConcateNewQueryString(str, QueryBuilder.BuildOffsetString(offset));
-            str = ConcateNewQueryString(str, QueryBuilder.BuildLimitString(limit));            
+            str = ConcateNewQueryString(str, QueryStringBuilder.BuildGroupByString(groupBy));
+            str = ConcateNewQueryString(str, QueryStringBuilder.BuildQueryString(queryPhrases));
+            str = ConcateNewQueryString(str, QueryStringBuilder.BuildOrderByString(orderBy));
+            str = ConcateNewQueryString(str, QueryStringBuilder.BuildFieldsString(fields));
+            str = ConcateNewQueryString(str, QueryStringBuilder.BuildOffsetString(offset));
+            str = ConcateNewQueryString(str, QueryStringBuilder.BuildLimitString(limit));            
             return str;
         }
 

@@ -9,6 +9,10 @@ using Hpe.Nga.Api.Core.Services.RequestContext;
 
 namespace Hpe.Nga.Api.Core.Services
 {
+    /// <summary>
+    /// Apllication layer class.
+    /// Wraps low-level <see cref="RestConnector"/> and exposes method for CRUD manipulating entities.
+    /// </summary>
     public class EntityService
     {
         private RestConnector rc = RestConnector.GetInstance();
@@ -50,7 +54,7 @@ namespace Hpe.Nga.Api.Core.Services
             String collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
             string url = context.GetPath() + "/" + collectionName;
 
-            String queryString = QueryBuilder.BuildQueryString(queryPhrases, fields, null, null, limit, null);
+            String queryString = QueryStringBuilder.BuildQueryString(queryPhrases, fields, null, null, limit, null);
             if (!String.IsNullOrEmpty(queryString))
             {
                 url = url + "?" + queryString;
@@ -73,7 +77,7 @@ namespace Hpe.Nga.Api.Core.Services
             string url = context.GetPath() + "/" + collectionName + "/groups";
 
 
-            String queryString = QueryBuilder.BuildQueryString(queryPhrases, null, null, null, null, groupBy);
+            String queryString = QueryStringBuilder.BuildQueryString(queryPhrases, null, null, null, null, groupBy);
             if (!String.IsNullOrEmpty(queryString))
             {
                 url = url + "?" + queryString;
@@ -94,7 +98,7 @@ namespace Hpe.Nga.Api.Core.Services
         {
             String collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
             string url = context.GetPath() + "/" + collectionName + "/" + id;
-            String queryString = QueryBuilder.BuildQueryString(null, fields, null, null, null, null);
+            String queryString = QueryStringBuilder.BuildQueryString(null, fields, null, null, null, null);
             if (!String.IsNullOrEmpty(queryString))
             {
                 url = url + "?" + queryString;
