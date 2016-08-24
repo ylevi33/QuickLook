@@ -16,6 +16,18 @@ namespace Hpe.Nga.Api.Core.Tests
     {
 
         [TestMethod]
+        public void GetReleaseFieldMetadata()
+        {
+            List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
+
+            LogicalQueryPhrase byEntityNamePhrase = new LogicalQueryPhrase(FieldMetadata.ENTITY_NAME, "release");
+            queryPhrases.Add(byEntityNamePhrase);
+
+            EntityListResult<FieldMetadata> result = entityService.Get<FieldMetadata>(workspaceContext, queryPhrases, null);
+            Assert.IsTrue(result.total_count > 0);
+        }
+
+        [TestMethod]
         public void CreateReleaseTest()
         {
             Release created = CreateRelease(workspaceContext);
@@ -40,7 +52,7 @@ namespace Hpe.Nga.Api.Core.Tests
             Release release2 = CreateRelease(workspaceContext);
 
 
-            LogicalQueryPhrase namePhrase = new LogicalQueryPhrase("name");
+            LogicalQueryPhrase namePhrase = new LogicalQueryPhrase(Release.NAME_FIELD);
             namePhrase.AddExpression(release1.Name, ComparisonOperator.Equal);
             namePhrase.AddExpression(release2.Name, ComparisonOperator.Equal);
 
@@ -120,7 +132,7 @@ namespace Hpe.Nga.Api.Core.Tests
 
 
             List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
-            QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", release.Id);
+            QueryPhrase releaseIdPhrase = new LogicalQueryPhrase(Release.ID_FIELD, release.Id);
             QueryPhrase byReleasePhrase = new CrossQueryPhrase(Milestone.RELEASES_FIELD, releaseIdPhrase);
 
             queryPhrases.Add(byReleasePhrase);
@@ -140,7 +152,7 @@ namespace Hpe.Nga.Api.Core.Tests
             fields.Add(Sprint.RELEASE_FIELD);
 
             List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
-            QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", release.Id);
+            QueryPhrase releaseIdPhrase = new LogicalQueryPhrase(Release.ID_FIELD, release.Id);
             QueryPhrase byReleasePhrase = new CrossQueryPhrase(Sprint.RELEASE_FIELD, releaseIdPhrase);
 
             queryPhrases.Add(byReleasePhrase);

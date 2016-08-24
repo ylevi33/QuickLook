@@ -75,16 +75,20 @@ namespace Hpe.Nga.Api.Core.Services.Core
 
         private static BaseEntity ConvertToBaseEntity(Dictionary<String, Object> rawEntity)
         {
-            String entityTypeName = (String)rawEntity["type"];
             BaseEntity baseEntity = null;
-            if (entityTypeName != null)
+            if (rawEntity.ContainsKey("type"))
             {
-                Type entityType = EntityTypeRegistry.GetInstance().GetTypeByEntityTypeName(entityTypeName);
-                if (entityType != null)
+                String entityTypeName = (String)rawEntity["type"];
+                if (entityTypeName != null)
                 {
-                    baseEntity = (BaseEntity)Activator.CreateInstance(entityType);
+                    Type entityType = EntityTypeRegistry.GetInstance().GetTypeByEntityTypeName(entityTypeName);
+                    if (entityType != null)
+                    {
+                        baseEntity = (BaseEntity)Activator.CreateInstance(entityType);
+                    }
                 }
             }
+ 
             if (baseEntity == null)
             {
                 baseEntity = new BaseEntity();

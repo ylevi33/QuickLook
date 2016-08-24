@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using Hpe.Nga.Api.Core.Connector;
+using Hpe.Nga.Api.Core.Entities;
+using Hpe.Nga.Api.Core.Services.Attributes;
 using Hpe.Nga.Api.Core.Services.Core;
 using Hpe.Nga.Api.Core.Services.GroupBy;
 using Hpe.Nga.Api.Core.Services.Query;
@@ -51,7 +53,7 @@ namespace Hpe.Nga.Api.Core.Services
         public EntityListResult<T> Get<T>(IRequestContext context, IList<QueryPhrase> queryPhrases, List<String> fields, int? limit)
             where T : BaseEntity
         {
-            String collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
+            String collectionName = GetCollectionName<T>();
             string url = context.GetPath() + "/" + collectionName;
 
             String queryString = QueryStringBuilder.BuildQueryString(queryPhrases, fields, null, null, limit, null);
@@ -69,11 +71,35 @@ namespace Hpe.Nga.Api.Core.Services
             return null;
         }
 
+        private string GetCollectionName<T>() where T : BaseEntity
+        {
+            CustomCollectionPathAttribute customCollectionPathAttribute =
+            (CustomCollectionPathAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(CustomCollectionPathAttribute));
+
+            String collectionName=null;
+            if (customCollectionPathAttribute != null)
+            {
+                collectionName = customCollectionPathAttribute.Path;
+            }
+            else
+            {
+                collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
+            }
+            /*
+            var type = typeof(FieldMetadata);
+            var attribute = type.GetCustomAttribute<SomeAttribute>();
+            var type = typeof(T);
+            var attribute = type.GetCustomAttribute<CustomCollectionPathAttribute>();
+            //var CustomCollectionPathAttribute = type.GetCustomAttribute<CustomCollectionPathAttribute>();*/
+
+            return collectionName;
+        }
+
         public GroupResult GetWithGroupBy<T>(IRequestContext context, IList<QueryPhrase> queryPhrases, String groupBy)
             where T : BaseEntity
         {
 
-            String collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
+            String collectionName = GetCollectionName<T>();
             string url = context.GetPath() + "/" + collectionName + "/groups";
 
 
@@ -96,7 +122,7 @@ namespace Hpe.Nga.Api.Core.Services
         public T GetById<T>(IRequestContext context, long id, IList<String> fields)
            where T : BaseEntity
         {
-            String collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
+            String collectionName = GetCollectionName<T>();
             string url = context.GetPath() + "/" + collectionName + "/" + id;
             String queryString = QueryStringBuilder.BuildQueryString(null, fields, null, null, null, null);
             if (!String.IsNullOrEmpty(queryString))
@@ -118,7 +144,7 @@ namespace Hpe.Nga.Api.Core.Services
         public EntityListResult<T> Create<T>(IRequestContext context, EntityList<T> entityList)
              where T : BaseEntity
         {
-            String collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
+            String collectionName = GetCollectionName<T>();
             string url = context.GetPath() + "/" + collectionName;
             String data = jsonSerializer.Serialize(entityList);
             ResponseWrapper response = rc.ExecutePost(url, data);
@@ -137,7 +163,7 @@ namespace Hpe.Nga.Api.Core.Services
         public T Update<T>(IRequestContext context, T entity)
              where T : BaseEntity
         {
-            String collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
+            String collectionName = GetCollectionName<T>();
             string url = context.GetPath() + "/" + collectionName + "/" + entity.Id;
             String data = jsonSerializer.Serialize(entity);
             ResponseWrapper response = rc.ExecutePut(url, data);
@@ -149,7 +175,7 @@ namespace Hpe.Nga.Api.Core.Services
         public void Delete<T>(IRequestContext context, long entityId)
              where T : BaseEntity
         {
-            String collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
+            String collectionName = GetCollectionName<T>();
             string url = context.GetPath() + "/" + collectionName + "/" + entityId;
             ResponseWrapper response = rc.ExecuteDelete(url);
             //T result = jsonSerializer.Deserialize<T>(response.Data);

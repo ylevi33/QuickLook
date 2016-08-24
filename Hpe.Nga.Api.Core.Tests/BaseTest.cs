@@ -19,6 +19,7 @@ namespace Hpe.Nga.Api.Core.Tests
         protected static string userName;
 
         protected static WorkspaceContext workspaceContext;
+        protected static SharedSpaceContext sharedSpaceContext;
 
         [AssemblyInitialize]
         public static void InitConnection(TestContext context)
@@ -35,6 +36,7 @@ namespace Hpe.Nga.Api.Core.Tests
                 workspaceId = int.Parse(ConfigurationManager.AppSettings["workspaceId"]);
 
                 workspaceContext = new WorkspaceContext(sharedSpaceId, workspaceId);
+                sharedSpaceContext = new SharedSpaceContext(sharedSpaceId);
             }
         }
     }

@@ -8,14 +8,13 @@ using Hpe.Nga.Api.Core.Services;
 namespace Hpe.Nga.Api.Core.Entities
 {
     /// <summary>
-    /// Wrapper for WorkItem entity
+    /// Wrapper for Metaphase entity
     /// More fields might be supported by entity that still are not exposed in the class
     /// </summary>
-    public class WorkItem : BaseEntity
-    {        public static string RELEASE = "release";
-        public static string PHASE = "phase";
-        public static string SUBTYPE_DEFECT = "defect";
-        public static string SUBTYPE_US = "story";
-        
+    public class Metaphase : BaseEntity
+    {
+
+
+
     }
 }

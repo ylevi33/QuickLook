@@ -12,9 +12,10 @@ namespace Hpe.Nga.Api.Core.Services
     public class BaseEntity : DictionaryBasedEntity
     {
         public static string ID_FIELD = "id";
-        public static string TYPE_NAME_FIELD = "type";
+        public static string TYPE_FIELD = "type";
+        public static string SUBTYPE_FIELD = "subtype";
         public static string NAME_FIELD = "name";
-        
+
         public static string DATE_TIME_FORMAT = "yyyy-MM-ddTHH:mm:ssZ";
 
         #region Ctors
@@ -63,7 +64,15 @@ namespace Hpe.Nga.Api.Core.Services
         {
             get
             {
-                return GetStringValue(TYPE_NAME_FIELD);
+                return GetStringValue(TYPE_FIELD);
+            }
+
+        }
+        public string SubTypeName
+        {
+            get
+            {
+                return GetStringValue(SUBTYPE_FIELD);
             }
 
         }
@@ -166,7 +175,8 @@ namespace Hpe.Nga.Api.Core.Services
 
         public override string ToString()
         {
-            return m_properties == null ? "No properties" : String.Format("{0} #{1} , {2} properties", TypeName, Id, m_properties.Count);
+            String name = Name == null ? "No name" : Name.Substring(0, Math.Min(20, Name.Length)); //Show upto 20 characters in name
+            return m_properties == null ? "No properties" : String.Format("{0} #{1} - {2} , {3} properties", TypeName, Id, name, m_properties.Count);
         }
 
 
