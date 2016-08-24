@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Hpe.Nga.Api.Core.Tests
 {
     [TestClass]
-    public class ReleaseAndRelatedEntitiesTests : BaseTest
+    public class ReleaseTests : BaseTest
     {
 
         [TestMethod]
@@ -20,7 +20,7 @@ namespace Hpe.Nga.Api.Core.Tests
         {
             List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
 
-            LogicalQueryPhrase byEntityNamePhrase = new LogicalQueryPhrase(FieldMetadata.ENTITY_NAME, "release");
+            LogicalQueryPhrase byEntityNamePhrase = new LogicalQueryPhrase(FieldMetadata.ENTITY_NAME_FIELD, "release");
             queryPhrases.Add(byEntityNamePhrase);
 
             EntityListResult<FieldMetadata> result = entityService.Get<FieldMetadata>(workspaceContext, queryPhrases, null);
@@ -30,14 +30,14 @@ namespace Hpe.Nga.Api.Core.Tests
         [TestMethod]
         public void CreateReleaseTest()
         {
-            Release created = CreateRelease(workspaceContext);
+            Release created = CreateRelease();
             Assert.IsNotNull(created);
         }
 
         [TestMethod]
         private static Release GetReleaseByIdTest()
         {
-            Release created = CreateRelease(workspaceContext);
+            Release created = CreateRelease();
             List<String> fields = new List<string>();
             fields.Add(Release.NAME_FIELD);
             Release release = entityService.GetById<Release>(workspaceContext, created.Id, fields);
@@ -48,8 +48,8 @@ namespace Hpe.Nga.Api.Core.Tests
         [TestMethod]
         public void GetReleasesByNameTest()
         {
-            Release release1 = CreateRelease(workspaceContext);
-            Release release2 = CreateRelease(workspaceContext);
+            Release release1 = CreateRelease();
+            Release release2 = CreateRelease();
 
 
             LogicalQueryPhrase namePhrase = new LogicalQueryPhrase(Release.NAME_FIELD);
@@ -67,7 +67,7 @@ namespace Hpe.Nga.Api.Core.Tests
         [TestMethod]
         public void GetAllReleasesTest()
         {
-            Release created = CreateRelease(workspaceContext);
+            Release created = CreateRelease();
 
             List<String> fields = new List<string>();
             fields.Add(Release.NAME_FIELD);
@@ -83,7 +83,7 @@ namespace Hpe.Nga.Api.Core.Tests
         [TestMethod]
         public void UpdateReleaseNameTest()
         {
-            Release created = CreateRelease(workspaceContext);
+            Release created = CreateRelease();
 
             //Prepare for update
             String name = "ReleaseUpdated_" + Guid.NewGuid();
@@ -97,7 +97,7 @@ namespace Hpe.Nga.Api.Core.Tests
         [TestMethod]
         public void DeleteReleaseTest()
         {
-            Release created = CreateRelease(workspaceContext);
+            Release created = CreateRelease();
             entityService.Delete<Release>(workspaceContext, created.Id);
             try
             {
@@ -117,8 +117,8 @@ namespace Hpe.Nga.Api.Core.Tests
         [TestMethod]
         public void CreateMilestoneTest()
         {
-            Release release = CreateRelease(workspaceContext);
-            Milestone created = CreateMilestone(workspaceContext, release);
+            Release release = CreateRelease();
+            Milestone created = CreateMilestone(release);
             Assert.IsNotNull(created);
         }
 
@@ -126,9 +126,9 @@ namespace Hpe.Nga.Api.Core.Tests
         [TestMethod]
         public void GetMilestonesByReleaseTest()
         {
-            Release release = CreateRelease(workspaceContext);
-            Milestone created1 = CreateMilestone(workspaceContext, release);
-            Milestone created2 = CreateMilestone(workspaceContext, release);
+            Release release = CreateRelease();
+            Milestone created1 = CreateMilestone(release);
+            Milestone created2 = CreateMilestone(release);
 
 
             List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
@@ -143,7 +143,7 @@ namespace Hpe.Nga.Api.Core.Tests
         [TestMethod]
         public void GetSprintsByReleaseTest()
         {
-            Release release = CreateRelease(workspaceContext);
+            Release release = CreateRelease();
 
             List<String> fields = new List<string>();
             fields.Add(Sprint.NAME_FIELD);
@@ -164,7 +164,7 @@ namespace Hpe.Nga.Api.Core.Tests
         }
 
 
-        private static Release CreateRelease(WorkspaceContext context)
+        private static Release CreateRelease()
         {
             String name = "Release_" + Guid.NewGuid();
             Release release = new Release();
@@ -174,12 +174,12 @@ namespace Hpe.Nga.Api.Core.Tests
             release.SprintDuration = 7;
 
 
-            Release created = entityService.Create<Release>(context, release);
+            Release created = entityService.Create<Release>(workspaceContext, release);
             Assert.AreEqual<String>(name, created.Name);
             return created;
         }
 
-        private static Milestone CreateMilestone(WorkspaceContext context, Release release)
+        private static Milestone CreateMilestone(Release release)
         {
             String name = "Milestone_" + Guid.NewGuid();
             Milestone milestone = new Milestone();
@@ -188,7 +188,7 @@ namespace Hpe.Nga.Api.Core.Tests
             milestone.SetRelease(new EntityList<Release>(release));
 
 
-            Milestone created = entityService.Create<Milestone>(context, milestone);
+            Milestone created = entityService.Create<Milestone>(workspaceContext, milestone);
             Assert.AreEqual<String>(name, created.Name);
             return created;
         }

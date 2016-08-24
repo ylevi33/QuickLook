@@ -100,12 +100,12 @@ namespace QuickLook
             LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE_FIELD, WorkItem.SUBTYPE_DEFECT);
             queries.Add(subtypeQuery);
             QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
-            QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE, releaseIdPhrase);
+            QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE_FIELD, releaseIdPhrase);
             queries.Add(byReleasePhrase);
             LogicalQueryPhrase phaseNamePhrase = new LogicalQueryPhrase("name", "Done");
             phaseNamePhrase.NegativeCondition = true;
             CrossQueryPhrase phaseIdPhrase = new CrossQueryPhrase("metaphase", phaseNamePhrase);
-            CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE, phaseIdPhrase);
+            CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE_FIELD, phaseIdPhrase);
             queries.Add(byPhasePhrase);
 
             GroupResult result = entityService.GetWithGroupBy<WorkItem>(workspaceContext, queries, "severity");
@@ -123,15 +123,15 @@ namespace QuickLook
             LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE_FIELD, WorkItem.SUBTYPE_US);
             queries.Add(subtypeQuery);
             QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
-            QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE, releaseIdPhrase);
+            QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE_FIELD, releaseIdPhrase);
             queries.Add(byReleasePhrase);
             LogicalQueryPhrase phaseNamePhrase = new LogicalQueryPhrase("name", "Done");
             phaseNamePhrase.NegativeCondition = true;
             CrossQueryPhrase phaseIdPhrase = new CrossQueryPhrase("metaphase", phaseNamePhrase);
-            CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE, phaseIdPhrase);
+            CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE_FIELD, phaseIdPhrase);
             queries.Add(byPhasePhrase);
 
-            GroupResult result = entityService.GetWithGroupBy<WorkItem>(workspaceContext, queries, WorkItem.PHASE);
+            GroupResult result = entityService.GetWithGroupBy<WorkItem>(workspaceContext, queries, WorkItem.PHASE_FIELD);
             return result;
         }
 
@@ -146,12 +146,12 @@ namespace QuickLook
             LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE_FIELD, WorkItem.SUBTYPE_US);
             queryPhrases.Add(subtypeQuery);
             QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
-            QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE, releaseIdPhrase);
+            QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE_FIELD, releaseIdPhrase);
             queryPhrases.Add(byReleasePhrase);
             LogicalQueryPhrase phaseNamePhrase = new LogicalQueryPhrase("name", "Done");
             phaseNamePhrase.NegativeCondition = true;
             CrossQueryPhrase phaseIdPhrase = new CrossQueryPhrase("metaphase", phaseNamePhrase);
-            CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE, phaseIdPhrase);
+            CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE_FIELD, phaseIdPhrase);
             queryPhrases.Add(byPhasePhrase);
 
 

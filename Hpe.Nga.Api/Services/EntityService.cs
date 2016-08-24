@@ -5,6 +5,7 @@ using Hpe.Nga.Api.Core.Connector;
 using Hpe.Nga.Api.Core.Entities;
 using Hpe.Nga.Api.Core.Services.Attributes;
 using Hpe.Nga.Api.Core.Services.Core;
+using Hpe.Nga.Api.Core.Services.Exceptions;
 using Hpe.Nga.Api.Core.Services.GroupBy;
 using Hpe.Nga.Api.Core.Services.Query;
 using Hpe.Nga.Api.Core.Services.RequestContext;
@@ -76,7 +77,7 @@ namespace Hpe.Nga.Api.Core.Services
             CustomCollectionPathAttribute customCollectionPathAttribute =
             (CustomCollectionPathAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(CustomCollectionPathAttribute));
 
-            String collectionName=null;
+            String collectionName = null;
             if (customCollectionPathAttribute != null)
             {
                 collectionName = customCollectionPathAttribute.Path;
@@ -85,12 +86,6 @@ namespace Hpe.Nga.Api.Core.Services
             {
                 collectionName = EntityTypeRegistry.GetInstance().GetCollectionName(typeof(T));
             }
-            /*
-            var type = typeof(FieldMetadata);
-            var attribute = type.GetCustomAttribute<SomeAttribute>();
-            var type = typeof(T);
-            var attribute = type.GetCustomAttribute<CustomCollectionPathAttribute>();
-            //var CustomCollectionPathAttribute = type.GetCustomAttribute<CustomCollectionPathAttribute>();*/
 
             return collectionName;
         }
@@ -133,8 +128,7 @@ namespace Hpe.Nga.Api.Core.Services
             ResponseWrapper response = rc.ExecuteGet(url);
             if (response.FailException != null)
             {
-                throw response.FailException;
-
+                throw new RestException(response.FailException);
             }
 
             T result = jsonSerializer.Deserialize<T>(response.Data);
@@ -148,6 +142,10 @@ namespace Hpe.Nga.Api.Core.Services
             string url = context.GetPath() + "/" + collectionName;
             String data = jsonSerializer.Serialize(entityList);
             ResponseWrapper response = rc.ExecutePost(url, data);
+            if (response.FailException != null)
+            {
+                throw new RestException(response.FailException);
+            }
             EntityListResult<T> result = jsonSerializer.Deserialize<EntityListResult<T>>(response.Data);
             return result;
         }
@@ -167,6 +165,10 @@ namespace Hpe.Nga.Api.Core.Services
             string url = context.GetPath() + "/" + collectionName + "/" + entity.Id;
             String data = jsonSerializer.Serialize(entity);
             ResponseWrapper response = rc.ExecutePut(url, data);
+            if (response.FailException != null)
+            {
+                throw new RestException(response.FailException);
+            }
             T result = jsonSerializer.Deserialize<T>(response.Data);
             return result;
         }
@@ -178,6 +180,10 @@ namespace Hpe.Nga.Api.Core.Services
             String collectionName = GetCollectionName<T>();
             string url = context.GetPath() + "/" + collectionName + "/" + entityId;
             ResponseWrapper response = rc.ExecuteDelete(url);
+            if (response.FailException != null)
+            {
+                throw new RestException(response.FailException);
+            }
             //T result = jsonSerializer.Deserialize<T>(response.Data);
             //return result;
         }

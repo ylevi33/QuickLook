@@ -50,6 +50,7 @@
     <Compile Include="Connector\RequestType.cs" />
     <Compile Include="Connector\ResponseWrapper.cs" />
     <Compile Include="Connector\RestConnector.cs" />
+    <Compile Include="Entities\Defect.cs" />
     <Compile Include="Entities\Phase.cs" />
     <Compile Include="Entities\Metaphase.cs" />
     <Compile Include="Entities\ListNode.cs" />
@@ -59,11 +60,13 @@
     <Compile Include="Entities\SharedSpace.cs" />
     <Compile Include="Entities\Epic.cs" />
     <Compile Include="Entities\Sprint.cs" />
+    <Compile Include="Entities\WorkItemRoot.cs" />
     <Compile Include="Entities\WorkItem.cs" />
     <Compile Include="Entities\Workspace.cs" />
     <Compile Include="Entities\WorkspaceUser.cs" />
     <Compile Include="Services\Attributes\CustomCollectionPathAttribute.cs" />
     <Compile Include="Services\EntityList.cs" />
+    <Compile Include="Services\Exceptions\RestException.cs" />
     <Compile Include="Services\GroupBy\GroupResult.cs" />
     <Compile Include="Services\GroupBy\Group.cs" />
     <Compile Include="Services\GroupBy\GroupByValue.cs" />

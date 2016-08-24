@@ -15,6 +15,7 @@ namespace Hpe.Nga.Api.Core.Services
         public static string TYPE_FIELD = "type";
         public static string SUBTYPE_FIELD = "subtype";
         public static string NAME_FIELD = "name";
+        public static string LOGICAL_NAME_FIELD = "logical_name";
 
         public static string DATE_TIME_FORMAT = "yyyy-MM-ddTHH:mm:ssZ";
 
@@ -68,11 +69,16 @@ namespace Hpe.Nga.Api.Core.Services
             }
 
         }
-        public string SubTypeName
+
+        public string SubType
         {
             get
             {
                 return GetStringValue(SUBTYPE_FIELD);
+            }
+            set
+            {
+                SetValue(SUBTYPE_FIELD, value);
             }
 
         }

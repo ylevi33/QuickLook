@@ -15,7 +15,7 @@ namespace Hpe.Nga.Api.Core.Entities
     [CustomCollectionPathAttribute("metadata/fields")]
     public class FieldMetadata : BaseEntity
     {
-        public static string ENTITY_NAME = "entity_name";
+        public static string ENTITY_NAME_FIELD = "entity_name";
 
     }
 }
