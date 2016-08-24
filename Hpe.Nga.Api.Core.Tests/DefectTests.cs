@@ -95,12 +95,12 @@ namespace Hpe.Nga.Api.Core.Tests
         }
 
         [TestMethod]
-        public void GetAllNotCompletedDefectsAssinedToReleaseWithGroupByTest()
+        public void GetNotCompletedDefectsAssinedToReleaseTest()
         {
             Defect defect = CreateDefect();
             Release release = CreateRelease();
 
-            //set release to defect
+            //assign defect to release
             Defect defectForUpdate = new Defect(defect.Id);
             defectForUpdate.Release = release;
             entityService.Update<Defect>(workspaceContext, defectForUpdate);
@@ -108,17 +108,19 @@ namespace Hpe.Nga.Api.Core.Tests
             Assert.AreEqual<long>(release.Id, defectAfterUpdate.Release.Id);
 
             //Fetch all defects that assigned to release and still not done
+            //Fetch defects as work-items 
             List<QueryPhrase> queries = new List<QueryPhrase>();
             LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE_FIELD, WorkItem.SUBTYPE_DEFECT);
             queries.Add(subtypeQuery);
 
+            //condition of release
             QueryPhrase releaseIdPhrase = new LogicalQueryPhrase(WorkItem.ID_FIELD, release.Id);
             QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE_FIELD, releaseIdPhrase);
             queries.Add(byReleasePhrase);
 
             //condition by metaphase (parent of phase)
             LogicalQueryPhrase phaseNamePhrase = new LogicalQueryPhrase(WorkItem.NAME_FIELD, "Done");
-            phaseNamePhrase.NegativeCondition = true;
+            phaseNamePhrase.NegativeCondition = true;//not Done
             CrossQueryPhrase phaseIdPhrase = new CrossQueryPhrase("metaphase", phaseNamePhrase);
             CrossQueryPhrase byPhasePhrase = new CrossQueryPhrase(WorkItem.PHASE_FIELD, phaseIdPhrase);
             queries.Add(byPhasePhrase);
@@ -126,31 +128,22 @@ namespace Hpe.Nga.Api.Core.Tests
             EntityListResult<WorkItem> entitiesResult = entityService.Get<WorkItem>(workspaceContext, queries, null);
             Assert.AreEqual<int>(1, entitiesResult.total_count.Value);
             Assert.AreEqual<long>(defect.Id, entitiesResult.data[0].Id);
-            
-
-            GroupResult groupedResult = entityService.GetWithGroupBy<WorkItem>(workspaceContext, queries, WorkItem.SEVERITY_FIELD);
-            Assert.AreEqual<int>(1, groupedResult.groupsTotalCount);
         }
 
 
         private static Defect CreateDefect()
         {
             String name = "Defect" + Guid.NewGuid();
-            Defect defect = PrepareDefectForCreate(name);
-            Defect created = entityService.Create<Defect>(workspaceContext, defect);
-            Assert.AreEqual<String>(name, created.Name);
-            Assert.IsTrue(created.Id > 0);
-            return created;
-        }
-
-        private static Defect PrepareDefectForCreate(String name)
-        {
             Defect defect = new Defect();
             defect.Name = name;
             defect.Phase = PHASE_NEW;
             defect.Severity = SEVERITY_HIGH;
             defect.Parent = WORK_ITEM_ROOT;
-            return defect;
+            Defect created = entityService.Create<Defect>(workspaceContext, defect);
+            Assert.AreEqual<String>(name, created.Name);
+            Assert.IsTrue(created.Id > 0);
+            return created;
+
         }
 
         private static Phase GetPhaseByName(String entityTypeName, String name)
