@@ -116,6 +116,7 @@ namespace Hpe.Nga.Api.Core.Tests
             QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE_FIELD, releaseIdPhrase);
             queries.Add(byReleasePhrase);
 
+            //condition by metaphase (parent of phase)
             LogicalQueryPhrase phaseNamePhrase = new LogicalQueryPhrase(WorkItem.NAME_FIELD, "Done");
             phaseNamePhrase.NegativeCondition = true;
             CrossQueryPhrase phaseIdPhrase = new CrossQueryPhrase("metaphase", phaseNamePhrase);
