@@ -50,6 +50,7 @@
     <Compile Include="Connector\RequestType.cs" />
     <Compile Include="Connector\ResponseWrapper.cs" />
     <Compile Include="Connector\RestConnector.cs" />
+    <Compile Include="Entities\Story.cs" />
     <Compile Include="Entities\Defect.cs" />
     <Compile Include="Entities\Phase.cs" />
     <Compile Include="Entities\Metaphase.cs" />
@@ -77,7 +78,7 @@
     <Compile Include="Services\Queries\QueryExpression.cs" />
     <Compile Include="Services\Queries\QueryPhrase.cs" />
     <Compile Include="Services\Queries\LogicalQueryPhrase.cs" />
-    <Compile Include="Services\BaseEntity.cs" />
+    <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Services\Core\BaseEntityJsonConverter.cs" />
     <Compile Include="Services\EntityService.cs" />
     <Compile Include="Services\RequestContext\IRequestContext.cs" />

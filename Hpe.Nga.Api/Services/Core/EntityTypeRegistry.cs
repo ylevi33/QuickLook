@@ -33,7 +33,8 @@ namespace Hpe.Nga.Api.Core.Services.Core
             string entityTypeName = ExtractEntityTypeName(type);
             entityTypeName2Type[entityTypeName] = type;
 
-            String collectionName = entityTypeName + "s";
+
+            String collectionName = entityTypeName.EndsWith("y") ? entityTypeName.Substring(0, entityTypeName.Length - 1) + "ies" : entityTypeName + "s";
             type2collectionNameMap[type] = collectionName;
         }
 

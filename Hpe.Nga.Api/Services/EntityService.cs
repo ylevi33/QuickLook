@@ -64,6 +64,10 @@ namespace Hpe.Nga.Api.Core.Services
             }
 
             ResponseWrapper response = rc.ExecuteGet(url);
+            if (response.FailException != null)
+            {
+                throw new RestException(response.FailException);
+            }
             if (response.Data != null)
             {
                 EntityListResult<T> result = jsonSerializer.Deserialize<EntityListResult<T>>(response.Data);
@@ -105,6 +109,10 @@ namespace Hpe.Nga.Api.Core.Services
             }
 
             ResponseWrapper response = rc.ExecuteGet(url);
+            if (response.FailException != null)
+            {
+                throw new RestException(response.FailException);
+            }
             if (response.Data != null)
             {
                 GroupResult result = jsonSerializer.Deserialize<GroupResult>(response.Data);

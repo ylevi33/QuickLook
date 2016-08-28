@@ -130,7 +130,6 @@ namespace Hpe.Nga.Api.Core.Tests
             Assert.AreEqual<long>(defect.Id, entitiesResult.data[0].Id);
         }
 
-
         private static Defect CreateDefect()
         {
             String name = "Defect" + Guid.NewGuid();
