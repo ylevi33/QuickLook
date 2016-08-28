@@ -34,43 +34,43 @@ namespace Hpe.Nga.Api.Core.Services.Core
 
         public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
         {
-            /*if (type == typeof(BaseEntity))
-            {
-                return new BaseEntity(dictionary);
-            }*/
             BaseEntity entity = (BaseEntity)Activator.CreateInstance(type);
             entity.SetProperties(dictionary);
+            OverrideReferenceFields(entity);
 
-            foreach (var pair in dictionary)
+            return entity;
+        }
+
+        private static void OverrideReferenceFields(BaseEntity entity)
+        {
+            ICollection<String> keys = new List<String>(entity.GetProperties().Keys);
+            foreach (String key in keys)
             {
-                if (pair.Value is Dictionary<String, Object>)
+                object value = entity.GetValue(key);
+                if (value is Dictionary<String, Object>)
                 {
-
-
-                    Dictionary<String, Object> pairValue = (Dictionary<String, Object>)pair.Value;
+                    Dictionary<String, Object> pairValue = (Dictionary<String, Object>)value;
                     if (pairValue.ContainsKey("total_count"))
                     {
                         EntityList<BaseEntity> entityList = new EntityList<BaseEntity>();
-                        IList data = (IList)((Dictionary<String, Object>)pair.Value)["data"];
+                        IList data = (IList)((Dictionary<String, Object>)value)["data"];
                         for (int i = 0; i < data.Count; i++)
                         {
                             Dictionary<String, Object> rawEntity = (Dictionary<String, Object>)data[i];
                             BaseEntity baseEntity = ConvertToBaseEntity(rawEntity);
+                            OverrideReferenceFields(baseEntity);
                             entityList.data.Add(baseEntity);
                         }
-                        entity.SetValue(pair.Key, entityList);
+                        entity.SetValue(key, entityList);
                     }
                     else //single entity, like listNode
                     {
                         BaseEntity baseEntity = ConvertToBaseEntity(pairValue);
-                        entity.SetValue(pair.Key, baseEntity);
+                        OverrideReferenceFields(baseEntity);
+                        entity.SetValue(key, baseEntity);
                     }
-
-
                 }
             }
-
-            return entity;
         }
 
         private static BaseEntity ConvertToBaseEntity(Dictionary<String, Object> rawEntity)
@@ -88,7 +88,7 @@ namespace Hpe.Nga.Api.Core.Services.Core
                     }
                 }
             }
- 
+
             if (baseEntity == null)
             {
                 baseEntity = new BaseEntity();

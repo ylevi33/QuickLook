@@ -40,11 +40,11 @@ namespace Hpe.Nga.Api.Core.Entities
             }
         }
 
-        public List<WorkspaceRole> WorkspaceRoles
+        public EntityList<BaseEntity> WorkspaceRoles
         {
             get
             {
-                return (List<WorkspaceRole>)GetValue(WORKSPACE_ROLES_FIELD);
+                return (EntityList<BaseEntity>)GetValue(WORKSPACE_ROLES_FIELD);
             }
             set
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,21 +72,30 @@ namespace Hpe.Nga.Api.Core.Tests
         public void AssignSharedSpaceAdminRoleToUserTest()
         {
 
-            //Find shared space admin role
+            //FIND shared space admin role
             LogicalQueryPhrase roleLogicalName = new LogicalQueryPhrase(Role.LOGICAL_NAME_FIELD, "role.shared.space.admin");
             CrossQueryPhrase byRole = new CrossQueryPhrase(WorkspaceRole.ROLE_FIELD, roleLogicalName);
             List<QueryPhrase> queries = new List<QueryPhrase>();
             queries.Add(byRole);
             EntityListResult<WorkspaceRole> roles = entityService.Get<WorkspaceRole>(sharedSpaceContext, queries, null);
             Assert.AreEqual<int>(1, roles.total_count.Value);
+            WorkspaceRole sharedSpaceAdminRole = roles.data[0];
 
-            //create user
+            //CREATE USER
             SharedspaceUser createdUser = CreateUser();
 
-            //update user by adding shared space admin role
+            //UPDATE USER by adding shared space admin role
             SharedspaceUser userForUpdate = new SharedspaceUser(createdUser.Id);
             userForUpdate.WorkspaceRoles = createdUser.WorkspaceRoles;
-            int t = 5;
+            userForUpdate.WorkspaceRoles.data.Add(sharedSpaceAdminRole);
+            entityService.Update<SharedspaceUser>(sharedSpaceContext, userForUpdate);
+
+            //READ USER
+            List<String> fields = new List<string> { SharedspaceUser.NAME_FIELD, SharedspaceUser.WORKSPACE_ROLES_FIELD };
+            SharedspaceUser updatedUser = EntityService.GetInstance().GetById<SharedspaceUser>(sharedSpaceContext, createdUser.Id, fields);
+
+            List<long> assignedWorkspaceRoles = updatedUser.WorkspaceRoles.data.Select(p => p.Id).ToList<long>();
+            Assert.IsTrue(assignedWorkspaceRoles.Contains(sharedSpaceAdminRole.Id));
         }
 
         private static SharedspaceUser CreateUser()
