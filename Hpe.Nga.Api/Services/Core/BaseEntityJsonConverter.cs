@@ -50,7 +50,7 @@ namespace Hpe.Nga.Api.Core.Services.Core
                 if (value is Dictionary<String, Object>)
                 {
                     Dictionary<String, Object> pairValue = (Dictionary<String, Object>)value;
-                    if (pairValue.ContainsKey("total_count"))
+                    if (pairValue.ContainsKey("total_count"))//list of entities
                     {
                         EntityList<BaseEntity> entityList = new EntityList<BaseEntity>();
                         IList data = (IList)((Dictionary<String, Object>)value)["data"];
@@ -63,7 +63,7 @@ namespace Hpe.Nga.Api.Core.Services.Core
                         }
                         entity.SetValue(key, entityList);
                     }
-                    else //single entity, like listNode
+                    else //single entity
                     {
                         BaseEntity baseEntity = ConvertToBaseEntity(pairValue);
                         OverrideReferenceFields(baseEntity);
@@ -97,7 +97,6 @@ namespace Hpe.Nga.Api.Core.Services.Core
             baseEntity.SetProperties(rawEntity);
             return baseEntity;
         }
-
 
     }
 }
