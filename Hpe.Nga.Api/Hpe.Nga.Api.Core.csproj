@@ -46,11 +46,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connector\ConnectionInfo.cs" />
+    <Compile Include="Connector\RestExceptionInfo.cs" />
     <Compile Include="Connector\NotConnectedException.cs" />
     <Compile Include="Connector\RequestType.cs" />
     <Compile Include="Connector\ResponseWrapper.cs" />
     <Compile Include="Connector\RestConnector.cs" />
-    <Compile Include="Entities\Base\BaseEntityWithSubType.cs" />
+    <Compile Include="Connector\MqmRestException.cs" />
+    <Compile Include="Entities\Tests\ManualTest.cs" />
+    <Compile Include="Entities\Users\WorkspaceRole.cs" />
+    <Compile Include="Entities\Users\Role.cs" />
+    <Compile Include="Entities\Users\SharedspaceUser.cs" />
+    <Compile Include="Entities\Users\BaseUserEntity.cs" />
     <Compile Include="Entities\WorkItems\Feature.cs" />
     <Compile Include="Entities\WorkItems\Story.cs" />
     <Compile Include="Entities\WorkItems\Defect.cs" />
@@ -67,7 +73,7 @@
     <Compile Include="Entities\WorkItems\WorkItemRoot.cs" />
     <Compile Include="Entities\WorkItems\WorkItem.cs" />
     <Compile Include="Entities\Workspace.cs" />
-    <Compile Include="Entities\WorkspaceUser.cs" />
+    <Compile Include="Entities\Users\WorkspaceUser.cs" />
     <Compile Include="Services\Attributes\CustomCollectionPathAttribute.cs" />
     <Compile Include="Services\EntityList.cs" />
     <Compile Include="Services\Exceptions\RestException.cs" />

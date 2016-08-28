@@ -120,7 +120,7 @@ namespace QuickLook
 
 
             List<QueryPhrase> queries = new List<QueryPhrase>();
-            LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE_FIELD, WorkItem.SUBTYPE_US);
+            LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE_FIELD, WorkItem.SUBTYPE_STORY);
             queries.Add(subtypeQuery);
             QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
             QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE_FIELD, releaseIdPhrase);
@@ -143,7 +143,7 @@ namespace QuickLook
 
             List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
             List<QueryPhrase> queries = new List<QueryPhrase>();
-            LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE_FIELD, WorkItem.SUBTYPE_US);
+            LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE_FIELD, WorkItem.SUBTYPE_STORY);
             queryPhrases.Add(subtypeQuery);
             QueryPhrase releaseIdPhrase = new LogicalQueryPhrase("id", releaseId);
             QueryPhrase byReleasePhrase = new CrossQueryPhrase(WorkItem.RELEASE_FIELD, releaseIdPhrase);

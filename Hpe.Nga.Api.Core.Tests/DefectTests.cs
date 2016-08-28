@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hpe.Nga.Api.Core.Connector;
 using Hpe.Nga.Api.Core.Entities;
 using Hpe.Nga.Api.Core.Services;
+using Hpe.Nga.Api.Core.Services.Exceptions;
 using Hpe.Nga.Api.Core.Services.GroupBy;
 using Hpe.Nga.Api.Core.Services.Query;
 using Hpe.Nga.Api.Core.Services.RequestContext;
@@ -22,9 +24,9 @@ namespace Hpe.Nga.Api.Core.Tests
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
-            PHASE_NEW = GetPhaseByName("defect", "New");
-            SEVERITY_HIGH = getSeverityByName("High");
-            WORK_ITEM_ROOT = getWorkItemRoot();
+            PHASE_NEW = TestHelper.GetPhaseForEntityByName(workspaceContext, WorkItem.SUBTYPE_DEFECT, "New");
+            SEVERITY_HIGH = TestHelper.GetSeverityByName(workspaceContext, "High");
+            WORK_ITEM_ROOT = TestHelper.GetWorkItemRoot(workspaceContext);
         }
 
         [TestMethod]
@@ -43,10 +45,10 @@ namespace Hpe.Nga.Api.Core.Tests
         public void GetPhasesForDefectTest()
         {
             List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
-            LogicalQueryPhrase byEntityPhrase = new LogicalQueryPhrase(Phase.ENTITY_FIELD, "defect");
+            LogicalQueryPhrase byEntityPhrase = new LogicalQueryPhrase(Phase.ENTITY_FIELD, WorkItem.SUBTYPE_DEFECT);
             queryPhrases.Add(byEntityPhrase);
             EntityListResult<Phase> result = entityService.Get<Phase>(workspaceContext, queryPhrases, null);
-            Assert.IsTrue(result.total_count >= 8);
+            Assert.IsTrue(result.total_count >= 1);
         }
 
         [TestMethod]
@@ -130,6 +132,33 @@ namespace Hpe.Nga.Api.Core.Tests
             Assert.AreEqual<long>(defect.Id, entitiesResult.data[0].Id);
         }
 
+        [TestMethod]
+        public void DeleteDefectsByFilter()
+        {
+            Defect createdDefect = CreateDefect();
+
+
+            List<QueryPhrase> queries = new List<QueryPhrase>();
+            LogicalQueryPhrase byName = new LogicalQueryPhrase(Defect.NAME_FIELD, createdDefect.Name);
+            queries.Add(byName);
+
+            entityService.DeleteByFilter<WorkItem>(workspaceContext, queries);
+
+            try
+            {
+                Defect defect = entityService.GetById<Defect>(workspaceContext, createdDefect.Id, null);
+                Assert.Fail("Should not get here");
+            }
+            catch (MqmRestException e)
+            {
+                Assert.AreEqual<string>("platform.entity_not_found", e.ErrorCode);
+            }
+
+        }
+
+
+
+
         private static Defect CreateDefect()
         {
             String name = "Defect" + Guid.NewGuid();
@@ -143,47 +172,6 @@ namespace Hpe.Nga.Api.Core.Tests
             Assert.IsTrue(created.Id > 0);
             return created;
 
-        }
-
-        private static Phase GetPhaseByName(String entityTypeName, String name)
-        {
-            List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
-            LogicalQueryPhrase byEntityPhrase = new LogicalQueryPhrase(Phase.ENTITY_FIELD, entityTypeName);
-            LogicalQueryPhrase byNamePhrase = new LogicalQueryPhrase(Phase.NAME_FIELD, name);
-            queryPhrases.Add(byEntityPhrase);
-            queryPhrases.Add(byNamePhrase);
-
-            List<String> fields = new List<String>() { Phase.NAME_FIELD, Phase.LOGICAL_NAME_FIELD };
-            EntityListResult<Phase> result = entityService.Get<Phase>(workspaceContext, queryPhrases, fields);
-            Assert.AreEqual(1, result.total_count);
-            Phase phase = result.data[0];
-            return phase;
-        }
-
-        private static ListNode getSeverityByName(String name)
-        {
-            List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
-            LogicalQueryPhrase byLogicalName = new LogicalQueryPhrase(ListNode.LOGICAL_NAME_FIELD, "list_node.severity.*");
-            queryPhrases.Add(byLogicalName);
-
-            LogicalQueryPhrase byName = new LogicalQueryPhrase(ListNode.NAME_FIELD, name);
-            queryPhrases.Add(byName);
-
-            List<String> fields = new List<String>() { Phase.NAME_FIELD, Phase.LOGICAL_NAME_FIELD };
-
-            EntityListResult<ListNode> result = entityService.Get<ListNode>(workspaceContext, queryPhrases, fields);
-            Assert.AreEqual(1, result.total_count);
-            ListNode listNode = result.data[0];
-            return listNode;
-        }
-
-        private static WorkItemRoot getWorkItemRoot()
-        {
-            List<String> fields = new List<String>() { Phase.NAME_FIELD };
-            EntityListResult<WorkItemRoot> result = entityService.Get<WorkItemRoot>(workspaceContext, null, fields);
-            Assert.AreEqual(1, result.total_count);
-            WorkItemRoot root = result.data[0];
-            return root;
         }
 
         private static Release CreateRelease()

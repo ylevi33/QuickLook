@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hpe.Nga.Api.Core.Connector;
 using Hpe.Nga.Api.Core.Entities;
 using Hpe.Nga.Api.Core.Services;
 using Hpe.Nga.Api.Core.Services.Query;
@@ -24,7 +25,7 @@ namespace Hpe.Nga.Api.Core.Tests
             queryPhrases.Add(byEntityNamePhrase);
 
             EntityListResult<FieldMetadata> result = entityService.Get<FieldMetadata>(workspaceContext, queryPhrases, null);
-            Assert.IsTrue(result.total_count > 0);
+            Assert.IsTrue(result.total_count >= 1);
         }
 
         [TestMethod]
@@ -98,16 +99,16 @@ namespace Hpe.Nga.Api.Core.Tests
         public void DeleteReleaseTest()
         {
             Release created = CreateRelease();
-            entityService.Delete<Release>(workspaceContext, created.Id);
+            entityService.DeleteById<Release>(workspaceContext, created.Id);
             try
             {
                 //try read release
                 Release release = entityService.GetById<Release>(workspaceContext, created.Id, null);
                 Assert.Fail("Shouldnot get here");
             }
-            catch (Exception e)
+            catch (MqmRestException e)
             {
-                Assert.IsTrue(e.Message.Contains("404"));
+                Assert.AreEqual<string>("platform.entity_not_found", e.ErrorCode);
             }
 
         }

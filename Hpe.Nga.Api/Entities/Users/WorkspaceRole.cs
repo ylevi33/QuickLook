@@ -8,10 +8,11 @@ using Hpe.Nga.Api.Core.Services;
 namespace Hpe.Nga.Api.Core.Entities
 {
     /// <summary>
-    /// Wrapper for WorkspaceUser entity
+    /// Wrapper for WorkspaceRole entity
     /// More fields might be supported by entity that still are not exposed in the class
     /// </summary>
-    public class WorkspaceUser : BaseEntity
+    public class WorkspaceRole : BaseEntity
     {
+
     }
 }

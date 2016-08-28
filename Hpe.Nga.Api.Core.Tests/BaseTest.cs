@@ -14,9 +14,14 @@ namespace Hpe.Nga.Api.Core.Tests
         protected static EntityService entityService = EntityService.GetInstance();
         private static RestConnector restConnector = RestConnector.GetInstance();
 
-        protected static int sharedSpaceId;
-        protected static int workspaceId;
-        protected static string userName;
+        private static int sharedSpaceId;
+        private static int workspaceId;
+        private static string userName;
+
+        protected string CurrentUserName
+        {
+            get { return BaseTest.userName; }
+        }
 
         protected static WorkspaceContext workspaceContext;
         protected static SharedSpaceContext sharedSpaceContext;

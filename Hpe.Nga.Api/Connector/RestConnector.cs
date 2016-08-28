@@ -236,11 +236,14 @@ namespace Hpe.Nga.Api.Core.Connector
                 UpdateLwssoTokenFromResponse(response);
 
             }
-            catch (Exception ex)
+            catch (WebException ex)
             {
-                responseWrapper.FailException = ex;
+                var response = (HttpWebResponse)ex.Response;
+                var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+                RestExceptionInfo exceptionInfo = jsSerializer.Deserialize<RestExceptionInfo>(body);
+                throw new MqmRestException(exceptionInfo);
             }
-
 
             return responseWrapper;
 

@@ -64,10 +64,6 @@ namespace Hpe.Nga.Api.Core.Services
             }
 
             ResponseWrapper response = rc.ExecuteGet(url);
-            if (response.FailException != null)
-            {
-                throw new RestException(response.FailException);
-            }
             if (response.Data != null)
             {
                 EntityListResult<T> result = jsonSerializer.Deserialize<EntityListResult<T>>(response.Data);
@@ -109,10 +105,6 @@ namespace Hpe.Nga.Api.Core.Services
             }
 
             ResponseWrapper response = rc.ExecuteGet(url);
-            if (response.FailException != null)
-            {
-                throw new RestException(response.FailException);
-            }
             if (response.Data != null)
             {
                 GroupResult result = jsonSerializer.Deserialize<GroupResult>(response.Data);
@@ -134,11 +126,6 @@ namespace Hpe.Nga.Api.Core.Services
             }
 
             ResponseWrapper response = rc.ExecuteGet(url);
-            if (response.FailException != null)
-            {
-                throw new RestException(response.FailException);
-            }
-
             T result = jsonSerializer.Deserialize<T>(response.Data);
             return result;
         }
@@ -150,10 +137,6 @@ namespace Hpe.Nga.Api.Core.Services
             string url = context.GetPath() + "/" + collectionName;
             String data = jsonSerializer.Serialize(entityList);
             ResponseWrapper response = rc.ExecutePost(url, data);
-            if (response.FailException != null)
-            {
-                throw new RestException(response.FailException);
-            }
             EntityListResult<T> result = jsonSerializer.Deserialize<EntityListResult<T>>(response.Data);
             return result;
         }
@@ -173,27 +156,26 @@ namespace Hpe.Nga.Api.Core.Services
             string url = context.GetPath() + "/" + collectionName + "/" + entity.Id;
             String data = jsonSerializer.Serialize(entity);
             ResponseWrapper response = rc.ExecutePut(url, data);
-            if (response.FailException != null)
-            {
-                throw new RestException(response.FailException);
-            }
             T result = jsonSerializer.Deserialize<T>(response.Data);
             return result;
         }
 
 
-        public void Delete<T>(IRequestContext context, long entityId)
+        public void DeleteById<T>(IRequestContext context, long entityId)
              where T : BaseEntity
         {
             String collectionName = GetCollectionName<T>();
             string url = context.GetPath() + "/" + collectionName + "/" + entityId;
             ResponseWrapper response = rc.ExecuteDelete(url);
-            if (response.FailException != null)
-            {
-                throw new RestException(response.FailException);
-            }
-            //T result = jsonSerializer.Deserialize<T>(response.Data);
-            //return result;
+        }
+
+        public void DeleteByFilter<T>(IRequestContext context, IList<QueryPhrase> queryPhrases)
+            where T : BaseEntity
+        {
+            String collectionName = GetCollectionName<T>();
+            String queryString = QueryStringBuilder.BuildQueryString(queryPhrases, null, null, null, null, null);
+            string url = context.GetPath() + "/" + collectionName + "?" + queryString;
+            ResponseWrapper response = rc.ExecuteDelete(url);
         }
 
 

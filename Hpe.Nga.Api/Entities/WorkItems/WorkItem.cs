@@ -8,11 +8,12 @@ using Hpe.Nga.Api.Core.Services;
 namespace Hpe.Nga.Api.Core.Entities
 {
     /// <summary>
-    /// Wrapper for WorkItem entity
+    /// Base class for all WorkItem entities.
     /// More fields might be supported by entity that still are not exposed in the class
     /// </summary>
-    public class WorkItem : BaseEntityWithSubType
+    public class WorkItem : BaseEntity
     {
+        public static string SUBTYPE_FIELD = "subtype";
         public static string RELEASE_FIELD = "release";
         public static string PHASE_FIELD = "phase";
         public static string SEVERITY_FIELD = "severity";
@@ -21,8 +22,9 @@ namespace Hpe.Nga.Api.Core.Entities
 
 
         public static string SUBTYPE_DEFECT = "defect";
-        public static string SUBTYPE_US = "story";
+        public static string SUBTYPE_STORY = "story";
         public static string SUBTYPE_FEATURE = "feature";
+        public static string SUBTYPE_EPIC = "epic";
 
         public WorkItem()
         {
@@ -33,6 +35,18 @@ namespace Hpe.Nga.Api.Core.Entities
             Id = id;
         }
 
+        public string SubType
+        {
+            get
+            {
+                return GetStringValue(SUBTYPE_FIELD);
+            }
+            set
+            {
+                SetValue(SUBTYPE_FIELD, value);
+            }
+
+        }
 
         public Phase Phase
         {

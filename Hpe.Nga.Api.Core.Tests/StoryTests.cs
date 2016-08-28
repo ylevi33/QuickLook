@@ -19,8 +19,8 @@ namespace Hpe.Nga.Api.Core.Tests
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
-            PHASE_NEW = GetPhaseByName("story", "New");
-            WORK_ITEM_ROOT = getWorkItemRoot();
+            PHASE_NEW = TestHelper.GetPhaseForEntityByName(workspaceContext, WorkItem.SUBTYPE_STORY, "New");
+            WORK_ITEM_ROOT = TestHelper.GetWorkItemRoot(workspaceContext);
         }
 
         [TestMethod]
@@ -32,7 +32,7 @@ namespace Hpe.Nga.Api.Core.Tests
             queryPhrases.Add(byEntityNamePhrase);
 
             EntityListResult<FieldMetadata> result = entityService.Get<FieldMetadata>(workspaceContext, queryPhrases, null);
-            Assert.IsTrue(result.total_count >= 40);
+            Assert.IsTrue(result.total_count >= 1);
         }
 
         [TestMethod]
@@ -55,7 +55,7 @@ namespace Hpe.Nga.Api.Core.Tests
 
             //get as work-items
             List<QueryPhrase> queries = new List<QueryPhrase>();
-            LogicalQueryPhrase byStorySubType = new LogicalQueryPhrase(WorkItem.SUBTYPE_FIELD, WorkItem.SUBTYPE_US);
+            LogicalQueryPhrase byStorySubType = new LogicalQueryPhrase(WorkItem.SUBTYPE_FIELD, WorkItem.SUBTYPE_STORY);
             queries.Add(byStorySubType);
   
             EntityListResult<WorkItem> storiesAsWorkItems = entityService.Get<WorkItem>(workspaceContext, queries, null);
@@ -76,31 +76,5 @@ namespace Hpe.Nga.Api.Core.Tests
             Assert.IsTrue(created.Id > 0);
             return created;
         }
-
-        private static Phase GetPhaseByName(String entityTypeName, String name)
-        {
-            List<QueryPhrase> queryPhrases = new List<QueryPhrase>();
-            LogicalQueryPhrase byEntityPhrase = new LogicalQueryPhrase(Phase.ENTITY_FIELD, entityTypeName);
-            LogicalQueryPhrase byNamePhrase = new LogicalQueryPhrase(Phase.NAME_FIELD, name);
-            queryPhrases.Add(byEntityPhrase);
-            queryPhrases.Add(byNamePhrase);
-
-            List<String> fields = new List<String>() { Phase.NAME_FIELD, Phase.LOGICAL_NAME_FIELD };
-            EntityListResult<Phase> result = entityService.Get<Phase>(workspaceContext, queryPhrases, fields);
-            Assert.AreEqual(1, result.total_count);
-            Phase phase = result.data[0];
-            return phase;
-        }
-
-       
-        private static WorkItemRoot getWorkItemRoot()
-        {
-            List<String> fields = new List<String>() { Phase.NAME_FIELD };
-            EntityListResult<WorkItemRoot> result = entityService.Get<WorkItemRoot>(workspaceContext, null, fields);
-            Assert.AreEqual(1, result.total_count);
-            WorkItemRoot root = result.data[0];
-            return root;
-        }
-
     }
 }

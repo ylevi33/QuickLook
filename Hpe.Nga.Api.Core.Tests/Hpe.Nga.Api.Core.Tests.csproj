@@ -52,10 +52,14 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BaseTest.cs" />
+    <Compile Include="WorkItemTests.cs" />
+    <Compile Include="TestManualTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DefectTests.cs" />
     <Compile Include="ReleaseTests.cs" />
-    <Compile Include="UserTests.cs" />
+    <Compile Include="TestHelper.cs" />
+    <Compile Include="WorkspaceUserTests.cs" />
+    <Compile Include="SharedspaceUserTests.cs" />
     <Compile Include="StoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
