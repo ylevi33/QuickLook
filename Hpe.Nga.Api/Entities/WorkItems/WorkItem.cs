@@ -11,7 +11,7 @@ namespace Hpe.Nga.Api.Core.Entities
     /// Wrapper for WorkItem entity
     /// More fields might be supported by entity that still are not exposed in the class
     /// </summary>
-    public class WorkItem : BaseEntity
+    public class WorkItem : BaseEntityWithSubType
     {
         public static string RELEASE_FIELD = "release";
         public static string PHASE_FIELD = "phase";
@@ -22,6 +22,7 @@ namespace Hpe.Nga.Api.Core.Entities
 
         public static string SUBTYPE_DEFECT = "defect";
         public static string SUBTYPE_US = "story";
+        public static string SUBTYPE_FEATURE = "feature";
 
         public WorkItem()
         {
