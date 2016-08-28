@@ -123,7 +123,6 @@ namespace Hpe.Nga.Api.Core.Tests
             Assert.IsNotNull(created);
         }
 
-
         [TestMethod]
         public void GetMilestonesByReleaseTest()
         {

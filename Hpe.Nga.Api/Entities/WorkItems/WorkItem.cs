@@ -31,8 +31,8 @@ namespace Hpe.Nga.Api.Core.Entities
         }
 
         public WorkItem(long id)
+            : base(id)
         {
-            Id = id;
         }
 
         public string SubType

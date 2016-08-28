@@ -13,11 +13,13 @@ namespace Hpe.Nga.Api.Core.Entities
     public class Defect : WorkItem
     {
 
-        public Defect() : base()
+        public Defect()
+            : base()
         {
         }
 
-        public Defect(long id) : base(id)
+        public Defect(long id)
+            : base(id)
         {
         }
 

@@ -13,7 +13,8 @@ namespace Hpe.Nga.Api.Core.Entities
     public class Feature : WorkItem
     {
 
-        public Feature() : base()
+        public Feature()
+            : base()
         {
         }
 

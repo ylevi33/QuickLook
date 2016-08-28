@@ -20,8 +20,8 @@ namespace Hpe.Nga.Api.Core.Entities
         }
 
         public Epic(long id)
+            : base(id)
         {
-            Id = id;
         }
 
 

@@ -16,8 +16,16 @@ namespace Hpe.Nga.Api.Core.Entities
         public static string DATE_FIELD = "date";
         public static string DESCRIPTION_FIELD = "description";
         public static string RELEASES_FIELD = "releases";
-        public static string START_DATE_FIELD = "start_date";
-        public static string END_DATE_FIELD = "end_date";
+
+        public Milestone()
+        {
+
+        }
+
+        public Milestone(long id)
+            : base(id)
+        {
+        }
 
         public DateTime Date
         {
@@ -31,42 +39,17 @@ namespace Hpe.Nga.Api.Core.Entities
             }
 
         }
-        
-        public DateTime StartDate
-        {
-            get
-            {
-                return GetDateTimeUTCValue(START_DATE_FIELD).Value;
-            }
-            set
-            {
-                SetDateTimeValue(START_DATE_FIELD, value);
-            }
-
-        }
-
-        public DateTime EndDate
-        {
-            get
-            {
-                return GetDateTimeUTCValue(END_DATE_FIELD).Value;
-            }
-            set
-            {
-                SetDateTimeValue(END_DATE_FIELD, value);
-            }
-        }
 
         public String Description
         {
-          get
-          {
-            return GetStringValue(DESCRIPTION_FIELD);
-          }
-          set
-          {
-            SetValue(DESCRIPTION_FIELD, value);
-          }
+            get
+            {
+                return GetStringValue(DESCRIPTION_FIELD);
+            }
+            set
+            {
+                SetValue(DESCRIPTION_FIELD, value);
+            }
 
         }
 
@@ -89,12 +72,17 @@ namespace Hpe.Nga.Api.Core.Entities
 
         }
 
-        public void setMilestoneStartDateEndDate()
+        public DateTime GetStartDate()
         {
-            DateTime date = GetDateTimeValue(DATE_FIELD).Value;
-            StartDate = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
-            EndDate = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
-            EndDate = EndDate.AddDays(1);
+            DateTime date = Date;
+            DateTime startDate = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
+            return startDate;
+        }
+
+        public DateTime GetEndDate()
+        {
+            DateTime endDate = GetStartDate().AddDays(1);
+            return endDate;
         }
     }
 }

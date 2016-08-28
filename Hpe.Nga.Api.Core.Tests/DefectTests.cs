@@ -69,21 +69,6 @@ namespace Hpe.Nga.Api.Core.Tests
         }
 
         [TestMethod]
-        public void CreateDefectAsWorkItemTest()
-        {
-            String name = "Defect" + Guid.NewGuid();
-            WorkItem defect = new WorkItem();
-            defect.Name = name;
-            defect.Phase = PHASE_NEW;
-            defect.Severity = SEVERITY_HIGH;
-            defect.Parent = WORK_ITEM_ROOT;
-            defect.SubType = WorkItem.SUBTYPE_DEFECT;
-
-            WorkItem created = entityService.Create<WorkItem>(workspaceContext, defect);
-            Assert.AreEqual<String>(name, created.Name);
-        }
-
-        [TestMethod]
         public void UpdateDefectNameTest()
         {
             Defect defect = CreateDefect();
@@ -155,9 +140,6 @@ namespace Hpe.Nga.Api.Core.Tests
             }
 
         }
-
-
-
 
         private static Defect CreateDefect()
         {

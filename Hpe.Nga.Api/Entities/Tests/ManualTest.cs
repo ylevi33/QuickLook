@@ -13,7 +13,8 @@ namespace Hpe.Nga.Api.Core.Entities
     public class ManualTest : Test
     {
 
-        public ManualTest() : base()
+        public ManualTest()
+            : base()
         {
         }
 

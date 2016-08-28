@@ -18,7 +18,6 @@ namespace Hpe.Nga.Api.Core.Tests
     [TestClass]
     public class WorkItemTests : BaseTest
     {
-
         private static WorkItemRoot WORK_ITEM_ROOT;
 
         [ClassInitialize()]
@@ -27,7 +26,6 @@ namespace Hpe.Nga.Api.Core.Tests
 
             WORK_ITEM_ROOT = TestHelper.GetWorkItemRoot(workspaceContext);
         }
-
 
         [TestMethod]
         public void CrudDefectAsWorkItemTest()
@@ -96,15 +94,11 @@ namespace Hpe.Nga.Api.Core.Tests
             epicToCreate.Name = epicName;
             epicToCreate.Phase = EPIC_PHASE_NEW;
             epicToCreate.Parent = WORK_ITEM_ROOT;
-
-            //For workItems - SUBTYPE have to be set
-            epicToCreate.SubType = WorkItem.SUBTYPE_EPIC;
+            epicToCreate.SubType = WorkItem.SUBTYPE_EPIC;//For workItems - SUBTYPE have to be set
 
             WorkItem createdEpic = entityService.Create<WorkItem>(workspaceContext, epicToCreate);
             Assert.AreEqual<String>(WorkItem.SUBTYPE_EPIC, createdEpic.SubType);
             Assert.AreEqual<String>(epicName, createdEpic.Name);
-
-
 
 
             //parent of feature can be only epic, workItemRoot cannot be parent of feature
@@ -114,9 +108,7 @@ namespace Hpe.Nga.Api.Core.Tests
             featureToCreate.Name = featureName;
             featureToCreate.Phase = FEATURE_PHASE_NEW;
             featureToCreate.Parent = createdEpic;
-
-            //For workItems - SUBTYPE have to be set
-            featureToCreate.SubType = WorkItem.SUBTYPE_FEATURE;
+            featureToCreate.SubType = WorkItem.SUBTYPE_FEATURE; //For workItems - SUBTYPE have to be set
 
             WorkItem createdFeature = entityService.Create<WorkItem>(workspaceContext, featureToCreate);
             Assert.AreEqual<String>(WorkItem.SUBTYPE_FEATURE, createdFeature.SubType);

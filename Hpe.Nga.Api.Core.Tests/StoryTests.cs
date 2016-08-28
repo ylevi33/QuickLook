@@ -41,8 +41,6 @@ namespace Hpe.Nga.Api.Core.Tests
             CreateStory();
         }
 
-
-
         [TestMethod]
         public void GetAllStories()
         {

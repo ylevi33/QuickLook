@@ -25,6 +25,14 @@ namespace Hpe.Nga.Api.Core.Services
         {
         }
 
+        public BaseEntity(long id)
+            : base()
+        {
+            Id = id;
+        }
+
+
+
         public BaseEntity(IDictionary<string, object> properties)
             : base(properties)
         {

@@ -13,6 +13,31 @@ namespace Hpe.Nga.Api.Core.Entities
     /// </summary>
     public class WorkspaceRole : BaseEntity
     {
+        public static string WORKSPACE_FIELD = "workspace";
+        public static string ROLE_FIELD = "role";
 
+        public Workspace Workspace
+        {
+            get
+            {
+                return (Workspace)GetValue(WORKSPACE_FIELD);
+            }
+            set
+            {
+                SetValue(WORKSPACE_FIELD, value);
+            }
+        }
+
+        public Role Role
+        {
+            get
+            {
+                return (Role)GetValue(ROLE_FIELD);
+            }
+            set
+            {
+                SetValue(ROLE_FIELD, value);
+            }
+        }
     }
 }

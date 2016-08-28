@@ -15,6 +15,17 @@ namespace Hpe.Nga.Api.Core.Entities
         public static string FIRST_NAME_FIELD = "first_name";
         public static string LAST_NAME_FIELD = "last_name";
         public static string EMAIL_FIELD = "email";
+        public static string PHONE1_FIELD = "phone1";
+
+        public BaseUserEntity()
+            : base()
+        {
+        }
+
+        public BaseUserEntity(long id)
+            : base(id)
+        {
+        }
 
         public string UID
         {
@@ -73,6 +84,18 @@ namespace Hpe.Nga.Api.Core.Entities
             set
             {
                 SetValue(EMAIL_FIELD, value);
+            }
+        }
+
+        public string Phone1
+        {
+            get
+            {
+                return GetStringValue(PHONE1_FIELD);
+            }
+            set
+            {
+                SetValue(PHONE1_FIELD, value);
             }
         }
     }

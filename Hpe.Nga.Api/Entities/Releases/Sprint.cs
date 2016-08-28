@@ -23,10 +23,9 @@ namespace Hpe.Nga.Api.Core.Entities
         }
 
         public Sprint(long id)
+            : base(id)
         {
-            Id = id;
         }
-
 
         public DateTime StartDate
         {

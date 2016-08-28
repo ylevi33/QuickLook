@@ -133,7 +133,6 @@ namespace QuickLook
 
         foreach (Milestone milestone in milestones.data)
         {
-            milestone.setMilestoneStartDateEndDate();
             milestonesMap[milestone.Id] = milestone;
         }
 
@@ -179,17 +178,17 @@ namespace QuickLook
             String milestoneName = getMilestoneAppointmentName(milestone);
             MilestoneDataContainer msExtraData = getMilestoneData(milestone);
 
-            OutlookUtils.AddAppointment(milestoneName, milestone.StartDate, milestone.EndDate, msExtraData.Category, msExtraData.ReminderMinutesBeforeStart, msExtraData.ReminderSet, customFields, true);
+            OutlookUtils.AddAppointment(milestoneName, milestone.GetStartDate(), milestone.GetEndDate(), msExtraData.Category, msExtraData.ReminderMinutesBeforeStart, msExtraData.ReminderSet, customFields, true);
         }
     }
 
     private static void SyncMilestoneToOutlook(Milestone milestone, AppointmentItem appointment)
     {
         bool modified = false;
-        if ((appointment.Start.Date != milestone.StartDate.Date) || (appointment.End.Date != milestone.EndDate.Date))
+        if ((appointment.Start.Date != milestone.GetStartDate().Date) || (appointment.End.Date != milestone.GetEndDate().Date))
         {
-            appointment.Start = milestone.StartDate;
-            appointment.End = milestone.EndDate;
+            appointment.Start = milestone.GetStartDate();
+            appointment.End = milestone.GetEndDate();
             modified = true;
         }
 

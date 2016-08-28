@@ -23,11 +23,9 @@ namespace Hpe.Nga.Api.Core.Entities
 
         }
 
-        public Release(long id)
+        public Release(long id) : base(id)
         {
-            Id = id;
         }
-
 
         public DateTime StartDate
         {

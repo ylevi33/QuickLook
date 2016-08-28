@@ -13,7 +13,8 @@ namespace Hpe.Nga.Api.Core.Entities
     public class Story : WorkItem
     {
 
-        public Story() : base()
+        public Story()
+            : base()
         {
         }
 

@@ -13,6 +13,18 @@ namespace Hpe.Nga.Api.Core.Entities
     /// </summary>
     public class Role : BaseEntity
     {
+        // public static string LOGICAL_NAME_FIELD = "logical_name";
 
+        public string LogicalName
+        {
+            get
+            {
+                return GetStringValue(LOGICAL_NAME_FIELD);
+            }
+            set
+            {
+                SetValue(LOGICAL_NAME_FIELD, value);
+            }
+        }
     }
 }
