@@ -5,7 +5,6 @@ using Hpe.Nga.Api.Core.Connector;
 using Hpe.Nga.Api.Core.Entities;
 using Hpe.Nga.Api.Core.Services.Attributes;
 using Hpe.Nga.Api.Core.Services.Core;
-using Hpe.Nga.Api.Core.Services.Exceptions;
 using Hpe.Nga.Api.Core.Services.GroupBy;
 using Hpe.Nga.Api.Core.Services.Query;
 using Hpe.Nga.Api.Core.Services.RequestContext;

@@ -66,17 +66,16 @@
     <Compile Include="Entities\Releases\Milestone.cs" />
     <Compile Include="Entities\Base\FieldMetadata.cs" />
     <Compile Include="Entities\Releases\Release.cs" />
-    <Compile Include="Entities\SharedSpace.cs" />
+    <Compile Include="Entities\Base\SharedSpace.cs" />
     <Compile Include="Entities\WorkItems\Epic.cs" />
     <Compile Include="Entities\Releases\Sprint.cs" />
     <Compile Include="Entities\Tests\Test.cs" />
     <Compile Include="Entities\WorkItems\WorkItemRoot.cs" />
     <Compile Include="Entities\WorkItems\WorkItem.cs" />
-    <Compile Include="Entities\Workspace.cs" />
+    <Compile Include="Entities\Base\Workspace.cs" />
     <Compile Include="Entities\Users\WorkspaceUser.cs" />
     <Compile Include="Services\Attributes\CustomCollectionPathAttribute.cs" />
-    <Compile Include="Services\EntityList.cs" />
-    <Compile Include="Services\Exceptions\RestException.cs" />
+    <Compile Include="Services\Core\EntityList.cs" />
     <Compile Include="Services\GroupBy\GroupResult.cs" />
     <Compile Include="Services\GroupBy\Group.cs" />
     <Compile Include="Services\GroupBy\GroupByValue.cs" />
@@ -89,14 +88,14 @@
     <Compile Include="Services\Queries\LogicalQueryPhrase.cs" />
     <Compile Include="Entities\Base\BaseEntity.cs" />
     <Compile Include="Services\Core\BaseEntityJsonConverter.cs" />
-    <Compile Include="Services\EntityService.cs" />
+    <Compile Include="Services\Core\EntityService.cs" />
     <Compile Include="Services\RequestContext\IRequestContext.cs" />
     <Compile Include="Services\RequestContext\SharedSpaceContext.cs" />
     <Compile Include="Services\RequestContext\SiteAdminContext.cs" />
     <Compile Include="Services\RequestContext\SiteContext.cs" />
     <Compile Include="Services\RequestContext\WorkspaceContext.cs" />
     <Compile Include="Services\Core\DictionaryBasedEntity.cs" />
-    <Compile Include="Services\EntityListResult.cs" />
+    <Compile Include="Services\Core\EntityListResult.cs" />
     <Compile Include="Services\Core\EntityTypeRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
