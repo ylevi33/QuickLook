@@ -11,7 +11,7 @@ using Hpe.Nga.Api.Core.Services.GroupBy;
 using System.IO;
 using System.Reflection;
 
-namespace QuickLook
+namespace SharedCalendar
 {
   public class OutlookSyncUtils
   {

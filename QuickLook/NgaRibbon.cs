@@ -14,7 +14,7 @@ using Hpe.Nga.Api.Core.Services.RequestContext;
 using Hpe.Nga.Api.UI.Core.Configuration;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools.Ribbon;
-using QuickLook.Properties;
+using SharedCalendar.Properties;
 using Hpe.Nga.Api.Core.Services.GroupBy;
 using Office = Microsoft.Office.Core;
 
@@ -37,7 +37,7 @@ using Office = Microsoft.Office.Core;
 // For more information, see the Ribbon XML documentation in the Visual Studio Tools for Office Help.
 
 
-namespace QuickLook
+namespace SharedCalendar
 {
     [ComVisible(true)]
     public class NgaRibbon : Office.IRibbonExtensibility
@@ -49,7 +49,7 @@ namespace QuickLook
 
         public NgaRibbon()
         {
-            persistService.ConfigurationFileName = "QuickLook.configuration";
+          persistService.ConfigurationFileName = "SharedCalendar.configuration";
             tryAutoLogin();
         }
 
@@ -171,7 +171,7 @@ namespace QuickLook
 
         public string GetCustomUI(string ribbonID)
         {
-            return GetResourceText("QuickLook.NgaRibbon.xml");
+          return GetResourceText("SharedCalendar.NgaRibbon.xml");
         }
 
         #endregion

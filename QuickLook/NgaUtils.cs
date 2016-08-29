@@ -10,7 +10,7 @@ using Hpe.Nga.Api.Core.Services.Query;
 using Hpe.Nga.Api.Core.Services.RequestContext;
 using Hpe.Nga.Api.Core.Services.GroupBy;
 
-namespace QuickLook
+namespace SharedCalendar
 {
   public static class NgaUtils
   {
