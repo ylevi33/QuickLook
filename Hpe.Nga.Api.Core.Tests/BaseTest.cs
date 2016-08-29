@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using Hpe.Nga.Api.Core.Connector;
 using Hpe.Nga.Api.Core.Services;
 using Hpe.Nga.Api.Core.Services.RequestContext;
