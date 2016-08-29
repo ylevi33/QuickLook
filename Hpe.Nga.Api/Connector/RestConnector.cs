@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using Hpe.Nga.Api.Core.Connector.Exceptions;
 
 namespace Hpe.Nga.Api.Core.Connector
 {
@@ -211,21 +212,21 @@ namespace Hpe.Nga.Api.Core.Connector
             }
 
             HttpWebRequest request = CreateRequest(restRelativeUri, requestType);
-
-            if ((requestType == RequestType.Post || requestType == RequestType.Update) && !String.IsNullOrEmpty(data))
-            {
-                byte[] byteData = Encoding.UTF8.GetBytes(data);
-                request.ContentLength = byteData.Length;
-                using (Stream postStream = request.GetRequestStream())
-                {
-                    postStream.Write(byteData, 0, byteData.Length);
-                }
-            }
-
-
             ResponseWrapper responseWrapper = new ResponseWrapper();
+
             try
             {
+                if ((requestType == RequestType.Post || requestType == RequestType.Update) && !String.IsNullOrEmpty(data))
+                {
+                    byte[] byteData = Encoding.UTF8.GetBytes(data);
+                    request.ContentLength = byteData.Length;
+                    using (Stream postStream = request.GetRequestStream())
+                    {
+                        postStream.Write(byteData, 0, byteData.Length);
+                    }
+                }
+
+
                 var response = (HttpWebResponse)request.GetResponse();
                 using (var streamReader = new StreamReader(response.GetResponseStream()))
                 {
@@ -239,10 +240,22 @@ namespace Hpe.Nga.Api.Core.Connector
             catch (WebException ex)
             {
                 var response = (HttpWebResponse)ex.Response;
-                var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
-                JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-                RestExceptionInfo exceptionInfo = jsSerializer.Deserialize<RestExceptionInfo>(body);
-                throw new MqmRestException(exceptionInfo);
+                if (response == null)
+                {
+                    throw new ServerUnavailableException();
+                }
+                else
+                {
+                    var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                    JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+                    RestExceptionInfo exceptionInfo = jsSerializer.Deserialize<RestExceptionInfo>(body);
+                    throw new MqmRestException(exceptionInfo, response.StatusCode);
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
 
             return responseWrapper;

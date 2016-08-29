@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Hpe.Nga.Api.Core.Entities;
 
 
 namespace Hpe.Nga.Api.Core.Services

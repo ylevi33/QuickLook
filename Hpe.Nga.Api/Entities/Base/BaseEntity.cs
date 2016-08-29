@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Hpe.Nga.Api.Core.Services.Core;
 
-namespace Hpe.Nga.Api.Core.Services
+namespace Hpe.Nga.Api.Core.Entities
 {
     /// <summary>
     /// Base class for entities
