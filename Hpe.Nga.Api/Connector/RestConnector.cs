@@ -246,16 +246,16 @@ namespace Hpe.Nga.Api.Core.Connector
                 }
                 else
                 {
-                    var body = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                    String body = null;
+                    using (var streamReader = new StreamReader(response.GetResponseStream()))
+                    {
+                        body = streamReader.ReadToEnd();
+                    }
                     JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
                     RestExceptionInfo exceptionInfo = jsSerializer.Deserialize<RestExceptionInfo>(body);
                     throw new MqmRestException(exceptionInfo, response.StatusCode);
                 }
 
-            }
-            catch (Exception e)
-            {
-                throw e;
             }
 
             return responseWrapper;

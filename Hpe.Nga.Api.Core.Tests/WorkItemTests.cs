@@ -115,7 +115,37 @@ namespace Hpe.Nga.Api.Core.Tests
             Assert.AreEqual<String>(featureName, createdFeature.Name);
         }
 
+        [TestMethod]
+        public void GetOnlyDefectsWithLimit1()
+        {
+            List<String> fields = new List<string>();
+            fields.Add(WorkItem.NAME_FIELD);
+            fields.Add(WorkItem.SUBTYPE_FIELD);
 
+            List<QueryPhrase> queries = new List<QueryPhrase>();
+            LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE_FIELD, WorkItem.SUBTYPE_DEFECT);
+            queries.Add(subtypeQuery);
+
+            EntityListResult<WorkItem> result = entityService.Get<WorkItem>(workspaceContext, queries, fields, 1);
+            Assert.AreEqual<int>(1, result.data.Count);
+
+        }
+
+        [TestMethod]
+        public void GetOnlyDefectWithGroupSeverityTest(WorkspaceContext context)
+        {
+            List<String> fields = new List<string>();
+            fields.Add(WorkItem.NAME_FIELD);
+            fields.Add(WorkItem.SUBTYPE_FIELD);
+
+
+            List<QueryPhrase> queries = new List<QueryPhrase>();
+            LogicalQueryPhrase subtypeQuery = new LogicalQueryPhrase(WorkItem.SUBTYPE_FIELD, WorkItem.SUBTYPE_DEFECT);
+            queries.Add(subtypeQuery);
+
+            //~work_items/groups?group_by=severity&query="(subtype='defect');
+            GroupResult result = entityService.GetWithGroupBy<WorkItem>(context, queries,Defect.SEVERITY_FIELD);
+        }
 
     }
 

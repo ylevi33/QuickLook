@@ -22,21 +22,6 @@ namespace NgaOutlookTest
             persistService.ConfigurationFileName = "LoginConf.OnPrem.json";
         }
 
-
-
-        private void btnRunSprintTests_Click(object sender, EventArgs e)
-        {
-            WorkspaceContext workspaceContext = BasicCrudTests.GetWorkspaceContextTest(loginConfig.SharedSpaceId, loginConfig.WorkspaceId);
-            MessageBox.Show("Finished OK");
-        }
-
-        private void btnWorkItemsTests_Click(object sender, EventArgs e)
-        {
-            WorkspaceContext workspaceContext = BasicCrudTests.GetWorkspaceContextTest(loginConfig.SharedSpaceId, loginConfig.WorkspaceId);
-            BasicCrudTests.BasicWorkItemsTests(workspaceContext);
-            MessageBox.Show("Finished OK");
-        }
-
         private void btnLoginDialog_Click(object sender, EventArgs e)
         {
             //Open login dialog

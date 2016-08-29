@@ -29,10 +29,8 @@
         private void InitializeComponent()
         {
             this.lblStatus = new System.Windows.Forms.Label();
-            this.btnRunSprintTests = new System.Windows.Forms.Button();
             this.btnLoginConfiguration = new System.Windows.Forms.Button();
             this.btnSettingsDialog = new System.Windows.Forms.Button();
-            this.btnWorkItemsTests = new System.Windows.Forms.Button();
             this.btnLoginDialog = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -44,16 +42,6 @@
             this.lblStatus.Size = new System.Drawing.Size(78, 13);
             this.lblStatus.TabIndex = 13;
             this.lblStatus.Text = "Not connected";
-            // 
-            // btnRunSprintTests
-            // 
-            this.btnRunSprintTests.Location = new System.Drawing.Point(332, 167);
-            this.btnRunSprintTests.Name = "btnRunSprintTests";
-            this.btnRunSprintTests.Size = new System.Drawing.Size(131, 23);
-            this.btnRunSprintTests.TabIndex = 14;
-            this.btnRunSprintTests.Text = "Sprint tests";
-            this.btnRunSprintTests.UseVisualStyleBackColor = true;
-            this.btnRunSprintTests.Click += new System.EventHandler(this.btnRunSprintTests_Click);
             // 
             // btnLoginConfiguration
             // 
@@ -75,16 +63,6 @@
             this.btnSettingsDialog.UseVisualStyleBackColor = true;
             this.btnSettingsDialog.Click += new System.EventHandler(this.btnSettingsDialog_Click);
             // 
-            // btnWorkItemsTests
-            // 
-            this.btnWorkItemsTests.Location = new System.Drawing.Point(481, 167);
-            this.btnWorkItemsTests.Name = "btnWorkItemsTests";
-            this.btnWorkItemsTests.Size = new System.Drawing.Size(131, 23);
-            this.btnWorkItemsTests.TabIndex = 17;
-            this.btnWorkItemsTests.Text = "WorksItems tests";
-            this.btnWorkItemsTests.UseVisualStyleBackColor = true;
-            this.btnWorkItemsTests.Click += new System.EventHandler(this.btnWorkItemsTests_Click);
-            // 
             // btnLoginDialog
             // 
             this.btnLoginDialog.Enabled = false;
@@ -100,11 +78,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(646, 357);
-            this.Controls.Add(this.btnWorkItemsTests);
+            this.ClientSize = new System.Drawing.Size(646, 124);
             this.Controls.Add(this.btnSettingsDialog);
             this.Controls.Add(this.btnLoginConfiguration);
-            this.Controls.Add(this.btnRunSprintTests);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnLoginDialog);
             this.Name = "Form1";
@@ -117,10 +93,8 @@
         #endregion
 
         private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.Button btnRunSprintTests;
         private System.Windows.Forms.Button btnLoginConfiguration;
         private System.Windows.Forms.Button btnSettingsDialog;
-        private System.Windows.Forms.Button btnWorkItemsTests;
         private System.Windows.Forms.Button btnLoginDialog;
     }
 }
