@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Hpe.Nga.Api.Core.Entities;
 
 namespace Hpe.Nga.Api.Core.Services.Core
 {
+    /// <summary>
+    /// Registration of entities and their collection names (used by REST communication)
+    /// </summary>
     public class EntityTypeRegistry
     {
         private Dictionary<Type, String> type2collectionNameMap = new Dictionary<Type, String>();
@@ -30,7 +34,8 @@ namespace Hpe.Nga.Api.Core.Services.Core
             string entityTypeName = ExtractEntityTypeName(type);
             entityTypeName2Type[entityTypeName] = type;
 
-            String collectionName = entityTypeName + "s";
+
+            String collectionName = entityTypeName.EndsWith("y") ? entityTypeName.Substring(0, entityTypeName.Length - 1) + "ies" : entityTypeName + "s";
             type2collectionNameMap[type] = collectionName;
         }
 

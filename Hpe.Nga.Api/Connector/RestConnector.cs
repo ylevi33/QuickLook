@@ -6,9 +6,16 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using Hpe.Nga.Api.Core.Connector.Exceptions;
 
 namespace Hpe.Nga.Api.Core.Connector
 {
+    /// <summary>
+    /// Low-level class for communication with NGA server.
+    /// Used as singelton.
+    /// The login should be executed first by calling to <see cref="Connect"/> method.
+    /// For OO wrapper class <see cref="EntityService" class/>
+    /// </summary>
     public class RestConnector
     {
         private static string LWSSO_COOKIE_NAME = "LWSSO_COOKIE_KEY";
@@ -205,21 +212,21 @@ namespace Hpe.Nga.Api.Core.Connector
             }
 
             HttpWebRequest request = CreateRequest(restRelativeUri, requestType);
-
-            if ((requestType == RequestType.Post || requestType == RequestType.Update) && !String.IsNullOrEmpty(data))
-            {
-                byte[] byteData = Encoding.UTF8.GetBytes(data);
-                request.ContentLength = byteData.Length;
-                using (Stream postStream = request.GetRequestStream())
-                {
-                    postStream.Write(byteData, 0, byteData.Length);
-                }
-            }
-
-
             ResponseWrapper responseWrapper = new ResponseWrapper();
+
             try
             {
+                if ((requestType == RequestType.Post || requestType == RequestType.Update) && !String.IsNullOrEmpty(data))
+                {
+                    byte[] byteData = Encoding.UTF8.GetBytes(data);
+                    request.ContentLength = byteData.Length;
+                    using (Stream postStream = request.GetRequestStream())
+                    {
+                        postStream.Write(byteData, 0, byteData.Length);
+                    }
+                }
+
+
                 var response = (HttpWebResponse)request.GetResponse();
                 using (var streamReader = new StreamReader(response.GetResponseStream()))
                 {
@@ -230,11 +237,26 @@ namespace Hpe.Nga.Api.Core.Connector
                 UpdateLwssoTokenFromResponse(response);
 
             }
-            catch (Exception ex)
+            catch (WebException ex)
             {
-                responseWrapper.FailException = ex;
-            }
+                var response = (HttpWebResponse)ex.Response;
+                if (response == null)
+                {
+                    throw new ServerUnavailableException();
+                }
+                else
+                {
+                    String body = null;
+                    using (var streamReader = new StreamReader(response.GetResponseStream()))
+                    {
+                        body = streamReader.ReadToEnd();
+                    }
+                    JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+                    RestExceptionInfo exceptionInfo = jsSerializer.Deserialize<RestExceptionInfo>(body);
+                    throw new MqmRestException(exceptionInfo, response.StatusCode);
+                }
 
+            }
 
             return responseWrapper;
 

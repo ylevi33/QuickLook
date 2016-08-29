@@ -7,6 +7,10 @@ using Hpe.Nga.Api.Core.Services;
 
 namespace Hpe.Nga.Api.Core.Entities
 {
+    /// <summary>
+    /// Wrapper for Release entity
+    /// More fields might be supported by entity that still are not exposed in the class
+    /// </summary>
     public class Release : BaseEntity
     {
         public static string START_DATE_FIELD = "start_date";
@@ -19,11 +23,9 @@ namespace Hpe.Nga.Api.Core.Entities
 
         }
 
-        public Release(long id)
+        public Release(long id) : base(id)
         {
-            Id = id;
         }
-
 
         public DateTime StartDate
         {

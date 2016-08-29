@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hpe.Nga.Api.Core.Services.RequestContext
 {
+    /// <summary>
+    /// Define URL for specific sharedspace context
+    /// </summary>
     public class SharedSpaceContext : IRequestContext
     {
         public long SharedSpaceId { get; set; }

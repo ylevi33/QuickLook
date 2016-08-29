@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hpe.Nga.Api.Core.Services.RequestContext
 {
+    /// <summary>
+    /// Define URL for specific workspace context
+    /// </summary>
     public class WorkspaceContext : SharedSpaceContext
     {
         public long WorkspaceId { get; set; }

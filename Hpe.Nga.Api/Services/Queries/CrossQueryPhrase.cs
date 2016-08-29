@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 namespace Hpe.Nga.Api.Core.Services.Query
     
 {
+    /// <summary>
+    /// Used to execute filter by cross entities, for example : get defects by "owner" name
+    /// </summary>
     public class CrossQueryPhrase : QueryPhrase
     {
         public String FieldName { get; set; }

@@ -7,6 +7,9 @@ using Hpe.Nga.Api.Core.Services.Core;
 
 namespace Hpe.Nga.Api.Core.Services.GroupBy
 {
+    /// <summary>
+    /// Object that returns on GroupBy request
+    /// </summary>
     public class GroupResult 
     {
         public int groupsTotalCount { get; set; }

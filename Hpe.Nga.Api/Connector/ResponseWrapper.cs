@@ -11,8 +11,6 @@ namespace Hpe.Nga.Api.Core.Connector
     {
         public String Data { get; set; }
 
-        public Exception FailException { get; set; }
-
         public HttpStatusCode StatusCode { get; set; }
     }
 }

@@ -5,9 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Hpe.Nga.Api.Core.Services;
 
+
 namespace Hpe.Nga.Api.Core.Entities
 {
-    public class WorkspaceUser : BaseEntity
+    /// <summary>
+    /// Wrapper for ListNode entity
+    /// More fields might be supported by entity that still are not exposed in the class
+    /// </summary>
+    public class ListNode : BaseEntity
     {
     }
 }
