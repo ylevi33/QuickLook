@@ -28,6 +28,7 @@ namespace Hpe.Nga.Api.Core.Connector
 
 
         public static string AUTHENTICATION_URL = "/authentication/sign_in";
+        public static string DISCONNECT_URL = "/authentication/sign_out";
         public static string SHARED_SPACES_URL = "/api/shared_spaces";
 
         private static string METHOD_POST = "POST";
@@ -116,6 +117,12 @@ namespace Hpe.Nga.Api.Core.Connector
 
 
             return lwssoToken != null;
+        }
+
+        public void Disconnect()
+        {
+            ResponseWrapper wrapper = ExecutePost(DISCONNECT_URL, null);
+            lwssoToken = null;
         }
 
         public bool IsConnected()

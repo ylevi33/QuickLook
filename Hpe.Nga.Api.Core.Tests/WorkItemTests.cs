@@ -124,7 +124,7 @@ namespace Hpe.Nga.Api.Core.Tests
             queries.Add(subtypeQuery);
 
             EntityListResult<WorkItem> result = entityService.Get<WorkItem>(workspaceContext, queries, fields, 1);
-            Assert.AreEqual<int>(1, result.data.Count);
+            Assert.IsTrue(result.data.Count <= 1);
 
         }
 
@@ -141,7 +141,7 @@ namespace Hpe.Nga.Api.Core.Tests
             queries.Add(subtypeQuery);
 
             //~work_items/groups?group_by=severity&query="(subtype='defect');
-            GroupResult result = entityService.GetWithGroupBy<WorkItem>(context, queries,Defect.SEVERITY_FIELD);
+            GroupResult result = entityService.GetWithGroupBy<WorkItem>(context, queries, Defect.SEVERITY_FIELD);
         }
 
     }

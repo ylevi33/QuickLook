@@ -11,7 +11,7 @@ namespace Hpe.Nga.Api.Core.Tests
     public class BaseTest
     {
         protected static EntityService entityService = EntityService.GetInstance();
-        private static RestConnector restConnector = RestConnector.GetInstance();
+        protected static RestConnector restConnector = RestConnector.GetInstance();
 
         private static int sharedSpaceId;
         private static int workspaceId;
