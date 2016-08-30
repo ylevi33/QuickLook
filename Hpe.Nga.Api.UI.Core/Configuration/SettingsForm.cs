@@ -157,24 +157,24 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
             try
             {
                 sharedSpaces = EntityService.GetInstance().Get<SharedSpace>(new SiteContext());
-                if (sharedSpaces == null)
-                {
-                  SharedSpace defaultSharedSpace = new SharedSpace();
-                  defaultSharedSpace.Id = 1001;
-                  defaultSharedSpace.Name = "Default shared space";
-
-                  sharedSpaces = new EntityListResult<SharedSpace>();
-                  sharedSpaces.data = new List<SharedSpace>();
-                  sharedSpaces.data.Add(defaultSharedSpace);
-                  sharedSpaces.total_count = 1;
-                }
-                FillCombo(cmbSharedSpace, sharedSpaces.data);
-                //LoadWorkspaces(((SharedSpace)cmbSharedSpace.SelectedItem).Id);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
             }
+            if (sharedSpaces == null)
+            {
+              SharedSpace defaultSharedSpace = new SharedSpace();
+              defaultSharedSpace.Id = 1001;
+              defaultSharedSpace.Name = "Default shared space";
+
+              sharedSpaces = new EntityListResult<SharedSpace>();
+              sharedSpaces.data = new List<SharedSpace>();
+              sharedSpaces.data.Add(defaultSharedSpace);
+              sharedSpaces.total_count = 1;
+            }
+            FillCombo(cmbSharedSpace, sharedSpaces.data);
+            //LoadWorkspaces(((SharedSpace)cmbSharedSpace.SelectedItem).Id);
         }
 
         private void FillCombo<T>(ComboBox combo, List<T> data) where T : BaseEntity
