@@ -51,7 +51,7 @@ namespace SharedCalendar
             }
             else
             {
-                //Delete Sprint no longer exist in NGA
+                //Delete a Sprint that no longer exist
                 appointment.Delete();
             }
         }
@@ -161,7 +161,7 @@ namespace SharedCalendar
             }
                 else
                 {
-                    //Delete Milestone no longer exist in NGA
+                    //Delete a Milestone that no longer exist
                     appointment.Delete();
                 }
             }
