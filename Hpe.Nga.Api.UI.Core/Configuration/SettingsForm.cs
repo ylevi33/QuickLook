@@ -95,14 +95,6 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
             }
         }
 
-        /*private void Save()
-        {
-            ConfigurationPersistService persistService = new ConfigurationPersistService();
-            persistService.ConfigurationFileName = "LoginConf.OnPrem.json";
-            LoginConfiguration conf = Configuration;
-            persistService.Save(conf);
-        }*/
-
         private void OnLoginSettingsChanged(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(txtServer.Text) || String.IsNullOrEmpty(txtName.Text) || String.IsNullOrEmpty(txtPassword.Text))
@@ -149,14 +141,13 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
                 lblStatus.Text = "Authenticated";
                 lblStatus.ForeColor = Color.White;
                 Application.DoEvents();
+                LoadSharedSpaces();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 lblStatus.Text = "Failed to authenticate";
                 lblStatus.ForeColor = Color.Red;
             }
-
-            LoadSharedSpaces();
 
         }
 
@@ -166,25 +157,24 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
             try
             {
                 sharedSpaces = EntityService.GetInstance().Get<SharedSpace>(new SiteContext());
+                if (sharedSpaces == null)
+                {
+                  SharedSpace defaultSharedSpace = new SharedSpace();
+                  defaultSharedSpace.Id = 1001;
+                  defaultSharedSpace.Name = "Default shared space";
+
+                  sharedSpaces = new EntityListResult<SharedSpace>();
+                  sharedSpaces.data = new List<SharedSpace>();
+                  sharedSpaces.data.Add(defaultSharedSpace);
+                  sharedSpaces.total_count = 1;
+                }
+                FillCombo(cmbSharedSpace, sharedSpaces.data);
+                //LoadWorkspaces(((SharedSpace)cmbSharedSpace.SelectedItem).Id);
             }
             catch (Exception)
             {
 
             }
-
-            if (sharedSpaces == null)
-            {
-                SharedSpace defaultSharedSpace = new SharedSpace();
-                defaultSharedSpace.Id = 1001;
-                defaultSharedSpace.Name = "Default shared space";
-
-                sharedSpaces = new EntityListResult<SharedSpace>();
-                sharedSpaces.data = new List<SharedSpace>();
-                sharedSpaces.data.Add(defaultSharedSpace);
-                sharedSpaces.total_count = 1;
-            }
-            FillCombo(cmbSharedSpace, sharedSpaces.data);
-            //LoadWorkspaces(((SharedSpace)cmbSharedSpace.SelectedItem).Id);
         }
 
         private void FillCombo<T>(ComboBox combo, List<T> data) where T : BaseEntity
