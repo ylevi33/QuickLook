@@ -143,7 +143,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
                 Application.DoEvents();
                 LoadSharedSpaces();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 lblStatus.Text = "Failed to authenticate";
                 lblStatus.ForeColor = Color.Red;
@@ -158,7 +158,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
             {
                 sharedSpaces = EntityService.GetInstance().Get<SharedSpace>(new SiteContext());
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
