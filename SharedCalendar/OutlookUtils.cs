@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Office.Interop.Outlook;
 
-namespace QuickLook
+namespace SharedCalendar
 {
     public static class OutlookUtils
     {

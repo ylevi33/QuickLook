@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QuickLook
+namespace SharedCalendar
 {
   public class MilestoneDataContainer
   {
-    private static String[] PARAMS_LIST = new string[] { "Color", "Notification" };
+    private static String[] PARAMS_LIST = new string[] { "Color", "Reminder" };
     
     public String Category;
     public int ReminderMinutesBeforeStart;

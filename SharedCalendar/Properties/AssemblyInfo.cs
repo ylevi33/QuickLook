@@ -6,11 +6,11 @@ using System.Security;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("QuickLook")]
+[assembly: AssemblyTitle("SharedCalendar")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hewlett Packard Enterprise")]
-[assembly: AssemblyProduct("QuickLook")]
+[assembly: AssemblyProduct("SharedCalendar")]
 [assembly: AssemblyCopyright("Copyright © Hewlett Packard Enterprise 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
