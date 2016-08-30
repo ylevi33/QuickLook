@@ -142,17 +142,17 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
         {
             try
             {
-                lblStatus.Text = "Connecting ...";
+                lblStatus.Text = "Authenticating ...";
                 lblStatus.ForeColor = Color.White;
                 bool connected = RestConnector.GetInstance().Connect(txtServer.Text, txtName.Text, txtPassword.Text);
                 btnLogin.Enabled = true;
-                lblStatus.Text = "Connected";
+                lblStatus.Text = "Authenticated";
                 lblStatus.ForeColor = Color.White;
                 Application.DoEvents();
             }
             catch (Exception)
             {
-                lblStatus.Text = "Failed to connect";
+                lblStatus.Text = "Failed to authenticate";
                 lblStatus.ForeColor = Color.Red;
             }
 
