@@ -50,14 +50,18 @@ namespace SharedCalendar
         public NgaRibbon()
         {
           persistService.ConfigurationFileName = "SharedCalendar.configuration";
-            tryAutoLogin();
+        }
+
+        public Boolean GetIsLoggedIn(IRibbonControl control)
+        {
+          return isLoggedIn;
         }
 
         public String GetBtnConnectLable(IRibbonControl control)
         {
             if (isLoggedIn)
             {
-                return "Connected";
+                return "Disconnect";
             }
             else
             {
@@ -65,49 +69,31 @@ namespace SharedCalendar
             }
         }
 
-        private void tryAutoLogin()
-        {
-            try
-            {
-                LoginConfiguration tempLoginConfig = persistService.Load<LoginConfiguration>();
-                if (RestConnector.GetInstance().Connect(tempLoginConfig.ServerUrl, tempLoginConfig.Name, tempLoginConfig.Password))
-                {
-                    loginConfig = tempLoginConfig;
-                    NgaUtils.init(loginConfig.SharedSpaceId, loginConfig.WorkspaceId, loginConfig.ReleaseId);
-                    isLoggedIn = true;
-                    if (ribbon != null)
-                    {
-                        ribbon.InvalidateControl("btnConnect");
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                //autologin fail
-                if (ribbon != null)
-                {
-                    ribbon.InvalidateControl("btnConnect");
-                }
-            }
-
-        }
-
         public void OnLogin(Office.IRibbonControl control)
         {
+          if (isLoggedIn)
+          {
+            // disconnect
+            isLoggedIn = false;
+          }
+          else
+          {
+            // connect
             SettingsForm form = new SettingsForm();
             form.Configuration = persistService.Load<LoginConfiguration>();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                loginConfig = form.Configuration;
-                PersistLoginConfiguration();
-                UpdateLabelStatus();
-                NgaUtils.init(loginConfig.SharedSpaceId, loginConfig.WorkspaceId, loginConfig.ReleaseId);
-                isLoggedIn = true;
+              loginConfig = form.Configuration;
+              PersistLoginConfiguration();
+              UpdateLabelStatus();
+              NgaUtils.init(loginConfig.SharedSpaceId, loginConfig.WorkspaceId, loginConfig.ReleaseId);
+              isLoggedIn = true;
             }
-            if (ribbon != null)
-            {
-                ribbon.InvalidateControl("btnConnect");
-            }
+          }
+          if (ribbon != null)
+          {
+            ribbon.Invalidate();
+          }
         }
 
         public void OnSync(Office.IRibbonControl control)
@@ -116,7 +102,7 @@ namespace SharedCalendar
             {
                 if (!OutlookUtils.IsCalendarActive())
                 {
-                    MessageBox.Show("Please select calendar to sync");
+                  MessageBox.Show("No calendar selected. Pick a calendar before synchronizing.");
                 }
                 else
                 {
@@ -155,17 +141,21 @@ namespace SharedCalendar
 
         public Bitmap imageConnect_GetImage(IRibbonControl control)
         {
-            return Resources.OctaneConnect;
+          if (isLoggedIn)
+          {
+            return Resources.disconnect;
+          }
+          return Resources.connect;
         }
 
         public Bitmap imageSync_GetImage(IRibbonControl control)
         {
-            return Resources.OctaneSync;
+          return Resources.sync;
         }
 
         public Bitmap imageReport_GetImage(IRibbonControl control)
         {
-          return Resources.OctaneReport;
+          return Resources.release_report;
         }
         #region IRibbonExtensibility Members
 
