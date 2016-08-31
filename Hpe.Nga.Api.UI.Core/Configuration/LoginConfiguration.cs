@@ -22,6 +22,9 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
         public static string RELEASE_ID_FIELD = "releaseId";
         public static string RELEASE_NAME_FIELD = "releaseName";
 
+        public static string CALENDAR_NAME = "calendarName";
+
+
         #region Ctors
 
         public LoginConfiguration()
@@ -188,6 +191,19 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
             {
                 SetValue(RELEASE_NAME_FIELD, value);
             }
+
+        }
+
+        public string CalendarName
+        {
+          get
+          {
+            return GetStringValue(CALENDAR_NAME);
+          }
+          set
+          {
+            SetValue(CALENDAR_NAME, value);
+          }
 
         }
 
