@@ -62,7 +62,7 @@ namespace NgaOutlookTest
         {
             //Open login dialog
             SettingsForm form = new SettingsForm();
-            form.Configuration = persistService.Load<LoginConfiguration>(); ;
+            form.Configuration = persistService.Load<LoginConfiguration>();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 loginConfig = form.Configuration;

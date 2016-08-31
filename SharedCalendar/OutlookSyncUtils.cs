@@ -17,7 +17,7 @@ namespace SharedCalendar
   {
     public static int NO_ID_VALUE = -1;
 
-    public static void SyncSprintsToOutlook(Release release, EntityListResult<Sprint> sprints) {
+    public static void SyncSprintsToOutlook(String calendarName, Release release, EntityListResult<Sprint> sprints) {
 
       //set sprint map
       Dictionary<long, Sprint> sprintMap = new Dictionary<long, Sprint>();
@@ -27,7 +27,7 @@ namespace SharedCalendar
       }
 
     //iterate outlook appointments
-      Items resultItems = OutlookUtils.GetAppointmentsInRange(new DateTime(2015, 1, 1), new DateTime(2030, 1, 1));
+      Items resultItems = OutlookUtils.GetAppointmentsInRange(calendarName, new DateTime(2015, 1, 1), new DateTime(2030, 1, 1));
       foreach (AppointmentItem appointment in resultItems)
       {
         UserProperty releaseUP = appointment.UserProperties[OutlookUtils.APPOINTMENT_RELEASE_ID_FIELD];
@@ -126,7 +126,7 @@ namespace SharedCalendar
       return sprint.Release.Name + " " + sprint.Name;
     }
 
-    public static void SyncMilestonesToOutlook(Release release, EntityListResult<Milestone> milestones)
+    public static void SyncMilestonesToOutlook(String calendarName, Release release, EntityListResult<Milestone> milestones)
     {
         //set sprint map
         Dictionary<long, Milestone> milestonesMap = new Dictionary<long, Milestone>();
@@ -137,7 +137,7 @@ namespace SharedCalendar
         }
 
         //iterate outlook appointments
-        Items resultItems = OutlookUtils.GetAppointmentsInRange(new DateTime(2015, 1, 1), new DateTime(2030, 1, 1));
+        Items resultItems = OutlookUtils.GetAppointmentsInRange(calendarName, new DateTime(2015, 1, 1), new DateTime(2030, 1, 1));
         foreach (AppointmentItem appointment in resultItems)
         {
             UserProperty releaseUP = appointment.UserProperties[OutlookUtils.APPOINTMENT_RELEASE_ID_FIELD];

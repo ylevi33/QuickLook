@@ -75,20 +75,32 @@ namespace SharedCalendar
           {
             // disconnect
             RestConnector.GetInstance().Disconnect();
+            
             isLoggedIn = false;
           }
           else
           {
+
+            // make sure calendar tab is selected
+            OutlookUtils.SelectCalenderTab();
+
             // connect
             SettingsForm form = new SettingsForm();
-            form.Configuration = persistService.Load<LoginConfiguration>();
+            var config = persistService.Load<LoginConfiguration>();
+            var calendarName = config.CalendarName;
+            form.Configuration = config;
+
             if (form.ShowDialog() == DialogResult.OK)
             {
               loginConfig = form.Configuration;
-              PersistLoginConfiguration();
+              loginConfig.CalendarName = calendarName;
+
+              //save last successful configuration
+              persistService.Save(loginConfig);
               UpdateLabelStatus();
               NgaUtils.init(loginConfig.SharedSpaceId, loginConfig.WorkspaceId, loginConfig.ReleaseId);
               isLoggedIn = true;
+
             }
           }
           if (ribbon != null)
@@ -101,26 +113,32 @@ namespace SharedCalendar
         {
             try
             {
-                if (!OutlookUtils.IsCalendarActive())
-                {
-                  MessageBox.Show("No calendar selected. Pick a calendar before synchronizing.");
-                }
-                else
-                {
-                    //Get by id
-                    Release release = NgaUtils.GetSelectedRelease(); //NgaUtils.GetReleaseById(releaseId);
-                    EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
-                    OutlookSyncUtils.SyncSprintsToOutlook(release, sprints);
-                    EntityListResult<Milestone> milestones = NgaUtils.GetMilestonesByRelease(release.Id);
-                    OutlookSyncUtils.SyncMilestonesToOutlook(release, milestones);
-                    String str = String.Format("The sync is finished successfully.{0}Synced entities : {1} sprints and {2} milestones.", 
-                        Environment.NewLine, sprints.data.Count, milestones.data.Count);
-                    MessageBox.Show(str, "Sync is finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+              SyncForm form = new SyncForm();
+              var config = persistService.Load<LoginConfiguration>();
+              // get calender list and initialize the form
+              ICollection<String> calendars = OutlookUtils.GetCalendarList(config.CalendarName);
+              form.Init(calendars, config);
+
+              if (form.ShowDialog() == DialogResult.OK)
+              {
+                config.CalendarName = form.SelectedCalendar;
+                persistService.Save(config);
+                OutlookUtils.SelectedCalendarName = config.CalendarName;
+                //Get by id
+                Release release = NgaUtils.GetSelectedRelease(); //NgaUtils.GetReleaseById(releaseId);
+                EntityListResult<Sprint> sprints = NgaUtils.GetSprintsByRelease(release.Id);
+                OutlookSyncUtils.SyncSprintsToOutlook(config.CalendarName, release, sprints);
+
+                EntityListResult<Milestone> milestones = NgaUtils.GetMilestonesByRelease(release.Id);
+                OutlookSyncUtils.SyncMilestonesToOutlook(config.CalendarName, release, milestones);
+                String str = String.Format("The sync is finished successfully.{0}Sync Summary : {1} sprints and {2} milestones.",
+                    Environment.NewLine, sprints.data.Count, milestones.data.Count);
+                MessageBox.Show(str, "Sync is finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
+              }
             }
             catch (Exception e)
             {
-                MessageBox.Show("Failed to sync : " + e.Message + e.StackTrace);
+              MessageBox.Show("Failed to sync : " + e.Message + Environment.NewLine + e.StackTrace);
             }
         }
 
@@ -206,15 +224,6 @@ namespace SharedCalendar
             Console.Write(String.Format("Connected as '{0}' to {1}, shared space ({2})", loginConfig.Name, loginConfig.ServerUrl, loginConfig.SharedSpaceId));
             //lblStatus.Text = format;
         }
-
-        private void PersistLoginConfiguration()
-        {
-
-            //save last successful configuration
-            persistService.Save(loginConfig);
-        }
-
-
 
     }
 }
