@@ -94,7 +94,7 @@
       this.Controls.Add(this.lbCalendar);
       this.Controls.Add(this.lbSyncRelease);
       this.Name = "SyncForm";
-      this.Text = "SyncForm";
+      this.Text = "Synchronize";
       this.ResumeLayout(false);
       this.PerformLayout();
 

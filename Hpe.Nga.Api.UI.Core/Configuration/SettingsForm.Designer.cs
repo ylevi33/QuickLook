@@ -60,12 +60,12 @@
       rightBorder = new System.Windows.Forms.PictureBox();
       bottomBorder = new System.Windows.Forms.PictureBox();
       separator1 = new System.Windows.Forms.PictureBox();
-      ((System.ComponentModel.ISupportInitialize)(this.closeImg)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(topBorder)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(leftBorder)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(rightBorder)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(bottomBorder)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(separator1)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.closeImg)).BeginInit();
       this.SuspendLayout();
       // 
       // label4
@@ -97,9 +97,67 @@
       label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
       label8.Location = new System.Drawing.Point(18, 333);
       label8.Name = "label8";
-      label8.Size = new System.Drawing.Size(101, 18);
+      label8.Size = new System.Drawing.Size(141, 18);
       label8.TabIndex = 25;
-      label8.Text = "Login Settings";
+      label8.Text = "Connection Settings";
+      // 
+      // topBorder
+      // 
+      topBorder.BackColor = System.Drawing.SystemColors.ControlText;
+      topBorder.Dock = System.Windows.Forms.DockStyle.Top;
+      topBorder.Location = new System.Drawing.Point(1, 0);
+      topBorder.Name = "topBorder";
+      topBorder.Size = new System.Drawing.Size(498, 1);
+      topBorder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+      topBorder.TabIndex = 28;
+      topBorder.TabStop = false;
+      // 
+      // leftBorder
+      // 
+      leftBorder.BackColor = System.Drawing.SystemColors.ControlText;
+      leftBorder.Dock = System.Windows.Forms.DockStyle.Left;
+      leftBorder.Location = new System.Drawing.Point(0, 0);
+      leftBorder.Margin = new System.Windows.Forms.Padding(0);
+      leftBorder.MaximumSize = new System.Drawing.Size(1, 0);
+      leftBorder.Name = "leftBorder";
+      leftBorder.Size = new System.Drawing.Size(1, 599);
+      leftBorder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+      leftBorder.TabIndex = 30;
+      leftBorder.TabStop = false;
+      // 
+      // rightBorder
+      // 
+      rightBorder.BackColor = System.Drawing.SystemColors.ControlText;
+      rightBorder.Dock = System.Windows.Forms.DockStyle.Right;
+      rightBorder.Location = new System.Drawing.Point(499, 0);
+      rightBorder.Margin = new System.Windows.Forms.Padding(0);
+      rightBorder.MaximumSize = new System.Drawing.Size(1, 0);
+      rightBorder.Name = "rightBorder";
+      rightBorder.Size = new System.Drawing.Size(1, 599);
+      rightBorder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+      rightBorder.TabIndex = 31;
+      rightBorder.TabStop = false;
+      // 
+      // bottomBorder
+      // 
+      bottomBorder.BackColor = System.Drawing.SystemColors.ControlText;
+      bottomBorder.Dock = System.Windows.Forms.DockStyle.Bottom;
+      bottomBorder.Location = new System.Drawing.Point(0, 599);
+      bottomBorder.Name = "bottomBorder";
+      bottomBorder.Size = new System.Drawing.Size(500, 1);
+      bottomBorder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+      bottomBorder.TabIndex = 29;
+      bottomBorder.TabStop = false;
+      // 
+      // separator1
+      // 
+      separator1.Image = global::Hpe.Nga.Api.UI.Core.Properties.Resources.separator;
+      separator1.Location = new System.Drawing.Point(15, 31);
+      separator1.Name = "separator1";
+      separator1.Size = new System.Drawing.Size(470, 1);
+      separator1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+      separator1.TabIndex = 27;
+      separator1.TabStop = false;
       // 
       // cmbRelease
       // 
@@ -284,7 +342,7 @@
       this.btnLogin.Name = "btnLogin";
       this.btnLogin.Size = new System.Drawing.Size(259, 40);
       this.btnLogin.TabIndex = 21;
-      this.btnLogin.Text = "Login";
+      this.btnLogin.Text = "Connect";
       this.btnLogin.UseVisualStyleBackColor = false;
       this.btnLogin.Click += new System.EventHandler(this.btnConnect_Click);
       // 
@@ -308,64 +366,6 @@
       this.closeImg.TabIndex = 32;
       this.closeImg.TabStop = false;
       this.closeImg.Click += new System.EventHandler(this.closeImg_Click);
-      // 
-      // topBorder
-      // 
-      topBorder.BackColor = System.Drawing.SystemColors.ControlText;
-      topBorder.Dock = System.Windows.Forms.DockStyle.Top;
-      topBorder.Location = new System.Drawing.Point(1, 0);
-      topBorder.Name = "topBorder";
-      topBorder.Size = new System.Drawing.Size(498, 1);
-      topBorder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-      topBorder.TabIndex = 28;
-      topBorder.TabStop = false;
-      // 
-      // leftBorder
-      // 
-      leftBorder.BackColor = System.Drawing.SystemColors.ControlText;
-      leftBorder.Dock = System.Windows.Forms.DockStyle.Left;
-      leftBorder.Location = new System.Drawing.Point(0, 0);
-      leftBorder.Margin = new System.Windows.Forms.Padding(0);
-      leftBorder.MaximumSize = new System.Drawing.Size(1, 0);
-      leftBorder.Name = "leftBorder";
-      leftBorder.Size = new System.Drawing.Size(1, 599);
-      leftBorder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-      leftBorder.TabIndex = 30;
-      leftBorder.TabStop = false;
-      // 
-      // rightBorder
-      // 
-      rightBorder.BackColor = System.Drawing.SystemColors.ControlText;
-      rightBorder.Dock = System.Windows.Forms.DockStyle.Right;
-      rightBorder.Location = new System.Drawing.Point(499, 0);
-      rightBorder.Margin = new System.Windows.Forms.Padding(0);
-      rightBorder.MaximumSize = new System.Drawing.Size(1, 0);
-      rightBorder.Name = "rightBorder";
-      rightBorder.Size = new System.Drawing.Size(1, 599);
-      rightBorder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-      rightBorder.TabIndex = 31;
-      rightBorder.TabStop = false;
-      // 
-      // bottomBorder
-      // 
-      bottomBorder.BackColor = System.Drawing.SystemColors.ControlText;
-      bottomBorder.Dock = System.Windows.Forms.DockStyle.Bottom;
-      bottomBorder.Location = new System.Drawing.Point(0, 599);
-      bottomBorder.Name = "bottomBorder";
-      bottomBorder.Size = new System.Drawing.Size(500, 1);
-      bottomBorder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-      bottomBorder.TabIndex = 29;
-      bottomBorder.TabStop = false;
-      // 
-      // separator1
-      // 
-      separator1.Image = global::Hpe.Nga.Api.UI.Core.Properties.Resources.separator;
-      separator1.Location = new System.Drawing.Point(15, 31);
-      separator1.Name = "separator1";
-      separator1.Size = new System.Drawing.Size(470, 1);
-      separator1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-      separator1.TabIndex = 27;
-      separator1.TabStop = false;
       // 
       // SettingsForm
       // 
@@ -406,12 +406,12 @@
       this.ShowIcon = false;
       this.ShowInTaskbar = false;
       this.Text = "Settings";
-      ((System.ComponentModel.ISupportInitialize)(this.closeImg)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(topBorder)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(leftBorder)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(rightBorder)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(bottomBorder)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(separator1)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.closeImg)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 

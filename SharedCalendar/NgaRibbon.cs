@@ -93,7 +93,6 @@ namespace SharedCalendar
 
               //save last successful configuration
               persistService.Save(loginConfig);
-              UpdateLabelStatus();
               NgaUtils.init(loginConfig.SharedSpaceId, loginConfig.WorkspaceId, loginConfig.ReleaseId);
               isLoggedIn = true;
               
@@ -129,14 +128,15 @@ namespace SharedCalendar
 
                 EntityListResult<Milestone> milestones = NgaUtils.GetMilestonesByRelease(release.Id);
                 OutlookSyncUtils.SyncMilestonesToOutlook(config.CalendarName, release, milestones);
-                String str = String.Format("The sync is finished successfully.{0}Sync Summary : {1} sprints and {2} milestones.",
+                String str = String.Format("Sync completed successfully.{0}Summary : {1} sprints and {2} milestones.",
                     Environment.NewLine, sprints.data.Count, milestones.data.Count);
-                MessageBox.Show(str, "Sync is finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(str, "Sync completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
               }
             }
             catch (Exception e)
             {
-              MessageBox.Show("Failed to sync : " + e.Message + Environment.NewLine + e.StackTrace);
+              String errorMsg = "Sync failed : " + e.Message + Environment.NewLine + e.StackTrace;
+              MessageBox.Show(errorMsg, "Sync Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -152,7 +152,7 @@ namespace SharedCalendar
             }
             catch (Exception e)
             {
-                MessageBox.Show("Failed to generate Mail report : " + e.Message + e.StackTrace);
+                MessageBox.Show("Failed to generate report: " + e.Message + Environment.NewLine + e.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -217,11 +217,6 @@ namespace SharedCalendar
 
         #endregion
 
-        private void UpdateLabelStatus()
-        {
-            Console.Write(String.Format("Connected as '{0}' to {1}, shared space ({2})", loginConfig.Name, loginConfig.ServerUrl, loginConfig.SharedSpaceId));
-            //lblStatus.Text = format;
-        }
 
     }
 }
