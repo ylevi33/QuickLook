@@ -165,13 +165,12 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
       try
       {
         lblStatus.Text = "Authenticating ...";
-        lblStatus.ForeColor = Color.White;
+        lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
         bool connected = RestConnector.GetInstance().Connect(txtServer.Text, txtName.Text, txtPassword.Text);
         btnAuthenticate.Enabled = true;
-        lblStatus.Text = "Authenticated";
-        lblStatus.ForeColor = Color.White;
         Application.DoEvents();
         LoadSharedSpaces();
+        lblStatus.Text = "";
       }
       catch (Exception)
       {

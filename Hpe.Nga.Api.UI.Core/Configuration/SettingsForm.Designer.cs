@@ -349,12 +349,12 @@
       // lblStatus
       // 
       this.lblStatus.AutoSize = true;
-      this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(119)))), ((int)(((byte)(119)))), ((int)(((byte)(119)))));
-      this.lblStatus.Location = new System.Drawing.Point(120, 296);
+      this.lblStatus.Location = new System.Drawing.Point(117, 293);
       this.lblStatus.Name = "lblStatus";
       this.lblStatus.Padding = new System.Windows.Forms.Padding(0, 7, 0, 0);
-      this.lblStatus.Size = new System.Drawing.Size(0, 25);
+      this.lblStatus.Size = new System.Drawing.Size(0, 23);
       this.lblStatus.TabIndex = 26;
       // 
       // closeImg
