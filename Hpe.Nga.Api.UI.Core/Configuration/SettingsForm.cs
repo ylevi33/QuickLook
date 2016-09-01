@@ -26,6 +26,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
     {
       InitializeComponent();
       OnLoginSettingsChanged(null, null);
+      CenterToScreen();
     }
 
     ///
