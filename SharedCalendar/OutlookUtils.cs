@@ -118,7 +118,7 @@ namespace SharedCalendar
       var navPane = GetApplication().ActiveExplorer().NavigationPane;
       CalendarModule objModule = (CalendarModule)navPane.Modules.GetNavigationModule(OlNavigationModuleType.olModuleCalendar);
 
-      // iterate over all group and add the selected calendars to the list
+      // iterate over all groups and add the selected calendars to the list
       // add the previously selected calendar and make sure it's selected
       // don't include the default calendar 
       NavigationGroups objGroup = objModule.NavigationGroups;
