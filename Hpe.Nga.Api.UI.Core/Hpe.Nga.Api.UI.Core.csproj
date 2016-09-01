@@ -45,12 +45,6 @@
     <Compile Include="Configuration\BaseConfiguration.cs" />
     <Compile Include="Configuration\CryptoPropertiesAttribute.cs" />
     <Compile Include="Configuration\LoginConfiguration.cs" />
-    <Compile Include="Configuration\LoginForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Configuration\LoginForm.Designer.cs">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Configuration\ConfigurationJsonConverter.cs" />
     <Compile Include="Configuration\ConfigurationPersistService.cs" />
     <Compile Include="Configuration\SettingsForm.cs">
@@ -68,9 +62,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Configuration\LoginForm.resx">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Configuration\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
