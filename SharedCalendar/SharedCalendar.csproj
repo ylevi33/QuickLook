@@ -213,6 +213,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\close.png" />
     <None Include="assets\connect.png" />
     <None Include="assets\connected.png" />
     <None Include="assets\disconnected.png" />
