@@ -113,11 +113,11 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
     {
       if (String.IsNullOrEmpty(txtServer.Text) || String.IsNullOrEmpty(txtName.Text) || String.IsNullOrEmpty(txtPassword.Text))
       {
-        btnLogin.Enabled = false;
+        btnAuthenticate.Enabled = false;
       }
       else
       {
-        btnLogin.Enabled = true;
+        btnAuthenticate.Enabled = true;
       }
 
       ClearConnectSettings();
@@ -125,9 +125,24 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
       lblStatus.Text = "";
     }
 
+    private void EnableLoginButton(bool enable)
+    {
+      //btnLogin.Enabled = enable;
+      if (enable)
+      {
+        btnLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(169)))), ((int)(((byte)(130)))));
+        btnLogin.ForeColor = System.Drawing.Color.White;
+      }
+      else
+      {
+        btnLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(228)))), ((int)(((byte)(228)))));
+        btnLogin.ForeColor = System.Drawing.Color.LightGray;
+      }
+    }
+
     private void OnConnectSettingsChanged()
     {
-      btnConnect.Enabled = cmbSharedSpace.SelectedItem != null && cmbWorkspace.SelectedItem != null && cmbRelease.SelectedItem != null;
+      btnLogin.Enabled = cmbSharedSpace.SelectedItem != null && cmbWorkspace.SelectedItem != null && cmbRelease.SelectedItem != null;
     }
 
     private void ClearConnectSettings()
@@ -141,7 +156,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
       cmbRelease.Items.Clear();
       cmbRelease.Enabled = false;
 
-      btnConnect.Enabled = false;
+      EnableLoginButton(false);
     }
 
     private void OnLoginClick(object sender, EventArgs e)
@@ -151,7 +166,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
         lblStatus.Text = "Authenticating ...";
         lblStatus.ForeColor = Color.White;
         bool connected = RestConnector.GetInstance().Connect(txtServer.Text, txtName.Text, txtPassword.Text);
-        btnLogin.Enabled = true;
+        btnAuthenticate.Enabled = true;
         lblStatus.Text = "Authenticated";
         lblStatus.ForeColor = Color.White;
         Application.DoEvents();
@@ -258,7 +273,7 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
       {
         FillCombo<Release>(cmbRelease, result.data);
 
-        btnConnect.Enabled = true;
+        EnableLoginButton(true);
       }
       else
       {
@@ -297,6 +312,11 @@ namespace Hpe.Nga.Api.UI.Core.Configuration
     {
       this.DialogResult = DialogResult.OK;
 
+    }
+
+    private void closeImg_Click(object sender, EventArgs e)
+    {
+      this.Close();
     }
 
   }

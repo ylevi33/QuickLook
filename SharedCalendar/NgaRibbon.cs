@@ -80,10 +80,6 @@ namespace SharedCalendar
           }
           else
           {
-
-            // make sure calendar tab is selected
-            OutlookUtils.SelectCalenderTab();
-
             // connect
             SettingsForm form = new SettingsForm();
             var config = persistService.Load<LoginConfiguration>();
@@ -100,7 +96,9 @@ namespace SharedCalendar
               UpdateLabelStatus();
               NgaUtils.init(loginConfig.SharedSpaceId, loginConfig.WorkspaceId, loginConfig.ReleaseId);
               isLoggedIn = true;
-
+              
+              // select the calendar tab 
+              OutlookUtils.SelectCalenderTab();
             }
           }
           if (ribbon != null)
